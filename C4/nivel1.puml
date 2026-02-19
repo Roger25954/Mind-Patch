@@ -1,0 +1,68 @@
+@startuml
+left to right direction
+title C4 - Nivel 1: System Context Diagram\nPlataforma de Detección Temprana y Fortalecimiento Cognitivo mediante IA
+
+actor "Usuario Adulto" as adulto
+actor "Menor (Supervisor)" as menor
+actor "Especialista Externo" as especialista
+
+rectangle "Sistemas Externos" {
+  rectangle "A. Servicio de IA (Gemini)" as ia {
+    note right
+      Análisis Descriptivo
+      Recomendaciones
+    end note
+  }
+  
+  rectangle "B. Directorio Profesional" as directorio {
+    note right
+      Consulta de Especialistas
+      Información Pública
+    end note
+  }
+  
+  rectangle "C. Autenticación e Infraestructura" as infra {
+    note right
+      Hosting, SSL, Seguridad
+      Auth (JWT)
+    end note
+  }
+}
+
+rectangle "Plataforma de Detección Temprana\ny Fortalecimiento Cognitivo" as plataforma {
+  note top
+    Solicitudes
+    Reportes y Actividades
+    Interacción
+    Retroalimentación
+    Analizar
+    Lectura / Escritura
+  end note
+  
+  database "Base de Datos\nPostgreSQL" as db {
+    note right
+      Almacena:
+      • Usuarios
+      • Evaluaciones
+      • Perfiles
+      • Actividades
+      • Métricas
+    end note
+  }
+}
+
+adulto --> plataforma : Interacción Usuario
+menor --> plataforma : Interacción Usuario
+especialista --> plataforma : Interacción Usuario
+
+plataforma --> ia : Datos Sistema / Integración Externa
+plataforma --> directorio : Datos Sistema / Integración Externa
+plataforma --> infra : Datos Sistema / Integración Externa
+plataforma --> db : Lectura/Escritura
+
+note bottom of plataforma
+  <size:12><b>Seguridad:</b></size>
+  Encriptación, Control de Acceso
+end note
+
+@enduml

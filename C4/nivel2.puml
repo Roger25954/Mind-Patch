@@ -1,0 +1,85 @@
+@startuml
+left to right direction
+title C4 - Nivel 2: Container Diagram\nPlataforma de Detección Temprana y Fortalecimiento Cognitivo Personalizado con IA
+
+actor "Usuario Adulto" as adulto
+actor "Menor" as menor
+
+rectangle "Sistemas Externos" {
+  rectangle "Servicio de IA\nGemini" as ia {
+    note right
+      Análisis Descriptivo
+      Recomendaciones
+      Salida JSON Estructurada
+    end note
+  }
+  
+  rectangle "Directorio\nProfesional" as directorio {
+    note right
+      Consulta Especialistas
+      Información Pública
+    end note
+  }
+  
+  rectangle "Autenticación e\nInfraestructura" as auth {
+    note right
+      SSL, Hosting
+      Auth JWT
+    end note
+  }
+}
+
+rectangle "Plataforma Principal" {
+  
+  rectangle "Web Application\n(Frontend)" as web {
+    note top
+      HTML, CSS, JS/TS
+      Phaser (infantil)
+      
+      • Captura Interacción
+      • Ejecuta Juegos
+      • Agrega Métricas
+      • Consulta Perfiles
+    end note
+  }
+  
+  rectangle "API Backend\n(Node.js + Express)" as api {
+    note top
+      • Autenticación JWT
+      • Validación de Datos
+      • Perfil Cognitivo
+      • Motor de Perfil
+      • Genera JSON Estructurado
+      • Agrega Métricas
+      • Calcula Indicadores
+    end note
+  }
+  
+  database "Base de Datos\nPostgreSQL" as db {
+    note right
+      Usuarios
+      Evaluaciones
+      Perfiles Generados
+      Planes de Actividades
+      Datos Relacionales
+    end note
+  }
+}
+
+adulto --> web : Usa
+menor --> web : Usa
+
+web --> api : API Requests\nJSON/HTTPS
+
+api --> db : Lectura/Escritura\nSQL
+api --> ia : Consulta análisis\ny recomendaciones
+api --> directorio : Consulta\nespecialistas
+api --> auth : Autenticación\ny seguridad
+
+note bottom of api
+  <size:12><b>Seguridad:</b></size>
+  Encriptación, Control de Acceso
+  HTTPS, JSSNB
+end note
+
+@enduml
