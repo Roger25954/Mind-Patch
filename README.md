@@ -1,260 +1,179 @@
-# Documentación Técnica: Plataforma de Tamizaje Digital  
-## Detección Temprana y Fortalecimiento Cognitivo mediante IA  
+# Documentación Técnica: Plataforma de Tamizaje Digital
+## Detección Temprana y Fortalecimiento Cognitivo mediante IA
 
-**Equipo:** —  
-**Fecha de actualización:** 19 de febrero de 2026  
+**Equipo:** Mind Patch
+**Fecha de actualización:** 03 de marzo 2026
 
 ---
 
 ## Tabla de Contenidos
 
-- [Introducción](#introducción)  
-  - [Contexto del Problema](#contexto-del-problema)  
-  - [Necesidad Identificada](#necesidad-identificada)  
-  - [Enfoque de la Solución](#enfoque-de-la-solución)  
-  - [Limitación Importante](#limitación-importante)  
-- [Propuesta de Valor](#propuesta-de-valor)  
-  - [Inteligencia Artificial Estructurada y Responsable](#inteligencia-artificial-estructurada-y-responsable)  
-  - [Experiencias Gamificadas para Niñas y Niños](#experiencias-gamificadas-para-niñas-y-niños)  
-  - [Interfaz Empática para Adultos](#interfaz-empática-para-adultos)  
-  - [Resultados Estructurados y Comprensibles](#resultados-estructurados-y-comprensibles)  
-  - [Acompañamiento Activo mediante Actividades Digitales](#acompañamiento-activo-mediante-actividades-digitales)  
-- [Arquitectura Técnica General](#arquitectura-técnica-general)  
-  - [Capas del Sistema](#capas-del-sistema)  
-  - [Principios de Diseño](#principios-de-diseño)  
-- [Frontend: Experiencia de Usuario](#frontend-experiencia-de-usuario)  
-  - [Tecnologías Utilizadas](#tecnologías-utilizadas)  
-  - [Módulo Infantil - Gamificación](#módulo-infantil---gamificación)  
-  - [Módulo Adulto - Interfaz Empática](#módulo-adulto---interfaz-empática)  
-- [Backend: Procesamiento y Lógica de Negocio](#backend-procesamiento-y-lógica-de-negocio)  
-  - [Tecnologías Implementadas](#tecnologías-implementadas)  
-  - [API REST - Endpoints Principales](#api-rest---endpoints-principales)  
-  - [Motor de Perfil Cognitivo](#motor-de-perfil-cognitivo)  
-- [Módulo de Estimulación Adaptativa](#módulo-de-estimulación-adaptativa)  
-  - [Objetivo](#objetivo)  
-  - [Estructura del Plan de Actividades](#estructura-del-plan-de-actividades)  
-  - [Adaptación Dinámica](#adaptación-dinámica)  
-- [Servicio de IA Responsable](#servicio-de-ia-responsable)  
-  - [Rol de la IA](#rol-de-la-ia)  
-  - [Estructura de Respuesta JSON](#estructura-de-respuesta-json)  
-- [Entrega de Resultados](#entrega-de-resultados)  
-  - [Procesamiento de Resultados](#procesamiento-de-resultados)  
-  - [Presentación en Frontend](#presentación-en-frontend)  
-- [Canalización a Especialistas](#canalización-a-especialistas)  
-  - [Enfoque Responsable](#enfoque-responsable)  
-- [Consideraciones Éticas y de Seguridad](#consideraciones-éticas-y-de-seguridad)  
-  - [Protección de Datos](#protección-de-datos)  
-  - [Transparencia](#transparencia)  
-  - [Control de Acceso](#control-de-acceso)  
-- [Flujo Completo de Interacción](#flujo-completo-de-interacción)  
-  - [Paso a Paso](#paso-a-paso)  
-- [Conclusión Técnica](#conclusión-técnica)  
+- [Introducción](#introducción)
+    - [Contexto del Problema](#contexto-del-problema)
+    - [Necesidad Identificada](#necesidad-identificada)
+    - [Enfoque de la Solución](#enfoque-de-la-solución)
+    - [Limitación Importante](#limitación-importante)
+- [Propuesta de Valor](#propuesta-de-valor)
+    - [Detección Temprana Accesible](#detección-temprana-accesible)
+    - [Lenguaje Empático y No Alarmista](#lenguaje-empático-y-no-alarmista)
+    - [IA Estructurada y Responsable](#ia-estructurada-y-responsable)
+    - [Acompañamiento Activo](#acompañamiento-activo)
+- [Arquitectura Técnica General](#arquitectura-técnica-general)
+    - [Capas del Sistema](#capas-del-sistema)
+    - [Principios de Diseño](#principios-de-diseño)
+- [Frontend: Experiencia de Usuario](#frontend-experiencia-de-usuario)
+    - [Tecnologías](#tecnologías)
+    - [Módulo Infantil (Gamificación)](#módulo-infantil-gamificación)
+    - [Módulo Adulto](#módulo-adulto)
+- [Backend: Procesamiento y Lógica](#backend-procesamiento-y-lógica)
+    - [Tecnologías](#tecnologías-1)
+    - [API REST - Endpoints Principales](#api-rest---endpoints-principales)
+    - [Motor de Perfil Cognitivo](#motor-de-perfil-cognitivo)
+- [Motor de Estimulación Adaptativa](#motor-de-estimulación-adaptativa)
+    - [Objetivo](#objetivo)
+    - [Estructura del Plan](#estructura-del-plan)
+    - [Adaptación Dinámica](#adaptación-dinámica)
+- [Servicio de IA Responsable](#servicio-de-ia-responsable)
+    - [Función](#función)
+    - [Arquitectura de IA](#arquitectura-de-ia)
+    - [Ejemplo de Respuesta JSON](#ejemplo-de-respuesta-json)
+- [Canalización a Especialistas](#canalización-a-especialistas)
+- [Consideraciones Éticas y de Seguridad](#consideraciones-éticas-y-de-seguridad)
+    - [Protección de Datos](#protección-de-datos)
+    - [Transparencia](#transparencia)
+    - [Control de Acceso](#control-de-acceso)
+- [Flujo Completo del Sistema](#flujo-completo-del-sistema)
+- [Conclusión Técnica](#conclusión-técnica)
 
 ---
 
 ## Introducción
 
 ### Contexto del Problema
-
-En México, la falta de concientización y acceso oportuno a herramientas de detección temprana de neurodivergencias y dificultades relacionadas con la atención, memoria y organización mental en menores y adultos provoca orientaciones tardías. Esto genera estigmatización y limita el desarrollo académico, social y profesional de muchas personas.
+En México, el acceso tardío a evaluaciones especializadas en áreas como atención, memoria y regulación cognitiva limita la posibilidad de actuar preventivamente. La falta de herramientas accesibles que orienten a familias y adultos de manera temprana retrasa la búsqueda de acompañamiento profesional.
 
 ### Necesidad Identificada
-
-Existe una necesidad clara de soluciones tecnológicas accesibles que permitan realizar tamizajes digitales tempranos. Estas herramientas deben:
-
-- Ayudar a identificar **indicadores cognitivos y conductuales** que sugieran la conveniencia de acudir con un especialista.  
-- Ofrecer **información clara y empática** para orientar a familias y personas adultas.  
-- Proponer **actividades de fortalecimiento cognitivo** que sirvan como acompañamiento mientras se gestiona atención profesional.  
+Se requiere una plataforma digital que permita:
+- Explorar indicadores cognitivos de forma accesible.
+- Ofrecer orientación estructurada y comprensible.
+- Sugerir cuándo podría ser conveniente acudir con un especialista.
+- Proponer actividades digitales de fortalecimiento cognitivo.
 
 ### Enfoque de la Solución
-
-La plataforma propuesta es una aplicación web basada en Inteligencia Artificial orientada al **tamizaje digital temprano** y al **fortalecimiento cognitivo adaptativo**. Está diseñada para:
-
-- Identificar indicadores tempranos en niñas y niños mediante dinámicas gamificadas.  
-- Concientizar a personas adultas sobre posibles señales relacionadas con enfoque, organización mental y estilo cognitivo.  
-- Sugerir el acercamiento a profesionales de la salud cuando los indicadores lo ameriten.  
-- Ofrecer actividades digitales personalizadas que ayuden a fortalecer ciertas habilidades mientras se busca atención profesional.  
+Aplicación web basada en IA que combina: exploración digital temprana, generación de un perfil cognitivo orientativo, recomendación profesional responsable y actividades digitales adaptativas de fortalecimiento. Diseñada para población infantil y adulta.
 
 ### Limitación Importante
-
-La plataforma **no realiza diagnósticos clínicos**. Su función es:
-
-- Brindar orientación inicial estructurada.  
-- Describir tendencias e indicadores observados en el desempeño.  
-- Sugerir áreas que podrían beneficiarse de acompañamiento profesional.  
-- Proponer actividades de fortalecimiento cognitivo digital.  
-
-El diagnóstico formal y cualquier tratamiento clínico corresponden siempre a profesionales de la salud.
-
----
+La plataforma **no realiza diagnósticos clínicos**. Su función es orientar, describir tendencias observadas y sugerir áreas que podrían beneficiarse de acompañamiento profesional. El diagnóstico formal corresponde exclusivamente a profesionales de la salud.
 
 ## Propuesta de Valor
 
-### Inteligencia Artificial Estructurada y Responsable
+### Detección Temprana Accesible
+Identificación de indicadores conductuales y cognitivos mediante dinámicas digitales estructuradas y juegos.
 
-La IA se utiliza de forma controlada para:
+### Lenguaje Empático y No Alarmista
+Los resultados no etiquetan, no usan términos clínicos y se centran en fortalezas y áreas a fortalecer.
 
-- Interpretar métricas cuantitativas de desempeño (tiempos de respuesta, aciertos, omisiones, variabilidad).  
-- Generar descripciones **no clínicas** de estilos cognitivos y áreas a fortalecer.  
-- Sugerir parámetros para actividades de fortalecimiento cognitivo.  
+### IA Estructurada y Responsable
+La IA no diagnostica ni reemplaza especialistas. Funciona como apoyo descriptivo, operando bajo reglas predefinidas y con salida controlada en formato JSON.
 
-Siempre bajo principios de transparencia y explicabilidad.
-
-### Experiencias Gamificadas para Niñas y Niños
-
-El módulo infantil transforma la evaluación en una experiencia lúdica:
-
-- Minijuegos que registran métricas de atención, memoria de trabajo y regulación de respuestas.  
-- Dinámicas tipo *go/no-go* disfrazadas de juegos.  
-- Secuencias visuales y auditivas para explorar memoria y procesamiento.  
-
-El objetivo no es etiquetar, sino entender cómo responde la persona a distintos tipos de tareas.
-
-### Interfaz Empática para Adultos
-
-El módulo para adultos utiliza un lenguaje:
-
-- Claro y empático.  
-- No alarmista.  
-- Enfocado en **estilos cognitivos** y **áreas a fortalecer**, no en diagnósticos.  
-
-Incluye formularios progresivos, autoevaluaciones y microtareas cognitivas breves.
-
-### Resultados Estructurados y Comprensibles
-
-Los reportes generados:
-
-- Evitan términos clínicos y etiquetas estigmatizantes.  
-- Presentan **tendencias observadas** y **indicadores relevantes**.  
-- Destacan **fortalezas** y **áreas que podrían beneficiarse** de apoyo adicional.  
-
-### Acompañamiento Activo mediante Actividades Digitales
-
-Además del tamizaje digital temprano, la plataforma ofrece un **módulo de estimulación adaptativa** que:
-
-- Propone actividades digitales personalizadas (juegos, ejercicios breves).  
-- Ajusta dificultad y parámetros en función del desempeño.  
-- Sirve como **acompañamiento** mientras se gestiona atención profesional.  
-
----
+### Acompañamiento Activo
+Además de la orientación inicial, el sistema ofrece actividades digitales adaptativas que ayudan a fortalecer habilidades mientras el usuario gestiona atención profesional.
 
 ## Arquitectura Técnica General
 
 ### Capas del Sistema
-
-La solución se implementa como una aplicación web modular con las siguientes capas:
-
-1. **Capa de Presentación**: Frontend web (niños y adultos).  
-2. **Capa de Lógica de Negocio**: Backend con API REST.  
-3. **Capa de Perfil Cognitivo**: Motor que transforma métricas en perfiles descriptivos.  
-4. **Capa de Estimulación Adaptativa**: Motor que define y ajusta actividades de fortalecimiento.  
-5. **Capa de IA**: Servicios de IA para apoyo descriptivo y parametrización.  
-6. **Capa de Datos**: Base de datos relacional con soporte JSON (por ejemplo PostgreSQL).  
+1.  **Capa de Presentación (Frontend):** Interfaz de usuario, experiencias gamificadas y captura de métricas.
+2.  **Capa de Lógica de Negocio (Backend):** API REST, procesamiento y validación.
+3.  **Motor de Perfil Cognitivo:** Cálculo de indicadores estadísticos a partir de métricas.
+4.  **Motor de Estimulación Adaptativa:** Generación y ajuste de planes de actividades personalizados.
+5.  **Servicio de IA Responsable:** Análisis estructurado y generación de descripciones en lenguaje natural.
+6.  **Capa de Datos:** Persistencia y trazabilidad (PostgreSQL).
 
 ### Principios de Diseño
-
-- Separación clara entre **evaluación**, **perfil orientativo** y **actividades de fortalecimiento**.  
-- Minimización de datos personales.  
-- Trazabilidad de evaluaciones, sin almacenar información clínica sensible.  
-- IA utilizada como **apoyo** y no como fuente de diagnóstico.  
-
----
+- Separación clara entre evaluación y fortalecimiento.
+- Minimización de datos personales.
+- IA como apoyo, no como decisor clínico.
+- Enfoque ético y transparente.
 
 ## Frontend: Experiencia de Usuario
 
-### Tecnologías Utilizadas
+### Tecnologías
+- **HTML5:** Estructura semántica.
+- **CSS3:** Diseño responsivo.
+- **JavaScript/TypeScript:** Lógica de interacción.
+- **Phaser:** Motor para dinámicas gamificadas en 2D.
+- **Three.js:** Entornos visuales interactivos 3D.
 
-- HTML5, CSS3  
-- JavaScript/TypeScript  
-- Phaser/Canvas para el módulo gamificado infantil  
+### Módulo Infantil (Gamificación)
+- **Objetivo:** Explorar patrones de respuesta mediante juegos no clínicos.
+- **Actividades:** Juegos de atención selectiva, dinámicas go/no-go, secuencias de memoria de trabajo, discriminación auditiva/visual.
+- **Métricas Capturadas:**
+    - **Tiempo promedio de respuesta:**  
+  `<t> = (1/N) * Σ(t_i)`
 
-### Módulo Infantil - Gamificación
+- **Variabilidad (desviación estándar):**  
+  `σ_t = √[ (1/N) * Σ(t_i - <t>)² ]`
 
-#### Objetivo
+- **Tasa de aciertos:**  
+  `TA = (A_totales / N_total) × 100%`
 
-Explorar estilos de respuesta y desempeño cognitivo en niñas y niños mediante juegos que registran métricas sin que la experiencia se perciba como una prueba clínica.
+- **Tasa de impulsividad:**  
+  `TI = (E_impulsivos / N_total) × 100%`
 
-#### Métricas Capturadas
+### Módulo Adulto
+- Cuestionarios estructurados y microtareas cognitivas.
+- Reportes visuales con lenguaje claro y empático.
 
-Por ejemplo:
+## Backend: Procesamiento y Lógica
 
-- Tiempos de respuesta promedio y su variabilidad.  
-- Número de respuestas correctas.  
-- Omisiones (cuando no se responde ante un estímulo esperado).  
-- Respuestas impulsivas (cuando se responde ante estímulos que debían ignorarse).  
-
-Los datos detallados se agregan antes de ser enviados al backend.
-
-### Módulo Adulto - Interfaz Empática
-
-#### Elementos UX Clave
-
-- Barra de progreso.  
-- Lenguaje claro y no alarmista.  
-- Descripciones centradas en **fortalezas** y **posibles áreas a fortalecer**.  
-
----
-
-## Backend: Procesamiento y Lógica de Negocio
-
-### Tecnologías Implementadas
-
-- Node.js + Express (API REST).  
-- Autenticación con JWT.  
-- Base de datos relacional (PostgreSQL) con columnas JSONB para resultados de IA y métricas agregadas.  
+### Tecnologías
+- **Node.js + Express:** Entorno y framework para API REST.
+- **JWT:** Autenticación segura.
+- **PostgreSQL:** Base de datos con soporte JSONB.
 
 ### API REST - Endpoints Principales
-
-- `POST /api/auth/login`: Autenticación de usuarios.  
-- `POST /api/auth/register`: Registro de adultos/tutores.  
-- `POST /api/evaluaciones`: Registro de una nueva evaluación.  
-- `POST /api/eventos`: Envío de métricas agregadas de juegos.  
-- `GET /api/resultados/:id`: Consulta de un perfil orientativo generado.  
-- `GET /api/planes/:idUsuario`: Consulta del plan de actividades de fortalecimiento.  
+- `POST /api/auth/login` - Autenticación de usuarios
+- `POST /api/auth/register` - Registro de usuarios
+- `POST /api/evaluaciones` - Registrar nueva evaluación
+- `POST /api/eventos` - Enviar eventos agregados
+- `GET /api/resultados/:id` - Consultar resultado final
+- `GET /api/especialistas` - Consultar directorio
+- `POST /api/actividades/plan` - Generar plan de actividades
+- `GET /api/actividades/:id` - Obtener actividad específica
 
 ### Motor de Perfil Cognitivo
+Recibe métricas agregadas y calcula indicadores estadísticos para áreas como enfoque, memoria de trabajo y regulación. Organiza los resultados en un perfil descriptivo estructurado.
 
-El backend cuenta con un módulo específico que:
-
-- Recibe métricas agregadas.  
-- Calcula indicadores estadísticos básicos (promedios, variabilidad, proporciones).  
-- Organiza resultados por **áreas de funcionamiento**:  
-  - Enfoque y concentración  
-  - Organización mental  
-  - Ritmo y regulación  
-  - Memoria de trabajo  
-  - Etc.  
-- Construye un objeto estructurado que servirá de entrada para la IA.  
-
----
-
-## Módulo de Estimulación Adaptativa
-
-Este módulo es responsable de definir y ajustar las actividades de fortalecimiento cognitivo.
+## Motor de Estimulación Adaptativa
 
 ### Objetivo
+Traducir el perfil orientativo en un plan de actividades digitales personalizadas. **No constituye tratamiento clínico.**
 
-- Traducir el perfil orientativo en un **plan de actividades digitales**.  
-- Evitar cualquier lenguaje de “tratamiento clínico”.  
-- Acompañar a la persona mientras se gestiona atención profesional.  
+### Estructura del Plan
+El motor genera planes en formato JSON con actividades, frecuencia, duración y parámetros iniciales.
 
-### Estructura del Plan de Actividades
+### Adaptación Dinámica
+Ajusta parámetros (velocidad, distractores, complejidad) según reglas predefinidas en función del desempeño del usuario (ej. Si la tasa de aciertos < 50%, disminuir dificultad).
 
-Ejemplo de estructura JSON generada por el módulo:
+## Servicio de IA Responsable
 
+### Función
+La IA recibe métricas anonimizadas y genera descripciones en lenguaje natural, sugiriendo parámetros dentro de límites predefinidos. Nunca emite diagnósticos.
+
+### Arquitectura de IA
+- **LangChain:** Orquestador que construye prompts estructurados y aplica reglas de salida (JSON).
+- **Google AI Studio (Gemini):** Motor de análisis que identifica patrones y genera descripciones cualitativas.
+
+### Ejemplo de Respuesta JSON
 ```json
 {
   "tipo_usuario": "infantil",
-  "areas_a_fortalecer": ["enfoque_y_concentracion"],
-  "plan_actividades": [
-    {
-      "nombre": "Juego de foco visual",
-      "frecuencia_sugerida": "3 veces por semana",
-      "duracion_estimada_minutos": 8,
-      "parametros_iniciales": {
-        "velocidad_estimulos": "media",
-        "cantidad_distractores": 2
-      }
-    }
-  ]
+  "perfil_observado": {
+    "fortalezas": ["Buena capacidad de seguimiento de instrucciones"],
+    "areas_para_fortalecer": ["Mantenimiento de atención con distractores"]
+  },
+  "tendencias_identificadas": {
+    "atencion": "Variabilidad moderada en presencia de distractores"
+  },
+  "nota_etica": "Este análisis es un perfil orientativo y no constituye un diagnóstico clínico."
 }
