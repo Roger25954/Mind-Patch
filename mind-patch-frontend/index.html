@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Patch - Portal para Tutores</title>
+    <style>
+        body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Cambiado para evitar cortes en pantallas cortas */
+        margin: 0;
+        padding: 20px; /* Espacio de seguridad para móviles */
+    }
+
+    .login-card {
+        background-color: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box; /* Evita que el padding "infle" la tarjeta */
+    }
+
+    /* 📱 REGLAS PARA MÓVILES */
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 25px; /* Menos espacio interno en celulares */
+            box-shadow: none; /* Quitamos sombra para que se vea más limpio */
+            border: 1px solid #e2e8f0;
+        }
+        h2 { font-size: 24px; }
+        input { font-size: 14px; padding: 10px; }
+    }e-error { color: #ef4444; font-size: 14px; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Mind Patch</h2>
+        <p>Acceso al Panel de Control del Tutor</p>
+        
+        <form id="formulario-login">
+            <input type="email" id="correo" placeholder="Correo electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+
+        <p id="mensaje-error"></p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

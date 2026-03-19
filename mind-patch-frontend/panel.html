@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Patch - Panel de Control</title>
+    <style>
+        .container {
+        max-width: 900px;
+        margin: 20px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+    }
+
+    /* Contenedor para que la tabla no rompa el diseño */
+/* 1. Estándar Moderno (Firefox y Chrome 121+) */
+    .table-responsive {
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+    }
+
+    /* 2. Para Motores WebKit (Chrome, Safari, Edge, iOS, Samsung Internet) */
+    .table-responsive::-webkit-scrollbar {
+        height: 6px; /* Grosor de la barra horizontal */
+        width: 6px;  /* Grosor de la barra vertical */
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: transparent; /* Fondo de la barra */
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1; /* Color de la barrita */
+        border-radius: 10px;       /* Bordes redondeados */
+        border: 1px solid transparent; 
+    }
+
+    /* 3. Evitar que la barra aparezca si no es necesaria */
+    .table-responsive {
+        -webkit-overflow-scrolling: touch; /* Re-activado solo si buscas soporte para iOS < 13, de lo contrario puedes omitirlo */
+    }
+    /* 📱 AJUSTES PARA MÓVILES */
+    @media (max-width: 600px) {
+        .container {
+            padding: 15px;
+            margin: 10px;
+        }
+        h1 { font-size: 20px; }
+        .logout { 
+            float: none; 
+            display: block; 
+            margin-bottom: 15px; 
+            text-align: right; 
+        }
+        /* Convertimos la tarjeta de la IA en algo más vertical */
+        .card { padding: 10px; }
+    }    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="logout" onclick="cerrarSesion()">Cerrar Sesión</span>
+        <h1>Panel del Tutor</h1>
+        <p>Bienvenido. Aquí puedes ver el progreso y análisis de las evaluaciones.</p>
+
+        <div id="lista-evaluaciones">
+            <p>Cargando datos médicos...</p>
+        </div>
+    </div>
+
+    <script src="panel.js"></script>
+</body>
+</html>
