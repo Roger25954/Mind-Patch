@@ -1,0 +1,32 @@
+import "dotenv/config";
+import { GoogleGenAI } from "@google/genai";
+import readline from "node:readline";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+async function chat() {
+  rl.question("You: ", async (message) => {
+
+    if (message.toLowerCase() === "exit") {
+      rl.close();
+      return;
+    }
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: message,
+    });
+
+    console.log("AI:", response.text);
+    chat();
+  });
+}
+
+chat();
