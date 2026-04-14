@@ -1,0 +1,17 @@
+/* Estilos CSS para el juego espacial.
+   - Resetea márgenes y padding para todos los elementos.
+   - Hace que el canvas ocupe toda la pantalla de manera fija. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}

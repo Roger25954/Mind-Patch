@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/vite.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>El Guardián Espacial</title>
+    <style>
+      #debug-panel {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        width: 300px;
+        max-height: 200px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #0f0;
+        font-family: monospace;
+        font-size: 11px;
+        padding: 10px;
+        border: 1px solid #0f0;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+      }
+      #debug-panel.show {
+        display: block;
+      }
+      #debug-panel .log-entry {
+        margin: 2px 0;
+        padding: 2px;
+      }
+      #debug-toggle {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #0f0;
+        border: 1px solid #0f0;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-family: monospace;
+        z-index: 1001;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <div id="debug-toggle">DEBUG [OFF]</div>
+    <div id="debug-panel">
+      <div><strong>= DEBUG LOG =</strong></div>
+      <div id="debug-logs"></div>
+    </div>
+    <script
+      type="module"
+      src="/src/main.ts"
+    ></script>
+    <script>
+      // Panel de Debug
+      let debugEnabled = false
+      const maxLogs = 30
+      const logs = []
+
+      const debugPanel = document.getElementById('debug-panel')
+      const debugToggle = document.getElementById('debug-toggle')
+      const debugLogs = document.getElementById('debug-logs')
+
+      debugToggle.onclick = () => {
+        debugEnabled = !debugEnabled
+        debugPanel.classList.toggle('show')
+        debugToggle.textContent = debugEnabled ? 'DEBUG [ON]' : 'DEBUG [OFF]'
+      }
+
+      // Interceptar console.log
+      const originalLog = console.log
+      console.log = function (...args) {
+        originalLog.apply(console, args)
+        if (debugEnabled) {
+          const msg = args.map(arg => 
+            typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+          ).join(' ')
+          
+          logs.push(msg)
+          if (logs.length > maxLogs) logs.shift()
+          
+          debugLogs.innerHTML = logs.map(log => 
+            `<div class="log-entry">${log.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`
+          ).join('')
+          debugLogs.parentElement.scrollTop = debugLogs.parentElement.scrollHeight
+        }
+      }
+    </script>
+  </body>
+</html>
