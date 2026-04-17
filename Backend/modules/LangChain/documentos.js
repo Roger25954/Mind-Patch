@@ -75,6 +75,9 @@ const analizarPdf = async (buffer, prompt) => {
 
   console.log("Respuesta IA:", response.text);
 
+  buffer = null;
+
+  console.log("Buffer liberado de memoria");
   return response.text;
 };
 
