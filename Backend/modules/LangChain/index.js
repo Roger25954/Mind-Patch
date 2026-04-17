@@ -1,4 +1,4 @@
-import "dotenv/config";
+/*import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 import readline from "node:readline";
 
@@ -29,4 +29,25 @@ async function chat() {
   });
 }
 
-chat();
+chat();*/
+
+//version web
+
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
+});
+
+const enviarMensaje = async (mensaje) => {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: mensaje
+  });
+
+  return response.text;
+};
+
+module.exports = {
+  enviarMensaje
+};
