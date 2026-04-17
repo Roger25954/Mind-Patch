@@ -8,7 +8,7 @@ exports.procesarIA = async (req, res) => {
 
         if (req.file) {
             const resultado = await analizarPdf(
-                req.file.path,
+                req.file.buffer,
                 prompt || "Analiza este documento"
             );
 
