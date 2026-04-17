@@ -46,25 +46,24 @@ rl.question("¿Qué quieres hacer con el documento? ", async (promptUsuario) => 
 
 
 //version web
-
 const { GoogleGenAI } = require("@google/genai");
-const fs = require("fs");
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 });
 
-const analizarPdf = async (archivo, prompt) => {
-  console.log("Analizando PDF:", archivo);
-  console.log("Prompt del usuario:", prompt);
+const analizarPdf = async (buffer, prompt) => {
+
+  console.log("PDF recibido en memoria");
+  console.log("Tamaño:", buffer.length, "bytes");
+  console.log("Prompt:", prompt);
+
   const contents = [
     { text: prompt },
     {
       inlineData: {
         mimeType: "application/pdf",
-        data: Buffer.from(
-          fs.readFileSync(archivo)
-        ).toString("base64")
+        data: buffer.toString("base64")
       }
     }
   ];
@@ -74,8 +73,11 @@ const analizarPdf = async (archivo, prompt) => {
     contents
   });
 
-  console.log("Respuesta de la IA:", response.text);
+  console.log("Respuesta IA:", response.text);
 
+  buffer = null;
+
+  console.log("Buffer liberado de memoria");
   return response.text;
 };
 
