@@ -1,0 +1,79 @@
+/* ══════════════════════════════════════════════
+   LA ACADEMIA DE MAGIA · Global Styles
+   Aesthetic: Dark Grimoire · Luxury · Arcane
+   ══════════════════════════════════════════════ */
+
+:root {
+  --gold:       #c9a84c;
+  --gold-light: #e8cc7a;
+  --gold-dim:   #7a5f28;
+  --ink:        #08080f;
+  --ink-mid:    #12121e;
+  --ink-soft:   #1c1c2e;
+  --parchment:  #f0e6c8;
+  --arcane:     #7755bb;
+  --arcane-dim: #3a2a66;
+  --mist:       #4a7aaa;
+  --ember:      #cc5533;
+  --sage:       #4a9966;
+  --text-muted: #5a5270;
+  --text-soft:  #9988bb;
+  --radius:     6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  font-family: 'Crimson Pro', Georgia, serif;
+  cursor: default;
+}
+
+#game-container {
+  position: relative;
+  /* Phaser injects canvas here */
+}
+
+/* Phaser canvas gets a subtle border */
+#game-container canvas {
+  display: block;
+  outline: none;
+  image-rendering: auto;
+}
+
+/* Loader shown before Phaser boots */
+#loader {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--ink);
+  z-index: 100;
+  transition: opacity 0.6s ease;
+}
+
+#loader.hidden { opacity: 0; pointer-events: none; }
+
+#loader-rune {
+  font-family: 'Cinzel', serif;
+  font-size: 48px;
+  color: var(--gold);
+  animation: runeRotate 3s linear infinite;
+  margin-bottom: 24px;
+}
+
+#loader-text {
+  font-family: 'Crimson Pro', serif;
+  font-size: 16px;
+  color: var(--text-soft);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@keyframes runeRotate {
+  0%   { transform: rotate(0deg) scale(1);   opacity: 1; }
+  50%  { transform: rotate(180deg) scale(1.1); opacity: 0.7; }
+  100% { transform: rotate(360deg) scale(1);  opacity: 1; }
+}
