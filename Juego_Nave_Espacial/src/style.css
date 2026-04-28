@@ -15,3 +15,86 @@ canvas {
   width: 100vw;
   height: 100vh;
 }
+
+:root{
+  --accent: #00ff00;
+  --accent-2: #ffd700;
+  --danger: #ff6b6b;
+  --bg-soft: rgba(0,0,0,0.6);
+  --hud-font: 'Comic Sans MS', 'Fredoka', Arial, sans-serif;
+}
+
+/* HUD and overlays */
+.hud-container{
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  z-index: 120;
+  font-family: var(--hud-font);
+  color: #fff;
+  pointer-events: none;
+}
+.hud-sector-name{
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 0 12px var(--accent);
+}
+.hud-progress{
+  width: 120px;
+  height: 10px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+}
+.hud-progress-fill{
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #ffffff);
+  width: 10%;
+  transition: width 350ms cubic-bezier(.2,.8,.2,1);
+  box-shadow: 0 0 12px var(--accent);
+}
+.hud-instructions{
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 16px;
+  background: var(--bg-soft);
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  max-width: 420px;
+  opacity: 1;
+  transition: opacity 500ms ease;
+  pointer-events: none;
+}
+.hud-break{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 22px;
+  background: rgba(0,0,0,0.9);
+  padding: 30px 44px;
+  border-radius: 14px;
+  border: 3px solid #fff;
+  color: #fff;
+  z-index: 200;
+  display: none;
+  pointer-events: auto;
+}
+
+/* Results overlay tweaks (child friendly) */
+#results-overlay .celebrate{
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+

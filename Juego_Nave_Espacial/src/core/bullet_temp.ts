@@ -53,7 +53,7 @@ export class Bullet {
     this.direction = direction.clone().normalize()
     this.root = new Object3D()
     this.root.position.copy(position)
-    this.scene.add(this.root)
+    this.scene.add(this.root);
 
     // ── 1. NÚCLEO ──────────────────────────────────────────────
     const coreGeo = new SphereGeometry(0.12, 12, 12)
@@ -63,7 +63,10 @@ export class Bullet {
       depthWrite: false,
     })
     this.coreMesh = new Mesh(coreGeo, coreMat)
-    this.root.add(this.coreMesh)
+    this.root.add(this.coreMesh);
+    // Evitar frustum culling para que no desaparezca en algunos frames
+    // @ts-ignore
+    this.coreMesh.frustumCulled = false
 
     // ── 2. HALO / GLOW (sprite billboard) ──────────────────────
     const glowMat = new SpriteMaterial({
@@ -76,7 +79,11 @@ export class Bullet {
     })
     this.glowSprite = new Sprite(glowMat)
     this.glowSprite.scale.setScalar(1.2)
-    this.root.add(this.glowSprite)
+    this.root.add(this.glowSprite);
+    // Renderizar siempre encima y evitar depth test para mayor visibilidad
+    // @ts-ignore
+    (this.glowSprite.material as SpriteMaterial).depthTest = false
+    this.glowSprite.renderOrder = 20
 
     // ── 3. TRAIL (estela de partículas) ────────────────────────
     this.trailPositions = new Array(this.MAX_TRAIL * 3).fill(0)
@@ -102,7 +109,12 @@ export class Bullet {
     })
 
     this.trail = new Points(trailGeo, trailMat)
-    this.scene.add(this.trail)
+    this.scene.add(this.trail);
+    // Evitar frustum culling en la estela
+    // @ts-ignore
+    this.trail.frustumCulled = false
+    // @ts-ignore
+    (this.trail.material as PointsMaterial).depthTest = false
   }
 
   /**
@@ -136,9 +148,9 @@ export class Bullet {
    * - Anima el pulso del halo
    * - Actualiza la estela de partículas con desvanecimiento
    */
-  public update(): void {
-    // Mueve el proyectil
-    this.root.position.addScaledVector(this.direction, this.speed)
+  public update(deltaTime: number = 0.016): void {
+    // Mueve el proyectil (velocidad basada en segundos)
+    this.root.position.addScaledVector(this.direction, this.speed * deltaTime)
 
     // Pulso en el glow (parpadeo energético)
     const pulse = 1 + 0.25 * Math.sin(performance.now() * 0.025)
