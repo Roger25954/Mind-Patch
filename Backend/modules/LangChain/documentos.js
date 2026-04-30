@@ -1,4 +1,4 @@
-import "dotenv/config";
+/*import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
 import readline from "node:readline";
@@ -42,4 +42,45 @@ rl.question("¿Qué quieres hacer con el documento? ", async (promptUsuario) => 
   console.log(response.text);
 
   rl.close();
+});*/
+
+
+//version web
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
 });
+
+const analizarPdf = async (buffer, prompt) => {
+
+  console.log("PDF recibido en memoria");
+  console.log("Tamaño:", buffer.length, "bytes");
+  console.log("Prompt:", prompt);
+
+  const contents = [
+    { text: prompt },
+    {
+      inlineData: {
+        mimeType: "application/pdf",
+        data: buffer.toString("base64")
+      }
+    }
+  ];
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents
+  });
+
+  console.log("Respuesta IA:", response.text);
+
+  buffer = null;
+
+  console.log("Buffer liberado de memoria");
+  return response.text;
+};
+
+module.exports = {
+  analizarPdf
+};

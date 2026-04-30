@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Patch IA</title>
+
+<style>
+body{
+    margin:0;
+    padding:40px;
+    font-family:Arial, sans-serif;
+    background:#f4f4f4;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+}
+
+input, textarea, button{
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+}
+
+textarea{
+    min-height:130px;
+}
+
+.resultado{
+    margin-top:20px;
+    background:#eee;
+    padding:15px;
+    white-space:pre-wrap;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Mind Patch IA</h1>
+
+<form id="formIA">
+
+<input type="file" id="pdf" accept=".pdf">
+
+<textarea
+id="prompt"
+placeholder="Escribe algo o sube PDF"
+></textarea>
+
+<button type="submit">Enviar</button>
+
+</form>
+
+<div class="resultado" id="respuesta">
+Esperando consulta...
+</div>
+
+</div>
+
+<script>
+const API = "http://localhost:3000/api/ia";
+
+document
+.getElementById("formIA")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault(); // EVITA RECARGA
+
+    const archivo = document.getElementById("pdf").files[0];
+    const prompt = document.getElementById("prompt").value.trim();
+    const respuesta = document.getElementById("respuesta");
+
+    respuesta.innerText = "Procesando...";
+
+    try{
+
+        let options = {
+            method:"POST"
+        };
+
+        if(archivo){
+
+            const formData = new FormData();
+            formData.append("pdf", archivo);
+            formData.append("prompt", prompt);
+
+            options.body = formData;
+
+        }else{
+
+            options.headers = {
+                "Content-Type":"application/json"
+            };
+
+            options.body = JSON.stringify({
+                mensaje: prompt
+            });
+        }
+
+        const res = await fetch(API, options);
+        const data = await res.json();
+
+        respuesta.innerText =
+            data.resultado ||
+            data.respuesta ||
+            data.error ||
+            JSON.stringify(data,null,2);
+
+    }catch(error){
+
+        respuesta.innerText =
+            "Error: " + error.message;
+    }
+});
+</script>
+
+</body>
+</html>

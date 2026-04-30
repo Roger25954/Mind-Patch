@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Academia de Magia - PROLEC-R</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: serif; overflow: hidden; }
+  #game-container { position: relative; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<div id="game-container"></div>
+<script>
+/* ============================================================
+   LA ACADEMIA DE MAGIA — PROLEC-R
+   Subpruebas: Letras | Palabras/Pseudopalabras | Oraciones
+   ============================================================ */
+
+// ─── DATOS DEL JUEGO ─────────────────────────────────────────
+
+const LETRAS_ITEMS = [
+  { a: 'bpal', b: 'bpal', igual: true },
+  { a: 'dqpb', b: 'dqpb', igual: true },
+  { a: 'mano', b: 'mamo', igual: false },
+  { a: 'tren', b: 'tren', igual: true },
+  { a: 'plaf', b: 'plat', igual: false },
+  { a: 'boda', b: 'boda', igual: true },
+  { a: 'casa', b: 'cana', igual: false },
+  { a: 'qdup', b: 'qdup', igual: true },
+  { a: 'frob', b: 'frob', igual: true },
+  { a: 'seta', b: 'zeta', igual: false },
+  { a: 'dlmn', b: 'dlmn', igual: true },
+  { a: 'pqbd', b: 'pqdb', igual: false },
+  { a: 'ruta', b: 'ruta', igual: true },
+  { a: 'blim', b: 'blin', igual: false },
+  { a: 'gota', b: 'gota', igual: true },
+  { a: 'vino', b: 'vina', igual: false },
+  { a: 'crep', b: 'crep', igual: true },
+  { a: 'fluq', b: 'fkuq', igual: false },
+  { a: 'miel', b: 'miel', igual: true },
+  { a: 'zopa', b: 'zopa', igual: true },
+];
+
+const PALABRAS_ITEMS = [
+  { texto: 'mesa', tipo: 'real' }, { texto: 'luna', tipo: 'real' },
+  { texto: 'firco', tipo: 'pseudo' }, { texto: 'zapato', tipo: 'real' },
+  { texto: 'bloma', tipo: 'pseudo' }, { texto: 'árbol', tipo: 'real' },
+  { texto: 'trufa', tipo: 'pseudo' }, { texto: 'ciudad', tipo: 'real' },
+  { texto: 'pluvia', tipo: 'pseudo' }, { texto: 'escuela', tipo: 'real' },
+  { texto: 'gremio', tipo: 'pseudo' }, { texto: 'ventana', tipo: 'real' },
+  { texto: 'calbo', tipo: 'pseudo' }, { texto: 'piedra', tipo: 'real' },
+  { texto: 'drema', tipo: 'pseudo' }, { texto: 'montaña', tipo: 'real' },
+  { texto: 'flisco', tipo: 'pseudo' }, { texto: 'camino', tipo: 'real' },
+  { texto: 'tronlo', tipo: 'pseudo' }, { texto: 'estrella', tipo: 'real' },
+  { texto: 'cielo', tipo: 'real' }, { texto: 'bruck', tipo: 'pseudo' },
+  { texto: 'cuerpo', tipo: 'real' }, { texto: 'plonk', tipo: 'pseudo' },
+  { texto: 'fuego', tipo: 'real' }, { texto: 'grumbo', tipo: 'pseudo' },
+  { texto: 'agua', tipo: 'real' }, { texto: 'frazlo', tipo: 'pseudo' },
+  { texto: 'libro', tipo: 'real' }, { texto: 'snork', tipo: 'pseudo' },
+  { texto: 'tierra', tipo: 'real' }, { texto: 'crumba', tipo: 'pseudo' },
+  { texto: 'vuelo', tipo: 'real' }, { texto: 'plimco', tipo: 'pseudo' },
+  { texto: 'magia', tipo: 'real' }, { texto: 'truvio', tipo: 'pseudo' },
+  { texto: 'hechizo', tipo: 'real' }, { texto: 'glorb', tipo: 'pseudo' },
+  { texto: 'varita', tipo: 'real' }, { texto: 'fincho', tipo: 'pseudo' },
+];
+
+const ORACIONES_ITEMS = [
+  {
+    instruccion: 'Toca el sombrero azul antes que la varita roja',
+    objetos: [
+      { nombre: 'sombrero', color: 0x3377ff, x: 260, y: 300 },
+      { nombre: 'varita', color: 0xff3355, x: 540, y: 300 },
+    ],
+    pasos: ['sombrero']
+  },
+  {
+    instruccion: 'Toca la estrella dorada y después la luna plateada',
+    objetos: [
+      { nombre: 'estrella', color: 0xffcc00, x: 220, y: 300 },
+      { nombre: 'luna', color: 0xaaaaff, x: 580, y: 300 },
+    ],
+    pasos: ['estrella', 'luna']
+  },
+  {
+    instruccion: 'Toca primero el libro verde y luego el cristal rojo',
+    objetos: [
+      { nombre: 'libro', color: 0x44cc44, x: 240, y: 300 },
+      { nombre: 'cristal', color: 0xff4444, x: 560, y: 300 },
+    ],
+    pasos: ['libro', 'cristal']
+  },
+  {
+    instruccion: 'Toca solo el pergamino amarillo',
+    objetos: [
+      { nombre: 'pergamino', color: 0xffdd55, x: 260, y: 300 },
+      { nombre: 'pocion', color: 0xaa44ff, x: 540, y: 300 },
+    ],
+    pasos: ['pergamino']
+  },
+  {
+    instruccion: 'Toca la poción morada y después el sombrero verde',
+    objetos: [
+      { nombre: 'pocion', color: 0xaa44ff, x: 230, y: 300 },
+      { nombre: 'sombrero', color: 0x44bb44, x: 570, y: 300 },
+    ],
+    pasos: ['pocion', 'sombrero']
+  },
+  {
+    instruccion: 'Toca el cristal azul antes que la estrella naranja',
+    objetos: [
+      { nombre: 'cristal', color: 0x44aaff, x: 250, y: 300 },
+      { nombre: 'estrella', color: 0xff8800, x: 550, y: 300 },
+    ],
+    pasos: ['cristal']
+  },
+  {
+    instruccion: 'Toca la varita roja y después el libro azul',
+    objetos: [
+      { nombre: 'varita', color: 0xff3355, x: 240, y: 300 },
+      { nombre: 'libro', color: 0x3377ff, x: 560, y: 300 },
+    ],
+    pasos: ['varita', 'libro']
+  },
+  {
+    instruccion: 'Toca solo la luna plateada',
+    objetos: [
+      { nombre: 'sombrero', color: 0xffaa00, x: 250, y: 300 },
+      { nombre: 'luna', color: 0xccccff, x: 550, y: 300 },
+    ],
+    pasos: ['luna']
+  },
+];
+
+// ─── ESTADO GLOBAL ───────────────────────────────────────────
+const GameState = {
+  jugador: 'Aprendiz',
+  resultados: { letras: [], palabras: [], oraciones: [] },
+  nivelActual: 'menu'
+};
+
+// ─── HELPERS ─────────────────────────────────────────────────
+function metricas(arr) {
+  const total = arr.length;
+  const correctos = arr.filter(r => r.correcto).length;
+  const precision = total > 0 ? (correctos / total * 100).toFixed(1) : 0;
+  const tiempos = arr.filter(r => r.tiempo).map(r => r.tiempo);
+  const velMedia = tiempos.length ? (tiempos.reduce((a, b) => a + b, 0) / tiempos.length).toFixed(0) : 0;
+  const errores = total - correctos;
+  const tasa_error = total > 0 ? (errores / total * 100).toFixed(1) : 0;
+  return { total, correctos, precision, velMedia, errores, tasa_error };
+}
+
+// ─── ESCENA: INTRO / MENU ────────────────────────────────────
+class MenuScene extends Phaser.Scene {
+  constructor() { super({ key: 'MenuScene' }); }
+
+  create() {
+    const W = this.scale.width, H = this.scale.height;
+
+    // Fondo
+    this.add.rectangle(W/2, H/2, W, H, 0x06060f);
+
+    // Estrellas
+    for (let i = 0; i < 80; i++) {
+      const x = Phaser.Math.Between(0, W);
+      const y = Phaser.Math.Between(0, H);
+      const r = Math.random() * 1.5 + 0.5;
+      const star = this.add.circle(x, y, r, 0xffffff, Math.random() * 0.8 + 0.2);
+      this.tweens.add({ targets: star, alpha: { from: star.alpha, to: 0.1 }, duration: Phaser.Math.Between(1000, 3000), yoyo: true, repeat: -1 });
+    }
+
+    // Torre mágica (decorativa)
+    this.add.rectangle(W/2, H - 80, 80, 200, 0x1a1a3a);
+    this.add.triangle(W/2, H - 180, -50, 0, 50, 0, 0, -80, 0x7744cc);
+
+    // Ventanas brillantes
+    [{ x: -15, y: -120 }, { x: 15, y: -80 }, { x: -10, y: -40 }].forEach(p => {
+      const w = this.add.rectangle(W/2 + p.x, H - 80 + p.y, 12, 16, 0xffee88);
+      this.tweens.add({ targets: w, alpha: { from: 1, to: 0.3 }, duration: 800 + Math.random() * 600, yoyo: true, repeat: -1 });
+    });
+
+    // Título
+    const title = this.add.text(W/2, H/2 - 140, '✦ La Academia de Magia ✦', {
+      fontSize: '32px', fontFamily: 'Georgia, serif', color: '#f0d070',
+      stroke: '#7744cc', strokeThickness: 3
+    }).setOrigin(0.5);
+    this.tweens.add({ targets: title, y: H/2 - 145, duration: 2000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+
+    this.add.text(W/2, H/2 - 90, 'PROLEC-R · Evaluación de Procesos Lectores', {
+      fontSize: '13px', fontFamily: 'Georgia, serif', color: '#9988cc'
+    }).setOrigin(0.5);
+
+    this.add.text(W/2, H/2 - 55, 'Aprendiz, tu misión es graduarte de esta academia.\nCompleta los tres desafíos mágicos para demostrar tu poder.', {
+      fontSize: '14px', fontFamily: 'Georgia, serif', color: '#ccbbee',
+      align: 'center', lineSpacing: 6
+    }).setOrigin(0.5);
+
+    // Botones de misiones
+    const misiones = [
+      { label: '📜  Sala de los Espejos', sub: 'Identificación de Letras (20 ítems)', scene: 'LetrasScene', color: 0x1a2244 },
+      { label: '⚗️  Clase de Pociones', sub: 'Palabras y Pseudopalabras (40 ítems)', scene: 'PalabrasScene', color: 0x1a2a1a },
+      { label: '🎯  Sala de Entrenamiento', sub: 'Comprensión de Oraciones (8 ítems)', scene: 'OracionesScene', color: 0x2a1a1a },
+    ];
+
+    misiones.forEach((m, i) => {
+      const by = H/2 + 20 + i * 72;
+      const bg = this.add.rectangle(W/2, by, 360, 58, m.color)
+        .setInteractive({ useHandCursor: true })
+        .setStrokeStyle(1.5, 0x7744cc);
+
+      this.add.text(W/2, by - 10, m.label, {
+        fontSize: '16px', fontFamily: 'Georgia, serif', color: '#f0d070'
+      }).setOrigin(0.5);
+      this.add.text(W/2, by + 12, m.sub, {
+        fontSize: '11px', fontFamily: 'Georgia, serif', color: '#9988cc'
+      }).setOrigin(0.5);
+
+      bg.on('pointerover', () => { bg.setFillStyle(m.color + 0x222222); });
+      bg.on('pointerout', () => { bg.setFillStyle(m.color); });
+      bg.on('pointerdown', () => {
+        this.cameras.main.fadeOut(400, 0, 0, 0);
+        this.cameras.main.once('camerafadeoutcomplete', () => {
+          this.scene.start(m.scene);
+        });
+      });
+    });
+
+    // Botón de resultados
+    const resBtn = this.add.text(W/2, H - 45, '[ Ver Métricas Finales ]', {
+      fontSize: '13px', fontFamily: 'Georgia, serif', color: '#7755bb'
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    resBtn.on('pointerover', () => resBtn.setColor('#aa88ff'));
+    resBtn.on('pointerout', () => resBtn.setColor('#7755bb'));
+    resBtn.on('pointerdown', () => {
+      this.cameras.main.fadeOut(300, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('ResultadosScene'));
+    });
+
+    this.cameras.main.fadeIn(600, 0, 0, 0);
+  }
+}
+
+// ─── ESCENA: SALA DE LOS ESPEJOS (Letras) ─────────────────────
+class LetrasScene extends Phaser.Scene {
+  constructor() { super({ key: 'LetrasScene' }); }
+
+  create() {
+    const W = this.scale.width, H = this.scale.height;
+    this.items = Phaser.Utils.Array.Shuffle([...LETRAS_ITEMS]);
+    this.idx = 0;
+    this.resultados = [];
+    this.tiempoInicio = 0;
+
+    // Fondo espejo
+    this.add.rectangle(W/2, H/2, W, H, 0x080818);
+    for (let i = 0; i < 12; i++) {
+      this.add.rectangle(Phaser.Math.Between(20, W-20), Phaser.Math.Between(20, H-20),
+        Phaser.Math.Between(40, 120), Phaser.Math.Between(40, 120), 0x112233, 0.15)
+        .setAngle(Phaser.Math.Between(-30, 30));
+    }
+
+    // Header
+    this.add.rectangle(W/2, 30, W, 60, 0x0d0d2a);
+    this.add.text(30, 15, '✦ Sala de los Espejos', { fontSize: '18px', fontFamily: 'Georgia, serif', color: '#7ec8e3' });
+    this.progressText = this.add.text(W - 30, 15, '', { fontSize: '13px', fontFamily: 'Georgia, serif', color: '#9988cc' }).setOrigin(1, 0);
+
+    // Instrucción
+    this.add.text(W/2, 75, '¿Los dos pergaminos son IGUALES o DIFERENTES?', {
+      fontSize: '14px', fontFamily: 'Georgia, serif', color: '#ccbbee', align: 'center'
+    }).setOrigin(0.5);
+
+    // Pergaminos
+    this.pergA = this.crearPergamino(W/2 - 130, H/2 - 20);
+    this.pergB = this.crearPergamino(W/2 + 130, H/2 - 20);
+    this.textoA = this.add.text(W/2 - 130, H/2 - 20, '', { fontSize: '26px', fontFamily: 'Courier New, monospace', color: '#2a1a00' }).setOrigin(0.5);
+    this.textoB = this.add.text(W/2 + 130, H/2 - 20, '', { fontSize: '26px', fontFamily: 'Courier New, monospace', color: '#2a1a00' }).setOrigin(0.5);
+
+    // Separador espejo
+    this.add.rectangle(W/2, H/2 - 20, 3, 140, 0x7ec8e3, 0.6);
+    this.add.text(W/2, H/2 + 50, '~ espejo ~', { fontSize: '11px', fontFamily: 'Georgia, serif', color: '#7ec8e3' }).setOrigin(0.5);
+
+    // Botones respuesta
+    this.crearBoton(W/2 - 90, H/2 + 120, '← IGUALES', 0x1a3355, '#7ec8e3', () => this.responder(true));
+    this.crearBoton(W/2 + 90, H/2 + 120, 'DIFERENTES →', 0x331a1a, '#ff9988', () => this.responder(false));
+
+    // Feedback
+    this.feedbackText = this.add.text(W/2, H/2 + 170, '', {
+      fontSize: '18px', fontFamily: 'Georgia, serif', color: '#88ff88'
+    }).setOrigin(0.5);
+
+    // Swipe hint
+    this.add.text(W/2, H - 20, 'Desliza ← igual   |   diferente →', {
+      fontSize: '11px', fontFamily: 'Georgia, serif', color: '#443355'
+    }).setOrigin(0.5);
+
+    // Swipe gesture
+    this.input.on('pointerdown', (p) => { this.swipeStart = p.x; });
+    this.input.on('pointerup', (p) => {
+      if (!this.swipeStart) return;
+      const dx = p.x - this.swipeStart;
+      if (Math.abs(dx) > 60) this.responder(dx < 0);
+      this.swipeStart = null;
+    });
+
+    this.mostrarItem();
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+  }
+
+  crearPergamino(x, y) {
+    const g = this.add.graphics();
+    g.fillStyle(0xf5e8c0); g.fillRoundedRect(x - 65, y - 55, 130, 110, 8);
+    g.fillStyle(0xd4b870, 0.4); g.fillRect(x - 65, y - 50, 130, 6);
+    g.fillRect(x - 65, y + 44, 130, 6);
+    g.lineStyle(1.5, 0xbb9944); g.strokeRoundedRect(x - 65, y - 55, 130, 110, 8);
+    return g;
+  }
+
+  crearBoton(x, y, label, bgColor, textColor, cb) {
+    const btn = this.add.rectangle(x, y, 150, 44, bgColor).setInteractive({ useHandCursor: true });
+    btn.setStrokeStyle(1.5, 0x445566);
+    this.add.text(x, y, label, { fontSize: '14px', fontFamily: 'Georgia, serif', color: textColor }).setOrigin(0.5);
+    btn.on('pointerover', () => btn.setAlpha(0.8));
+    btn.on('pointerout', () => btn.setAlpha(1));
+    btn.on('pointerdown', cb);
+    return btn;
+  }
+
+  mostrarItem() {
+    if (this.idx >= this.items.length) { this.terminar(); return; }
+    const item = this.items[this.idx];
+    this.textoA.setText(item.a);
+    this.textoB.setText(item.b);
+    this.progressText.setText(`${this.idx + 1} / ${this.items.length}`);
+    this.feedbackText.setText('');
+    this.tiempoInicio = Date.now();
+
+    // Animación de aparición
+    this.textoA.setAlpha(0); this.textoB.setAlpha(0);
+    this.tweens.add({ targets: [this.textoA, this.textoB], alpha: 1, duration: 300 });
+  }
+
+  responder(esIgual) {
+    const item = this.items[this.idx];
+    const tiempo = Date.now() - this.tiempoInicio;
+    const correcto = esIgual === item.igual;
+    this.resultados.push({ item: item.a + '/' + item.b, respuesta: esIgual, correcto, tiempo });
+
+    this.feedbackText.setColor(correcto ? '#88ff88' : '#ff6666');
+    this.feedbackText.setText(correcto ? '✦ ¡Correcto!' : '✗ Incorrecto');
+
+    this.time.delayedCall(700, () => { this.idx++; this.mostrarItem(); });
+  }
+
+  terminar() {
+    GameState.resultados.letras = this.resultados;
+    this.cameras.main.fadeOut(400, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('MenuScene'));
+  }
+}
+
+// ─── ESCENA: CLASE DE POCIONES (Palabras) ────────────────────
+class PalabrasScene extends Phaser.Scene {
+  constructor() { super({ key: 'PalabrasScene' }); }
+
+  create() {
+    const W = this.scale.width, H = this.scale.height;
+    this.items = Phaser.Utils.Array.Shuffle([...PALABRAS_ITEMS]);
+    this.idx = 0;
+    this.resultados = [];
+    this.tiempoInicio = 0;
+    this.timerBar = null;
+    this.timerTween = null;
+    this.TIEMPO_MS = 4000;
+
+    // Fondo alquimia
+    this.add.rectangle(W/2, H/2, W, H, 0x060f06);
+    for (let i = 0; i < 8; i++) {
+      const burbuja = this.add.circle(
+        Phaser.Math.Between(30, W-30), Phaser.Math.Between(H/2, H-20),
+        Phaser.Math.Between(8, 22), 0x33ff99, 0.07
+      );
+      this.tweens.add({ targets: burbuja, y: burbuja.y - Phaser.Math.Between(60, 150), alpha: 0, duration: Phaser.Math.Between(2000, 4000), repeat: -1, delay: Phaser.Math.Between(0, 2000) });
+    }
+
+    // Header
+    this.add.rectangle(W/2, 30, W, 60, 0x061206);
+    this.add.text(30, 15, '⚗️ Clase de Pociones', { fontSize: '18px', fontFamily: 'Georgia, serif', color: '#88ffcc' });
+    this.progressText = this.add.text(W - 30, 15, '', { fontSize: '13px', fontFamily: 'Georgia, serif', color: '#779955' }).setOrigin(1, 0);
+
+    // Instrucción
+    this.add.text(W/2, 75, '¿Es un ingrediente REAL o MÁGICO (inventado)?', {
+      fontSize: '14px', fontFamily: 'Georgia, serif', color: '#aaddbb', align: 'center'
+    }).setOrigin(0.5);
+
+    // Frasco central
+    this.frascoGrafico = this.add.graphics();
+    this.dibujarFrasco(W/2, H/2 - 30);
+
+    // Texto de la palabra
+    this.palabraText = this.add.text(W/2, H/2 - 30, '', {
+      fontSize: '34px', fontFamily: 'Georgia, serif', color: '#eeffcc',
+      stroke: '#33aa66', strokeThickness: 2
+    }).setOrigin(0.5);
+
+    // Barra de tiempo
+    this.timerBarBg = this.add.rectangle(W/2, H/2 + 65, 320, 10, 0x1a3322);
+    this.timerBar = this.add.rectangle(W/2 - 160 + 160, H/2 + 65, 320, 10, 0x44ff88).setOrigin(0, 0.5);
+    this.timerBar.x = W/2 - 160;
+
+    // Botones
+    this.crearBotonPocion(W/2 - 95, H/2 + 120, '🌿 REAL', 0x0d2a0d, '#88ffbb', () => this.responder('real'));
+    this.crearBotonPocion(W/2 + 95, H/2 + 120, '✨ MÁGICO', 0x1a0d2a, '#cc88ff', () => this.responder('pseudo'));
+
+    // Feedback
+    this.feedbackText = this.add.text(W/2, H/2 + 175, '', {
+      fontSize: '16px', fontFamily: 'Georgia, serif', color: '#88ff88'
+    }).setOrigin(0.5);
+
+    this.mostrarItem();
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+  }
+
+  dibujarFrasco(x, y) {
+    const g = this.frascoGrafico;
+    g.clear();
+    g.fillStyle(0x1a4422, 0.7);
+    g.fillRoundedRect(x - 50, y - 55, 100, 110, { tl: 10, tr: 10, bl: 20, br: 20 });
+    g.lineStyle(2, 0x44bb77); g.strokeRoundedRect(x - 50, y - 55, 100, 110, { tl: 10, tr: 10, bl: 20, br: 20 });
+    g.fillStyle(0x336644, 0.5); g.fillRoundedRect(x - 25, y - 70, 50, 20, 4);
+    g.lineStyle(1.5, 0x44bb77); g.strokeRoundedRect(x - 25, y - 70, 50, 20, 4);
+  }
+
+  crearBotonPocion(x, y, label, bgColor, textColor, cb) {
+    const btn = this.add.rectangle(x, y, 160, 50, bgColor).setInteractive({ useHandCursor: true });
+    btn.setStrokeStyle(1.5, 0x336644);
+    this.add.text(x, y, label, { fontSize: '15px', fontFamily: 'Georgia, serif', color: textColor }).setOrigin(0.5);
+    btn.on('pointerover', () => btn.setAlpha(0.8));
+    btn.on('pointerout', () => btn.setAlpha(1));
+    btn.on('pointerdown', cb);
+  }
+
+  mostrarItem() {
+    if (this.idx >= this.items.length) { this.terminar(); return; }
+    const item = this.items[this.idx];
+    this.palabraText.setText(item.texto);
+    this.progressText.setText(`${this.idx + 1} / ${this.items.length}`);
+    this.feedbackText.setText('');
+    this.tiempoInicio = Date.now();
+
+    // Resetear barra
+    if (this.timerTween) this.timerTween.stop();
+    this.timerBar.width = 320;
+    this.timerTween = this.tweens.add({
+      targets: this.timerBar,
+      width: 0,
+      duration: this.TIEMPO_MS,
+      ease: 'Linear',
+      onComplete: () => { this.responder(null); }
+    });
+
+    this.palabraText.setAlpha(0);
+    this.tweens.add({ targets: this.palabraText, alpha: 1, duration: 250 });
+  }
+
+  responder(tipo) {
+    if (this.timerTween) this.timerTween.stop();
+    const item = this.items[this.idx];
+    const tiempo = Date.now() - this.tiempoInicio;
+    const correcto = tipo === item.tipo;
+    this.resultados.push({ palabra: item.texto, tipo: item.tipo, respuesta: tipo, correcto, tiempo });
+
+    if (tipo === null) {
+      this.feedbackText.setColor('#ffaa00');
+      this.feedbackText.setText('⏳ Tiempo agotado');
+    } else {
+      this.feedbackText.setColor(correcto ? '#88ff88' : '#ff6666');
+      this.feedbackText.setText(correcto ? '✦ ¡Poción correcta!' : `✗ Era: ${item.tipo === 'real' ? 'REAL' : 'MÁGICA'}`);
+    }
+
+    this.time.delayedCall(800, () => { this.idx++; this.mostrarItem(); });
+  }
+
+  terminar() {
+    GameState.resultados.palabras = this.resultados;
+    this.cameras.main.fadeOut(400, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('MenuScene'));
+  }
+}
+
+// ─── ESCENA: SALA DE ENTRENAMIENTO (Oraciones) ───────────────
+class OracionesScene extends Phaser.Scene {
+  constructor() { super({ key: 'OracionesScene' }); }
+
+  create() {
+    const W = this.scale.width, H = this.scale.height;
+    this.items = Phaser.Utils.Array.Shuffle([...ORACIONES_ITEMS]);
+    this.idx = 0;
+    this.resultados = [];
+    this.pasosRealizados = [];
+    this.esperandoSiguiente = false;
+
+    // Fondo entrenamiento
+    this.add.rectangle(W/2, H/2, W, H, 0x100808);
+    // Suelo
+    this.add.rectangle(W/2, H - 30, W, 60, 0x1a0f0f);
+
+    // Header
+    this.add.rectangle(W/2, 30, W, 60, 0x1a0808);
+    this.add.text(30, 15, '🎯 Sala de Entrenamiento', { fontSize: '18px', fontFamily: 'Georgia, serif', color: '#ff9966' });
+    this.progressText = this.add.text(W - 30, 15, '', { fontSize: '13px', fontFamily: 'Georgia, serif', color: '#884433' }).setOrigin(1, 0);
+
+    // Instrucción
+    this.instruccionBg = this.add.rectangle(W/2, 100, W - 40, 55, 0x1f0f0f).setStrokeStyle(1, 0x663333);
+    this.instruccionText = this.add.text(W/2, 100, '', {
+      fontSize: '14px', fontFamily: 'Georgia, serif', color: '#ffddbb',
+      wordWrap: { width: W - 80 }, align: 'center', lineSpacing: 4
+    }).setOrigin(0.5);
+
+    // Área de objetos interactivos
+    this.objetosContainer = this.add.container(0, 0);
+
+    // Indicador de pasos
+    this.pasosText = this.add.text(W/2, H - 55, '', {
+      fontSize: '12px', fontFamily: 'Georgia, serif', color: '#996655'
+    }).setOrigin(0.5);
+
+    // Feedback
+    this.feedbackText = this.add.text(W/2, H - 35, '', {
+      fontSize: '15px', fontFamily: 'Georgia, serif', color: '#88ff88'
+    }).setOrigin(0.5);
+
+    this.mostrarItem();
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+  }
+
+  mostrarItem() {
+    if (this.idx >= this.items.length) { this.terminar(); return; }
+    const item = this.items[this.idx];
+    this.pasosRealizados = [];
+    this.esperandoSiguiente = false;
+
+    this.instruccionText.setText(item.instruccion);
+    this.progressText.setText(`${this.idx + 1} / ${this.items.length}`);
+    this.feedbackText.setText('');
+    this.pasosText.setText('Toca los objetos según la instrucción');
+
+    // Limpiar objetos anteriores
+    this.objetosContainer.removeAll(true);
+
+    // Crear objetos interactivos
+    item.objetos.forEach((obj) => {
+      const g = this.add.graphics();
+      this.dibujarObjeto(g, obj.x, obj.y, obj.nombre, obj.color);
+
+      const label = this.add.text(obj.x, obj.y + 58, obj.nombre.toUpperCase(), {
+        fontSize: '12px', fontFamily: 'Georgia, serif', color: '#ccaa88'
+      }).setOrigin(0.5);
+
+      const hitArea = this.add.rectangle(obj.x, obj.y, 100, 100, 0x000000, 0)
+        .setInteractive({ useHandCursor: true });
+
+      hitArea.on('pointerdown', () => {
+        if (this.esperandoSiguiente) return;
+        this.tocarObjeto(obj.nombre, item);
+        // Animación de toque
+        this.tweens.add({ targets: g, scaleX: 1.2, scaleY: 1.2, duration: 120, yoyo: true });
+      });
+
+      this.objetosContainer.add([g, label, hitArea]);
+    });
+
+    this.instruccionText.setAlpha(0);
+    this.tweens.add({ targets: this.instruccionText, alpha: 1, duration: 400 });
+  }
+
+  dibujarObjeto(g, x, y, nombre, color) {
+    const formas = {
+      sombrero: () => {
+        g.fillStyle(color); g.fillEllipse(x, y + 15, 80, 20);
+        g.fillTriangle(x - 25, y + 15, x + 25, y + 15, x, y - 35);
+        g.lineStyle(2, 0xffffff, 0.3); g.strokeTriangle(x - 25, y + 15, x + 25, y + 15, x, y - 35);
+      },
+      varita: () => {
+        g.fillStyle(color); g.fillRect(x - 5, y - 45, 10, 80);
+        g.fillStyle(0xffffff, 0.8); g.fillCircle(x, y - 48, 8);
+        g.lineStyle(1.5, 0xffffff, 0.3); g.strokeRect(x - 5, y - 45, 10, 80);
+      },
+      estrella: () => {
+        g.fillStyle(color);
+        const pts = [];
+        for (let i = 0; i < 10; i++) {
+          const angle = (i * Math.PI * 2) / 10 - Math.PI / 2;
+          const r = i % 2 === 0 ? 38 : 18;
+          pts.push({ x: x + Math.cos(angle) * r, y: y + Math.sin(angle) * r });
+        }
+        g.fillPoints(pts, true);
+      },
+      luna: () => {
+        g.fillStyle(color); g.fillCircle(x, y, 38);
+        g.fillStyle(0x100808); g.fillCircle(x + 14, y - 8, 28);
+      },
+      libro: () => {
+        g.fillStyle(color); g.fillRoundedRect(x - 32, y - 42, 64, 84, 4);
+        g.fillStyle(0xffffff, 0.1); g.fillRect(x - 28, y - 35, 56, 70);
+        g.lineStyle(1.5, 0xffffff, 0.3); g.strokeRoundedRect(x - 32, y - 42, 64, 84, 4);
+        g.fillStyle(0xffffff, 0.2); g.fillRect(x - 2, y - 42, 4, 84);
+      },
+      cristal: () => {
+        g.fillStyle(color, 0.85);
+        g.fillTriangle(x, y - 45, x - 28, y + 10, x + 28, y + 10);
+        g.fillRect(x - 20, y + 10, 40, 28);
+        g.lineStyle(2, 0xffffff, 0.4);
+        g.strokeTriangle(x, y - 45, x - 28, y + 10, x + 28, y + 10);
+        g.strokeRect(x - 20, y + 10, 40, 28);
+      },
+      pergamino: () => {
+        g.fillStyle(color); g.fillRoundedRect(x - 30, y - 45, 60, 90, 6);
+        g.fillStyle(0x000000, 0.12);
+        for (let l = 0; l < 5; l++) g.fillRect(x - 20, y - 30 + l * 14, 40, 3);
+        g.lineStyle(1.5, 0x886633); g.strokeRoundedRect(x - 30, y - 45, 60, 90, 6);
+      },
+      pocion: () => {
+        g.fillStyle(color, 0.85); g.fillEllipse(x, y + 18, 60, 55);
+        g.fillRect(x - 12, y - 26, 24, 40);
+        g.fillStyle(0xffffff, 0.2); g.fillEllipse(x - 10, y + 8, 18, 22);
+        g.lineStyle(2, 0xffffff, 0.35);
+        g.strokeEllipse(x, y + 18, 60, 55); g.strokeRect(x - 12, y - 26, 24, 40);
+        g.fillStyle(0x888888); g.fillRect(x - 10, y - 36, 20, 12);
+      },
+    };
+    const fn = formas[nombre] || formas['libro'];
+    fn();
+  }
+
+  tocarObjeto(nombre, item) {
+    this.pasosRealizados.push(nombre);
+
+    // Comprobar si los pasos son correctos hasta ahora
+    const correcto = item.pasos.every((paso, i) => this.pasosRealizados[i] === paso);
+    const completado = this.pasosRealizados.length >= item.pasos.length;
+
+    if (!correcto) {
+      this.feedbackText.setColor('#ff6666');
+      this.feedbackText.setText('✗ Orden incorrecto');
+      this.resultados.push({ oracion: item.instruccion, correcto: false });
+      this.esperandoSiguiente = true;
+      this.time.delayedCall(1200, () => { this.idx++; this.mostrarItem(); });
+      return;
+    }
+
+    if (completado) {
+      this.feedbackText.setColor('#88ff88');
+      this.feedbackText.setText('✦ ¡Instrucción completada!');
+      this.resultados.push({ oracion: item.instruccion, correcto: true });
+      this.esperandoSiguiente = true;
+      this.time.delayedCall(1200, () => { this.idx++; this.mostrarItem(); });
+    } else {
+      this.pasosText.setText(`Paso ${this.pasosRealizados.length}/${item.pasos.length} correcto ✓`);
+    }
+  }
+
+  terminar() {
+    GameState.resultados.oraciones = this.resultados;
+    this.cameras.main.fadeOut(400, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('MenuScene'));
+  }
+}
+
+// ─── ESCENA: RESULTADOS ──────────────────────────────────────
+class ResultadosScene extends Phaser.Scene {
+  constructor() { super({ key: 'ResultadosScene' }); }
+
+  create() {
+    const W = this.scale.width, H = this.scale.height;
+
+    this.add.rectangle(W/2, H/2, W, H, 0x06060f);
+
+    this.add.text(W/2, 35, '✦ Informe de la Academia ✦', {
+      fontSize: '22px', fontFamily: 'Georgia, serif', color: '#f0d070',
+      stroke: '#7744cc', strokeThickness: 2
+    }).setOrigin(0.5);
+
+    const secciones = [
+      { key: 'letras', label: 'Sala de los Espejos (Letras)', color: '#7ec8e3', by: 110 },
+      { key: 'palabras', label: 'Clase de Pociones (Palabras)', color: '#88ffcc', by: 220 },
+      { key: 'oraciones', label: 'Sala de Entrenamiento (Oraciones)', color: '#ff9966', by: 330 },
+    ];
+
+    secciones.forEach(s => {
+      const data = GameState.resultados[s.key];
+      if (!data || data.length === 0) {
+        this.add.text(W/2, s.by, `${s.label}\n— Sin datos aún —`, {
+          fontSize: '13px', fontFamily: 'Georgia, serif', color: '#443355', align: 'center'
+        }).setOrigin(0.5);
+        return;
+      }
+      const m = metricas(data);
+      this.add.rectangle(W/2, s.by + 30, W - 60, 90, 0x0d0d1a).setStrokeStyle(1, 0x332244);
+      this.add.text(W/2, s.by - 5, s.label, { fontSize: '13px', fontFamily: 'Georgia, serif', color: s.color }).setOrigin(0.5);
+
+      const cols = [
+        { label: 'Ítems', val: m.total },
+        { label: 'Correctos', val: m.correctos },
+        { label: 'Errores', val: m.errores },
+        { label: 'Precisión', val: m.precision + '%' },
+        { label: 'E_tasa', val: m.tasa_error + '%' },
+        { label: 'Vel. media', val: m.velMedia + 'ms' },
+      ];
+      cols.forEach((c, i) => {
+        const cx = 80 + (i % 3) * 200;
+        const cy = s.by + 25 + Math.floor(i / 3) * 38;
+        this.add.text(cx, cy, c.label, { fontSize: '10px', fontFamily: 'Georgia, serif', color: '#665577' }).setOrigin(0.5);
+        this.add.text(cx, cy + 16, String(c.val), { fontSize: '16px', fontFamily: 'Georgia, serif', color: '#ddccff', fontStyle: 'bold' }).setOrigin(0.5);
+      });
+    });
+
+    // Fórmula
+    this.add.text(W/2, H - 70, 'E_tasa = (Errores / Total) × 100', {
+      fontSize: '11px', fontFamily: 'Courier New, monospace', color: '#443355'
+    }).setOrigin(0.5);
+
+    // Botón volver
+    const btn = this.add.rectangle(W/2, H - 35, 200, 36, 0x1a1a3a)
+      .setInteractive({ useHandCursor: true }).setStrokeStyle(1, 0x7744cc);
+    this.add.text(W/2, H - 35, '← Volver a la Academia', {
+      fontSize: '13px', fontFamily: 'Georgia, serif', color: '#aa88ff'
+    }).setOrigin(0.5);
+
+    btn.on('pointerdown', () => {
+      this.cameras.main.fadeOut(300, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('MenuScene'));
+    });
+
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+  }
+}
+
+// ─── CONFIGURACIÓN PHASER ────────────────────────────────────
+const config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 500,
+  parent: 'game-container',
+  backgroundColor: '#06060f',
+  scene: [MenuScene, LetrasScene, PalabrasScene, OracionesScene, ResultadosScene],
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 800,
+    height: 500,
+  }
+};
+
+const game = new Phaser.Game(config);
+</script>
+</body>
+</html>
