@@ -66,6 +66,26 @@ export class ParticleSystem {
   }
 
   /**
+   * Convenience factory: crea un burst rápido con valores por defecto
+   */
+  public static burst(
+    scene: Scene,
+    position: Vector3,
+    color: number = 0xffffff,
+    count: number = 30,
+    size: number = 0.15
+  ): ParticleSystem {
+    return new ParticleSystem(scene, position, {
+      count,
+      color,
+      size,
+      speed: 2.0,
+      lifetime: 45,
+      spread: 360
+    })
+  }
+
+  /**
    * Actualiza el sistema de partículas
    * - Anima la opacidad (desvanecimiento)
    * - Mueve cada partícula según su velocidad
