@@ -1,0 +1,26 @@
+{
+    "items": [
+        {
+            "id": "T3_01",
+            "tipo": "Conteo",
+            "objetivo": 3,
+            "total_disponible": 6,
+            "mensaje": "Pon 3 galletas en el mostrador"
+        },
+        {
+            "id": "T3_02",
+            "tipo": "Magnitud",
+            "opcionA": 5,
+            "opcionB": 2,
+            "mensaje": "¿Dónde hay más dulces?"
+        },
+        
+        {
+            "id": "T3_03",
+            "tipo": "Calculo",
+            "precio": 3,
+            "monedas_dadas": 5,
+            "mensaje": "La paleta cuesta 3 monedas. ¡Quita las que sobran!"
+        }
+    ]
+}
