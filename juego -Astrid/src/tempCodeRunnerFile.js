@@ -1,0 +1,2 @@
+
+    type: Phaser.AUTO,

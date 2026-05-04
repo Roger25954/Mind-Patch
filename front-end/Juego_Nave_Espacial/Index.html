@@ -1,72 +1,108 @@
 <!DOCTYPE html>
+<!--
+  Index.html - Página principal (landing) para "El Guardián Espacial"
+
+  Cambios realizados:
+  - Añadida una página principal con título, descripción y botón "Jugar".
+  - Al pulsar "Jugar" se carga dinámicamente el módulo del juego (`/src/main.ts`) y se inicializa la aplicación.
+  - Conservado el panel de debug (toggle) para mostrar logs en pantalla.
+
+  Uso:
+  - Abrir http://localhost:5174/ y pulsar "Jugar" para cargar el juego.
+  - El botón carga el juego de forma dinámica para evitar inicializarlo antes de que el usuario quiera jugar.
+-->
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/vite.svg"
-    />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <title>El Guardián Espacial</title>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nebulosa Polar — El Guardián Espacial</title>
     <style>
-      #debug-panel {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        width: 300px;
-        max-height: 200px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #0f0;
-        font-family: monospace;
-        font-size: 11px;
-        padding: 10px;
-        border: 1px solid #0f0;
-        overflow-y: auto;
-        z-index: 1000;
-        display: none;
-      }
-      #debug-panel.show {
-        display: block;
-      }
-      #debug-panel .log-entry {
-        margin: 2px 0;
-        padding: 2px;
-      }
-      #debug-toggle {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #0f0;
-        border: 1px solid #0f0;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-family: monospace;
-        z-index: 1001;
-      }
+      :root { --bg: #030318; --accent: #00e5ff; --muted: #889; }
+      body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial; background: radial-gradient(ellipse at center, #051030 0%, #000814 60%); color: white; }
+      .landing { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; box-sizing:border-box }
+      .card { max-width:900px; width:100%; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); padding:32px; border-radius:12px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+      h1 { margin:0 0 8px 0; font-size:32px; color: var(--accent) }
+      p.lead { margin:0 0 20px 0; color:var(--muted) }
+      .actions { display:flex; gap:12px; }
+      button.primary { background: linear-gradient(90deg,#00e5ff,#7afcff); color:#002; border:0; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer }
+      button.ghost { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.06); padding:10px 16px; border-radius:8px; cursor:pointer }
+
+      /* Canvas oculto hasta que el juego se cargue */
+      #game-root { display:none; width:100vw; height:100vh; }
+      canvas#canvas { width:100%; height:100%; display:block }
+
+      /* Debug panel (mantengo funcionalidad existing) */
+      #debug-panel { position: fixed; bottom: 10px; left: 10px; width: 360px; max-height: 40vh; overflow: auto; background: rgba(0,0,0,0.6); color: #0f0; font-family: monospace; font-size: 12px; padding: 8px; z-index: 9999; border-radius: 6px; display:none }
+      #debug-toggle { position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #0f0; border: 1px solid #0f0; padding: 6px 10px; cursor: pointer; font-family: monospace; z-index: 10001 }
+      #debug-panel.show { display:block }
+      .log-entry { margin:2px 0; }
     </style>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <main class="landing" id="landing">
+      <div class="card">
+        <h1>Nebulosa Polar</h1>
+        <p class="lead">Bienvenido a <strong>El Guardián Espacial</strong>. Pulsa <em>Jugar</em> para iniciar la misión. Esta landing carga el juego sólo cuando el usuario lo solicita.</p>
+        <div class="actions">
+          <button class="primary" id="btn-play">Jugar</button>
+          <button class="ghost" id="btn-about">Acerca</button>
+        </div>
+        <p style="margin-top:18px;color:var(--muted);font-size:13px">Consejo: usa el recuadro <strong>DEBUG</strong> para ver logs de ejecución durante pruebas.</p>
+      </div>
+    </main>
+
+    <!-- Contenedor del juego (se muestra cuando se carga) -->
+    <div id="game-root" aria-hidden="true">
+      <canvas id="canvas"></canvas>
+    </div>
+
     <div id="debug-toggle">DEBUG [OFF]</div>
     <div id="debug-panel">
       <div><strong>= DEBUG LOG =</strong></div>
       <div id="debug-logs"></div>
     </div>
-    <script
-      type="module"
-      src="/src/main.ts"
-    ></script>
-    <script>
-      // Panel de Debug
-      let debugEnabled = false
-      const maxLogs = 30
-      const logs = []
 
+    <script>
+      // Lógica de landing: al pulsar Jugar, cargar dinámicamente el módulo y arrancar el juego.
+      const btnPlay = document.getElementById('btn-play')
+      const landing = document.getElementById('landing')
+      const gameRoot = document.getElementById('game-root')
+
+      async function startGame() {
+        // Evitar doble inicio
+        // @ts-ignore
+        if ((window).__app) return
+
+        try {
+          // Cargar el módulo del juego dinámicamente
+          const mod = await import('/src/main.ts')
+          // invocar la función exportada para crear la app
+          if (mod && typeof mod.startApp === 'function') {
+            landing.style.display = 'none'
+            gameRoot.style.display = 'block'
+            gameRoot.setAttribute('aria-hidden','false')
+            await mod.startApp()
+          } else {
+            console.error('Módulo del juego no expone startApp()')
+          }
+        } catch (e) {
+          console.error('Error cargando el juego', e)
+          alert('No se pudo cargar el juego. Revisa la consola para más detalles.')
+        }
+      }
+
+      btnPlay.addEventListener('click', startGame)
+
+      // Botón Acerca: muestra logs rápidos (ejemplo)
+      document.getElementById('btn-about').addEventListener('click', () => {
+        alert('El Guardián Espacial — Versión de prueba\nPresiona Jugar para iniciar.')
+      })
+
+      // Debug overlay (mantengo comportamiento previo)
+      let debugEnabled = false
+      const maxLogs = 60
+      const logs = []
       const debugPanel = document.getElementById('debug-panel')
       const debugToggle = document.getElementById('debug-toggle')
       const debugLogs = document.getElementById('debug-logs')
@@ -77,23 +113,23 @@
         debugToggle.textContent = debugEnabled ? 'DEBUG [ON]' : 'DEBUG [OFF]'
       }
 
-      // Interceptar console.log
-      const originalLog = console.log
-      console.log = function (...args) {
-        originalLog.apply(console, args)
-        if (debugEnabled) {
-          const msg = args.map(arg => 
-            typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
-          ).join(' ')
-          
-          logs.push(msg)
-          if (logs.length > maxLogs) logs.shift()
-          
-          debugLogs.innerHTML = logs.map(log => 
-            `<div class="log-entry">${log.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`
-          ).join('')
-          debugLogs.parentElement.scrollTop = debugLogs.parentElement.scrollHeight
-        }
+      // Interceptar console.log y console.error para el overlay
+      const origLog = console.log.bind(console)
+      const origError = console.error.bind(console)
+      console.log = function(...args) {
+        origLog(...args)
+        if (debugEnabled) pushLog(args.join(' '))
+      }
+      console.error = function(...args) {
+        origError(...args)
+        if (debugEnabled) pushLog('[ERROR] ' + args.join(' '))
+      }
+
+      function pushLog(msg) {
+        logs.push(msg)
+        if (logs.length > maxLogs) logs.shift()
+        debugLogs.innerHTML = logs.map(l => `<div class="log-entry">${String(l).replace(/</g,'&lt;')}</div>`).join('')
+        debugLogs.parentElement.scrollTop = debugLogs.parentElement.scrollHeight
       }
     </script>
   </body>

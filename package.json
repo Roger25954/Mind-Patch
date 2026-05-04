@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.20.0"
+  },
+  "name": "mind-patch",
+  "version": "1.0.0",
+  "description": "**Equipo:** Mind Patch\r **Fecha de actualización:** 03 de marzo 2026",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roger25954/Mind-Patch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Roger25954/Mind-Patch/issues"
+  },
+  "homepage": "https://github.com/Roger25954/Mind-Patch#readme"
+}
