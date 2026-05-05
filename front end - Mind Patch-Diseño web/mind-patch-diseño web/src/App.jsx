@@ -2,17 +2,34 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HeroSection } from './components/HeroSection'
 import { Features } from './components/Features'
-import { GamesSection } from './components/GamesSection'
-import { PromptBox } from './components/PromptBox'
+import { MetricsSection } from './components/MetricsSection'
 import { SignInPage } from './components/SignInPage'
 import { ContactSection } from './components/ContactSection'
+import { GameMenu } from './components/GameMenu'
 
 function App() {
   const [showAuth, setShowAuth] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [view, setView] = useState('landing') // 'landing' | 'games'
 
   const handleAuthRequired = () => {
-    if (!isLoggedIn) setShowAuth(true)
+    if (isLoggedIn) {
+      setView('games')
+    } else {
+      setShowAuth(true)
+    }
+  }
+
+  if (view === 'games') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.35 }}
+      >
+        <GameMenu onBack={() => setView('landing')} />
+      </motion.div>
+    )
   }
 
   return (
@@ -40,7 +57,7 @@ function App() {
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '460px', margin: '0 24px', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08)' }}
             >
-              {/* Botón cerrar */}
+              {/* Boton cerrar */}
               <button
                 onClick={() => setShowAuth(false)}
                 style={{
@@ -53,7 +70,7 @@ function App() {
                 ✕
               </button>
 
-              <SignInPage onSuccess={() => { setIsLoggedIn(true); setShowAuth(false) }} />
+              <SignInPage onSuccess={() => { setIsLoggedIn(true); setShowAuth(false); setView('games') }} />
             </motion.div>
           </motion.div>
         )}
@@ -61,10 +78,7 @@ function App() {
 
       <HeroSection onAuthRequired={handleAuthRequired} />
       <Features />
-      <GamesSection onAuthRequired={handleAuthRequired} />
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '60px 24px' }}>
-        <PromptBox />
-      </div>
+      <MetricsSection />
       <ContactSection />
 
     </div>
