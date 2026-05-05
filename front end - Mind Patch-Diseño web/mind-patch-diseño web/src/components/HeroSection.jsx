@@ -19,13 +19,12 @@ function GenerativeArtScene() {
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(75, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000)
     camera.position.z = 3
-
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight)
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     currentMount.appendChild(renderer.domElement)
 
-    const geometry = new THREE.IcosahedronGeometry(1.2, 64)
+    const geometry = new THREE.IcosahedronGeometry(1.2, 5)
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
@@ -83,26 +82,20 @@ function GenerativeArtScene() {
           return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
         }
         void main() {
-          vNormal = normal;
-          vPosition = position;
+          vNormal = normal; vPosition = position;
           float displacement = snoise(position * 2.0 + time * 0.5) * 0.2;
-          vec3 newPosition = position + normal * displacement;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position + normal * displacement, 1.0);
         }
       `,
       fragmentShader: `
-        uniform vec3 color;
-        uniform vec3 pointLightPos;
-        varying vec3 vNormal;
-        varying vec3 vPosition;
+        uniform vec3 color; uniform vec3 pointLightPos;
+        varying vec3 vNormal; varying vec3 vPosition;
         void main() {
-          vec3 normal = normalize(vNormal);
-          vec3 lightDir = normalize(pointLightPos - vPosition);
-          float diffuse = max(dot(normal, lightDir), 0.0);
-          float fresnel = 1.0 - dot(normal, vec3(0.0, 0.0, 1.0));
-          fresnel = pow(fresnel, 2.0);
-          vec3 finalColor = color * diffuse + color * fresnel * 0.5;
-          gl_FragColor = vec4(finalColor, 1.0);
+          vec3 n = normalize(vNormal);
+          vec3 l = normalize(pointLightPos - vPosition);
+          float diffuse = max(dot(n, l), 0.0);
+          float fresnel = pow(1.0 - dot(n, vec3(0.0, 0.0, 1.0)), 2.0);
+          gl_FragColor = vec4(color * diffuse + color * fresnel * 0.5, 1.0);
         }
       `,
       wireframe: true,
@@ -110,60 +103,87 @@ function GenerativeArtScene() {
 
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
-
     const pointLight = new THREE.PointLight(0xffffff, 1, 100)
     pointLight.position.set(0, 0, 5)
     lightRef.current = pointLight
     scene.add(pointLight)
 
+    // Reusar vectores para evitar garbage collection en cada mousemove
+    const _mouseVec = new THREE.Vector3()
+    const _mouseDir = new THREE.Vector3()
+    const _mousePos = new THREE.Vector3()
+
     let frameId
+    let isVisible = true
+
     const animate = (t) => {
+      if (!isVisible) return
       material.uniforms.time.value = t * 0.0003
       mesh.rotation.y += 0.0005
       mesh.rotation.x += 0.0002
       renderer.render(scene, camera)
       frameId = requestAnimationFrame(animate)
     }
-    animate(0)
+    frameId = requestAnimationFrame(animate)
+
+    // Pausar render cuando la sección no está en pantalla
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting
+        if (isVisible) frameId = requestAnimationFrame(animate)
+      },
+      { threshold: 0 }
+    )
+    observer.observe(currentMount)
+
+    // Pausar render cuando la pestaña no está activa
+    const handleVisibility = () => {
+      isVisible = document.visibilityState === 'visible'
+      if (isVisible) frameId = requestAnimationFrame(animate)
+    }
 
     const handleResize = () => {
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight
       camera.updateProjectionMatrix()
       renderer.setSize(currentMount.clientWidth, currentMount.clientHeight)
     }
-
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1
       const y = -(e.clientY / window.innerHeight) * 2 + 1
-      const vec = new THREE.Vector3(x, y, 0.5).unproject(camera)
-      const dir = vec.sub(camera.position).normalize()
-      const dist = -camera.position.z / dir.z
-      const pos = camera.position.clone().add(dir.multiplyScalar(dist))
-      lightRef.current.position.copy(pos)
-      material.uniforms.pointLightPos.value = pos
+      _mouseVec.set(x, y, 0.5).unproject(camera)
+      _mouseDir.copy(_mouseVec).sub(camera.position).normalize()
+      const dist = -camera.position.z / _mouseDir.z
+      _mousePos.copy(camera.position).addScaledVector(_mouseDir, dist)
+      lightRef.current.position.copy(_mousePos)
+      material.uniforms.pointLightPos.value.copy(_mousePos)
     }
 
-    window.addEventListener('resize', handleResize)
-    window.addEventListener('mousemove', handleMouseMove)
-
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    document.addEventListener('visibilitychange', handleVisibility)
     return () => {
       cancelAnimationFrame(frameId)
+      observer.disconnect()
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('visibilitychange', handleVisibility)
       currentMount.removeChild(renderer.domElement)
+      geometry.dispose()
+      material.dispose()
+      renderer.dispose()
     }
   }, [])
 
   return <div ref={mountRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
 }
 
-function HeroHeader() {
+function HeroHeader({ onAuthRequired }) {
   const [menuOpen, setMenuOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
 
   React.useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -204,7 +224,8 @@ function HeroHeader() {
           <nav style={{ display: 'flex', alignItems: 'center', gap: '32px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}
             className="hidden lg:flex">
             {menuItems.map((item) => (
-              <a key={item.name} href={item.href} style={{ color: 'rgb(156,163,175)', fontSize: '14px', textDecoration: 'none', whiteSpace: 'nowrap' }}
+              <a key={item.name} href={item.href}
+                style={{ color: 'rgb(156,163,175)', fontSize: '14px', textDecoration: 'none', whiteSpace: 'nowrap' }}
                 onMouseEnter={e => e.target.style.color = 'white'}
                 onMouseLeave={e => e.target.style.color = 'rgb(156,163,175)'}>
                 {item.name}
@@ -215,13 +236,17 @@ function HeroHeader() {
           {/* Botones desktop */}
           <div className="hidden lg:flex" style={{ alignItems: 'center', gap: '12px', flexShrink: 0 }}>
             {!isScrolled && (
-              <a href="#" style={{ padding: '6px 16px', fontSize: '13px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none' }}
+              <a href="#"
+                onClick={e => { e.preventDefault(); onAuthRequired() }}
+                style={{ padding: '6px 16px', fontSize: '13px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', cursor: 'pointer' }}
                 onMouseEnter={e => { e.target.style.borderColor = 'white'; e.target.style.color = 'white' }}
                 onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.2)'; e.target.style.color = 'rgb(156,163,175)' }}>
                 Iniciar sesión
               </a>
             )}
-            <a href="#evaluacion" style={{ padding: '6px 16px', fontSize: '13px', fontWeight: 600, background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none' }}
+            <a href="#"
+              onClick={e => { e.preventDefault(); onAuthRequired() }}
+              style={{ padding: '6px 16px', fontSize: '13px', fontWeight: 600, background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', cursor: 'pointer' }}
               onMouseEnter={e => e.target.style.background = '#e5e5e5'}
               onMouseLeave={e => e.target.style.background = 'white'}>
               {isScrolled ? 'Comenzar →' : 'Comenzar'}
@@ -251,10 +276,14 @@ function HeroHeader() {
                 ))}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <a href="#" style={{ textAlign: 'center', padding: '10px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', fontSize: '14px' }}>
+                <a href="#"
+                  onClick={e => { e.preventDefault(); setMenuOpen(false); onAuthRequired() }}
+                  style={{ textAlign: 'center', padding: '10px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', cursor: 'pointer' }}>
                   Iniciar sesión
                 </a>
-                <a href="#evaluacion" style={{ textAlign: 'center', padding: '10px', background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', fontWeight: 600 }}>
+                <a href="#"
+                  onClick={e => { e.preventDefault(); setMenuOpen(false); onAuthRequired() }}
+                  style={{ textAlign: 'center', padding: '10px', background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
                   Comenzar
                 </a>
               </div>
@@ -266,30 +295,27 @@ function HeroHeader() {
   )
 }
 
-export function HeroSection() {
+export function HeroSection({ onAuthRequired }) {
   return (
     <>
-      <HeroHeader />
+      <HeroHeader onAuthRequired={onAuthRequired} />
       <section style={{ position: 'relative', width: '100%', height: '100vh', background: '#080808', overflow: 'hidden' }}>
 
-        {/* Esfera 3D de fondo */}
         <Suspense fallback={null}>
           <GenerativeArtScene />
         </Suspense>
 
-        {/* Overlay gradiente */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 10,
           background: 'linear-gradient(to top, #080808 0%, rgba(8,8,8,0.7) 50%, transparent 100%)',
         }} />
 
-        {/* Contenido centrado abajo */}
         <div style={{
           position: 'relative', zIndex: 20,
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'flex-end',
-          height: '100%', paddingBottom: '100px',
-          textAlign: 'center', padding: '0 24px 100px',
+          height: '100%', textAlign: 'center',
+          padding: '0 24px 100px',
         }}>
 
           {/* Badge */}
@@ -338,10 +364,15 @@ export function HeroSection() {
             transition={{ duration: 0.9, delay: 0.7 }}
             style={{ marginTop: '32px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '12px' }}
           >
-            <a href="#evaluacion" style={{ padding: '12px 28px', fontSize: '15px', fontWeight: 600, color: 'black', background: 'white', borderRadius: '999px', textDecoration: 'none' }}>
+            <button
+              onClick={() => onAuthRequired()}
+              style={{ padding: '12px 28px', fontSize: '15px', fontWeight: 600, color: 'black', background: 'white', borderRadius: '999px', border: 'none', cursor: 'pointer' }}
+              onMouseEnter={e => e.target.style.background = '#e5e5e5'}
+              onMouseLeave={e => e.target.style.background = 'white'}>
               Comenzar evaluación
-            </a>
-            <a href="#como-funciona" style={{ padding: '12px 28px', fontSize: '15px', color: 'rgb(156,163,175)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '999px', textDecoration: 'none' }}>
+            </button>
+            <a href="#como-funciona"
+              style={{ padding: '12px 28px', fontSize: '15px', color: 'rgb(156,163,175)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '999px', textDecoration: 'none' }}>
               Ver cómo funciona
             </a>
           </motion.div>
