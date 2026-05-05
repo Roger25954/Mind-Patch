@@ -27,7 +27,16 @@ router.get('/google/callback',
             { expiresIn: '7d' }
         );
 
-        res.json({ user: req.user, token });
+        // Envía el token al popup del frontend y lo cierra
+        res.send(`
+            <script>
+                window.opener.postMessage(
+                    { type: 'GOOGLE_AUTH_SUCCESS', token: '${token}', user: ${JSON.stringify(req.user)} },
+                    '*'
+                );
+                window.close();
+            </script>
+        `);
     }
 );
 
