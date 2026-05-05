@@ -118,7 +118,7 @@ class LetrasScene extends Phaser.Scene {
     const item     = this._items[this._idx];
     const tiempoMs = Date.now() - this._tiempoInicio;
     const correcto = esIgual === item.igual;
-    GameState.registrarLetra(`${item.a}/${item.b}`, esIgual, correcto, tiempoMs);
+    GameState.registrarLetra(item, esIgual, correcto, tiempoMs);
     this._actualizarMarcador(this._idx, correcto);
     if (correcto) {
       this._feedbackText.setStyle(TEXT_STYLES.feedback_ok).setText('✦ ¡Correcto!');
