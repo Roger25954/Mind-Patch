@@ -2,14 +2,14 @@ class OracionesScene extends Phaser.Scene {
   constructor() { super({ key: 'OracionesScene' }); }
 
   init() {
-    this._items            = Phaser.Utils.Array.Shuffle([...DATA.oraciones]);
-    this._idx              = 0;
-    this._secuencia        = [];
+    this._items = Phaser.Utils.Array.Shuffle([...DATA.oraciones]);
+    this._idx = 0;
+    this._secuencia = [];
     this._erroresParciales = 0;
-    this._bloqueado        = false;
-    this._tiempoInicio     = 0;
-    this._objGroup         = [];
-    this._pasoIndicadores  = [];
+    this._bloqueado = false;
+    this._tiempoInicio = 0;
+    this._objGroup = [];
+    this._pasoIndicadores = [];
   }
 
   create() {
@@ -17,7 +17,7 @@ class OracionesScene extends Phaser.Scene {
 
     DrawHelper.fondoArcano(this, 0x0e0608);
     // Suelo de piedra
-    this.add.rectangle(W/2, H - 24, W, 48, 0x100808);
+    this.add.rectangle(W / 2, H - 24, W, 48, 0x100808);
     this.add.graphics().lineStyle(1, 0x3a1a0a, 0.4).strokeRect(0, H - 48, W, 1);
     // Antorchas decorativas
     this._dibujarAntorcha(80, H - 80);
@@ -29,11 +29,11 @@ class OracionesScene extends Phaser.Scene {
 
     // Panel instrucción
     const instrY = 170;
-    DrawHelper.panelPergamino(this, W/2, instrY, W - 100, 90);
-    this.add.text(W/2, instrY - 32, 'INSTRUCCIÓN MÁGICA', {
+    DrawHelper.panelPergamino(this, W / 2, instrY, W - 100, 90);
+    this.add.text(W / 2, instrY - 32, 'INSTRUCCIÓN MÁGICA', {
       ...TEXT_STYLES.label, color: '#4a2a1a', fontSize: '15px',
     }).setOrigin(0.5);
-    this._instruccionText = this.add.text(W/2, instrY + 8, '', {
+    this._instruccionText = this.add.text(W / 2, instrY + 8, '', {
       ...TEXT_STYLES.instruction, fontSize: '24px', color: '#e8d4c0',
       wordWrap: { width: W - 160 },
     }).setOrigin(0.5);
@@ -45,8 +45,8 @@ class OracionesScene extends Phaser.Scene {
     this._zonaY = H / 2 + 60;
 
     // Feedback
-    this._feedbackText = this.add.text(W/2, H - 68, '', { ...TEXT_STYLES.feedback_ok }).setOrigin(0.5);
-    this._pistaText    = this.add.text(W/2, H - 38, '', { ...TEXT_STYLES.bodySmall, color: '#3a1a0a', fontStyle: 'italic', fontSize: '18px' }).setOrigin(0.5);
+    this._feedbackText = this.add.text(W / 2, H - 68, '', { ...TEXT_STYLES.feedback_ok }).setOrigin(0.5);
+    this._pistaText = this.add.text(W / 2, H - 38, '', { ...TEXT_STYLES.bodySmall, color: '#3a1a0a', fontStyle: 'italic', fontSize: '18px' }).setOrigin(0.5);
 
     this._mostrarItem();
     this.cameras.main.fadeIn(500, 0, 0, 0);
@@ -66,10 +66,11 @@ class OracionesScene extends Phaser.Scene {
   _mostrarItem() {
     if (this._idx >= this._items.length) { this._terminar(); return; }
     const item = this._items[this._idx];
-    this._secuencia        = [];
+    this._secuencia = [];
+    this._firstActionMs = null;
     this._erroresParciales = 0;
-    this._bloqueado        = false;
-    this._tiempoInicio     = Date.now();
+    this._bloqueado = false;
+    this._tiempoInicio = Date.now();
 
     this._objGroup.forEach(o => o.destroy());
     this._objGroup = [];
@@ -89,10 +90,10 @@ class OracionesScene extends Phaser.Scene {
 
   _crearIndicadoresPasos(item) {
     const { width: W } = this.scale;
-    const total  = item.secuencia.length;
-    const sepX   = 80;
-    const startX = W/2 - (total - 1) * sepX / 2;
-    const cy     = this._pasoIndicadoresY;
+    const total = item.secuencia.length;
+    const sepX = 80;
+    const startX = W / 2 - (total - 1) * sepX / 2;
+    const cy = this._pasoIndicadoresY;
 
     if (total > 1) {
       const lg = this.add.graphics();
@@ -119,10 +120,10 @@ class OracionesScene extends Phaser.Scene {
 
   _crearObjetos(item) {
     const { width: W } = this.scale;
-    const objs  = item.objetos;
-    const sepX  = objs.length === 2 ? 360 : 240;
-    const startX = W/2 - (objs.length - 1) * sepX / 2;
-    const cy    = this._zonaY;
+    const objs = item.objetos;
+    const sepX = objs.length === 2 ? 360 : 240;
+    const startX = W / 2 - (objs.length - 1) * sepX / 2;
+    const cy = this._zonaY;
 
     objs.forEach((obj) => {
       const cx = startX + objs.indexOf(obj) * sepX;
@@ -173,7 +174,8 @@ class OracionesScene extends Phaser.Scene {
   }
 
   _tocarObjeto(objId, item) {
-    const paso     = this._secuencia.length;
+    if (this._firstActionMs === null) this._firstActionMs = Date.now() - this._tiempoInicio; // ← añadir
+    const paso = this._secuencia.length;
     const esperado = item.secuencia[paso];
 
     if (objId === esperado) {
@@ -181,12 +183,12 @@ class OracionesScene extends Phaser.Scene {
 
       // Marcar indicador de paso
       const circleRef = this._pasoIndicadores[1 + paso * 2];   // offset por la línea si existe
-      const numRef    = this._pasoIndicadores[2 + paso * 2];
+      const numRef = this._pasoIndicadores[2 + paso * 2];
       // Buscar por referencia directa
       const allCircles = this._pasoIndicadores.filter(p => p.type === 'Arc');
-      const allNums    = this._pasoIndicadores.filter(p => p.type === 'Text');
+      const allNums = this._pasoIndicadores.filter(p => p.type === 'Text');
       if (allCircles[paso]) { allCircles[paso].setFillStyle(PALETTE.sage); allCircles[paso].setStrokeStyle(1.5, PALETTE.sage, 0.8); }
-      if (allNums[paso])    { allNums[paso].setStyle({ color: '#66ffaa' }); }
+      if (allNums[paso]) { allNums[paso].setStyle({ color: '#66ffaa' }); }
 
       if (this._secuencia.length === item.secuencia.length) {
         this._concluirItem(item, true);
@@ -216,7 +218,7 @@ class OracionesScene extends Phaser.Scene {
     if (this._bloqueado) return;
     this._bloqueado = true;
     const tiempoMs = Date.now() - this._tiempoInicio;
-    GameState.registrarOracion(item.id, item.instruccion, correcto, this._erroresParciales, tiempoMs);
+    GameState.registrarOracion(item.id, item.instruccion, item.tipo, correcto, this._erroresParciales, tiempoMs, this._firstActionMs);
     if (correcto) {
       this._feedbackText.setStyle(TEXT_STYLES.feedback_ok).setText('✦ ¡Instrucción completada!');
       DrawHelper.particulas(this, this.scale.width / 2, this.scale.height / 2 + 40, PALETTE.gold, 20);
