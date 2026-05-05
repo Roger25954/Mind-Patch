@@ -177,15 +177,26 @@ function GenerativeArtScene() {
   return <div ref={mountRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
 }
 
-function HeroHeader({ onAuthRequired }) {
-  const [menuOpen, setMenuOpen] = React.useState(false)
+function HeroHeader({ onAuthRequired, isLoggedIn, user, onLogout }) {
+  const [menuOpen,   setMenuOpen]   = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const [dropOpen,   setDropOpen]   = React.useState(false)
+  const dropRef = React.useRef(null)
 
   React.useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  React.useEffect(() => {
+    if (!dropOpen) return
+    const handleClick = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) setDropOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [dropOpen])
 
   return (
     <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }}>
@@ -235,22 +246,101 @@ function HeroHeader({ onAuthRequired }) {
 
           {/* Botones desktop */}
           <div className="hidden lg:flex" style={{ alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-            {!isScrolled && (
-              <a href="#"
-                onClick={e => { e.preventDefault(); onAuthRequired() }}
-                style={{ padding: '6px 16px', fontSize: '13px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', cursor: 'pointer' }}
-                onMouseEnter={e => { e.target.style.borderColor = 'white'; e.target.style.color = 'white' }}
-                onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.2)'; e.target.style.color = 'rgb(156,163,175)' }}>
-                Iniciar sesión
-              </a>
+            {isLoggedIn ? (
+              /* ── Avatar + dropdown ── */
+              <div ref={dropRef} style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setDropOpen(o => !o)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: '999px', padding: '4px 12px 4px 4px',
+                    cursor: 'pointer', transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+                >
+                  {/* Avatar */}
+                  <div style={{
+                    width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
+                    overflow: 'hidden', background: 'rgba(99,102,241,0.3)',
+                    border: '1px solid rgba(99,102,241,0.4)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    {user?.foto
+                      ? <img src={user.foto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <span style={{ color: 'white', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase' }}>
+                          {(user?.nombre || 'U')[0]}
+                        </span>
+                    }
+                  </div>
+                  <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '13px', fontWeight: 500, maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {user?.nombre || 'Usuario'}
+                  </span>
+                  {/* Chevron */}
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" strokeLinecap="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+
+                {/* Dropdown */}
+                <AnimatePresence>
+                  {dropOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      style={{
+                        position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                        background: '#111', border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '12px', padding: '6px', minWidth: '160px',
+                        boxShadow: '0 16px 40px rgba(0,0,0,0.6)',
+                        zIndex: 200,
+                      }}
+                    >
+                      <button
+                        onClick={() => { setDropOpen(false); onLogout() }}
+                        style={{
+                          width: '100%', textAlign: 'left', background: 'none',
+                          border: 'none', borderRadius: '8px',
+                          padding: '9px 12px', color: 'rgba(255,255,255,0.6)',
+                          fontSize: '13px', cursor: 'pointer', transition: 'background 0.15s, color 0.15s',
+                          display: 'flex', alignItems: 'center', gap: '8px',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; e.currentTarget.style.color = '#f87171' }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)' }}
+                      >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Cerrar sesion
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <>
+                {!isScrolled && (
+                  <a href="#"
+                    onClick={e => { e.preventDefault(); onAuthRequired() }}
+                    style={{ padding: '6px 16px', fontSize: '13px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', cursor: 'pointer' }}
+                    onMouseEnter={e => { e.target.style.borderColor = 'white'; e.target.style.color = 'white' }}
+                    onMouseLeave={e => { e.target.style.borderColor = 'rgba(255,255,255,0.2)'; e.target.style.color = 'rgb(156,163,175)' }}>
+                    Iniciar sesion
+                  </a>
+                )}
+                <a href="#"
+                  onClick={e => { e.preventDefault(); onAuthRequired() }}
+                  style={{ padding: '6px 16px', fontSize: '13px', fontWeight: 600, background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', cursor: 'pointer' }}
+                  onMouseEnter={e => e.target.style.background = '#e5e5e5'}
+                  onMouseLeave={e => e.target.style.background = 'white'}>
+                  {isScrolled ? 'Comenzar →' : 'Comenzar'}
+                </a>
+              </>
             )}
-            <a href="#"
-              onClick={e => { e.preventDefault(); onAuthRequired() }}
-              style={{ padding: '6px 16px', fontSize: '13px', fontWeight: 600, background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', cursor: 'pointer' }}
-              onMouseEnter={e => e.target.style.background = '#e5e5e5'}
-              onMouseLeave={e => e.target.style.background = 'white'}>
-              {isScrolled ? 'Comenzar →' : 'Comenzar'}
-            </a>
           </div>
 
           {/* Hamburguesa */}
@@ -276,16 +366,37 @@ function HeroHeader({ onAuthRequired }) {
                 ))}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <a href="#"
-                  onClick={e => { e.preventDefault(); setMenuOpen(false); onAuthRequired() }}
-                  style={{ textAlign: 'center', padding: '10px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', cursor: 'pointer' }}>
-                  Iniciar sesión
-                </a>
-                <a href="#"
-                  onClick={e => { e.preventDefault(); setMenuOpen(false); onAuthRequired() }}
-                  style={{ textAlign: 'center', padding: '10px', background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
-                  Comenzar
-                </a>
+                {isLoggedIn ? (
+                  <>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0, overflow: 'hidden', background: 'rgba(99,102,241,0.3)', border: '1px solid rgba(99,102,241,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {user?.foto
+                          ? <img src={user.foto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <span style={{ color: 'white', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase' }}>{(user?.nombre || 'U')[0]}</span>
+                        }
+                      </div>
+                      <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>{user?.nombre || 'Usuario'}</span>
+                    </div>
+                    <button
+                      onClick={() => { setMenuOpen(false); onLogout() }}
+                      style={{ textAlign: 'center', padding: '10px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171', borderRadius: '999px', fontSize: '14px', cursor: 'pointer' }}>
+                      Cerrar sesion
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <a href="#"
+                      onClick={e => { e.preventDefault(); setMenuOpen(false); onAuthRequired() }}
+                      style={{ textAlign: 'center', padding: '10px', border: '1px solid rgba(255,255,255,0.2)', color: 'rgb(156,163,175)', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', cursor: 'pointer' }}>
+                      Iniciar sesion
+                    </a>
+                    <a href="#"
+                      onClick={e => { e.preventDefault(); setMenuOpen(false); onAuthRequired() }}
+                      style={{ textAlign: 'center', padding: '10px', background: 'white', color: 'black', borderRadius: '999px', textDecoration: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
+                      Comenzar
+                    </a>
+                  </>
+                )}
               </div>
             </motion.div>
           )}
@@ -295,10 +406,10 @@ function HeroHeader({ onAuthRequired }) {
   )
 }
 
-export function HeroSection({ onAuthRequired }) {
+export function HeroSection({ onAuthRequired, isLoggedIn, user, onLogout }) {
   return (
     <>
-      <HeroHeader onAuthRequired={onAuthRequired} />
+      <HeroHeader onAuthRequired={onAuthRequired} isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />
       <section style={{ position: 'relative', width: '100%', height: '100vh', background: '#080808', overflow: 'hidden' }}>
 
         <Suspense fallback={null}>

@@ -4,7 +4,7 @@ import fs from "fs";
 import readline from "node:readline";
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
+  apiKey: process.env.GOOGLE_API_KEY
 });
 
 const archivo = process.argv[2];
@@ -49,7 +49,7 @@ rl.question("¿Qué quieres hacer con el documento? ", async (promptUsuario) => 
 const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
+  apiKey: process.env.GOOGLE_API_KEY
 });
 
 const analizarPdf = async (buffer, prompt) => {
