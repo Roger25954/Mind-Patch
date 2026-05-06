@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { PromptBox } from './PromptBox'
 import { PsychologistsMap } from './PsychologistsMap'
 
@@ -303,12 +305,40 @@ function Message({ msg }) {
         <FlashcardsBlock tarjetas={msg.tarjetas} />
       ) : msg.tipo === 'quiz' ? (
         <QuizBlock preguntas={msg.preguntas} />
-      ) : (
+      ) : isUser ? (
         <div style={{
-          color: isUser ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.75)',
+          color: 'rgba(255,255,255,0.85)',
           fontSize: '15px', lineHeight: 1.75, whiteSpace: 'pre-wrap', paddingLeft: '30px',
         }}>
           {msg.content}
+        </div>
+      ) : (
+        <div style={{ paddingLeft: '30px' }}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p:      ({ children }) => <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px' }}>{children}</p>,
+              h1:     ({ children }) => <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 700, margin: '20px 0 10px', letterSpacing: '-0.02em' }}>{children}</h1>,
+              h2:     ({ children }) => <h2 style={{ color: 'white', fontSize: '17px', fontWeight: 600, margin: '18px 0 8px', letterSpacing: '-0.01em' }}>{children}</h2>,
+              h3:     ({ children }) => <h3 style={{ color: 'rgba(255,255,255,0.9)', fontSize: '15px', fontWeight: 600, margin: '14px 0 6px' }}>{children}</h3>,
+              strong: ({ children }) => <strong style={{ color: 'white', fontWeight: 600 }}>{children}</strong>,
+              em:     ({ children }) => <em style={{ color: 'rgba(180,180,255,0.9)', fontStyle: 'italic' }}>{children}</em>,
+              ul:     ({ children }) => <ul style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ul>,
+              ol:     ({ children }) => <ol style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ol>,
+              li:     ({ children }) => <li style={{ marginBottom: '4px' }}>{children}</li>,
+              code:   ({ inline, children }) => inline
+                ? <code style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: '5px', padding: '1px 6px', fontSize: '13px', color: '#a5b4fc', fontFamily: 'monospace' }}>{children}</code>
+                : <pre style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '14px 16px', overflowX: 'auto', margin: '10px 0' }}><code style={{ color: '#a5b4fc', fontSize: '13px', fontFamily: 'monospace', lineHeight: 1.6 }}>{children}</code></pre>,
+              blockquote: ({ children }) => <blockquote style={{ borderLeft: '3px solid rgba(99,102,241,0.4)', margin: '10px 0', paddingLeft: '14px', color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>{children}</blockquote>,
+              hr:     () => <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.08)', margin: '16px 0' }} />,
+              a:      ({ href, children }) => <a href={href} target="_blank" rel="noreferrer" style={{ color: '#818cf8', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{children}</a>,
+              table:  ({ children }) => <table style={{ width: '100%', borderCollapse: 'collapse', margin: '10px 0', fontSize: '14px' }}>{children}</table>,
+              th:     ({ children }) => <th style={{ padding: '8px 12px', textAlign: 'left', color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)' }}>{children}</th>,
+              td:     ({ children }) => <td style={{ padding: '8px 12px', color: 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>{children}</td>,
+            }}
+          >
+            {msg.content}
+          </ReactMarkdown>
         </div>
       )}
     </motion.div>

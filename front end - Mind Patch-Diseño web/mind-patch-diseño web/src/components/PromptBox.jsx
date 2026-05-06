@@ -48,9 +48,10 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
   const fileInputRef = React.useRef(null)
 
   const [value,        setValue]        = React.useState("")
-  const [pdfFile,      setPdfFile]      = React.useState(null)   // File object
+  const [pdfFile,      setPdfFile]      = React.useState(null)
   const [selectedTool, setSelectedTool] = React.useState(null)
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
+  const [isDragging,   setIsDragging]   = React.useState(false)
 
   React.useImperativeHandle(ref, () => internalRef.current)
 
@@ -63,6 +64,23 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
     const file = e.target.files?.[0]
     if (file && file.type === 'application/pdf') setPdfFile(file)
     e.target.value = ""
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setIsDragging(false)
+    if (disabled) return
+    const file = e.dataTransfer.files?.[0]
+    if (file && file.type === 'application/pdf') setPdfFile(file)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    if (!disabled) setIsDragging(true)
+  }
+
+  const handleDragLeave = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) setIsDragging(false)
   }
 
   const handleSubmit = () => {
@@ -79,13 +97,36 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
   const activeTool = toolsList.find(t => t.id === selectedTool)
 
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column',
-      borderRadius: '28px', padding: '8px',
-      background: '#141414',
-      border: '1px solid rgba(255,255,255,0.1)',
-      boxShadow: '0 0 40px rgba(0,0,0,0.4)',
-    }}>
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      style={{
+        display: 'flex', flexDirection: 'column',
+        borderRadius: '28px', padding: '8px',
+        background: isDragging ? 'rgba(99,102,241,0.08)' : '#141414',
+        border: isDragging ? '1px solid rgba(99,102,241,0.5)' : '1px solid rgba(255,255,255,0.1)',
+        boxShadow: isDragging ? '0 0 0 3px rgba(99,102,241,0.15), 0 0 40px rgba(0,0,0,0.4)' : '0 0 40px rgba(0,0,0,0.4)',
+        transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
+        position: 'relative',
+      }}>
+
+      {/* Overlay de drop */}
+      {isDragging && (
+        <div style={{
+          position: 'absolute', inset: 0, borderRadius: '28px',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          gap: '8px', pointerEvents: 'none', zIndex: 10,
+        }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(99,102,241,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,12 15,15"/>
+          </svg>
+          <span style={{ color: 'rgba(99,102,241,0.9)', fontSize: '13px', fontWeight: 500 }}>
+            Suelta el PDF aquí
+          </span>
+        </div>
+      )}
       <input
         type="file"
         ref={fileInputRef}
