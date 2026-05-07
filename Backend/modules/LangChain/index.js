@@ -20,7 +20,7 @@ async function chat() {
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-2.0-flash-lite",
       contents: message,
     });
 
@@ -36,12 +36,12 @@ chat();*/
 const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
+  apiKey: process.env.GOOGLE_API_KEY
 });
 
 const enviarMensaje = async (mensaje) => {
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash-lite",
     contents: mensaje
   });
 

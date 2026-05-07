@@ -10,6 +10,7 @@ import { GameMenu } from './components/GameMenu'
 function App() {
   const [showAuth, setShowAuth] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState(null)
   const [view, setView] = useState('landing') // 'landing' | 'games'
 
   const handleAuthRequired = () => {
@@ -18,6 +19,12 @@ function App() {
     } else {
       setShowAuth(true)
     }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('mp_token')
+    setIsLoggedIn(false)
+    setUser(null)
   }
 
   if (view === 'games') {
@@ -70,13 +77,13 @@ function App() {
                 ✕
               </button>
 
-              <SignInPage onSuccess={() => { setIsLoggedIn(true); setShowAuth(false); setView('games') }} />
+              <SignInPage onSuccess={(userData) => { setUser(userData); setIsLoggedIn(true); setShowAuth(false); setView('games') }} />
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <HeroSection onAuthRequired={handleAuthRequired} />
+      <HeroSection onAuthRequired={handleAuthRequired} isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
       <Features />
       <MetricsSection />
       <ContactSection />

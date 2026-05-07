@@ -174,6 +174,7 @@ export function SignInPage({ onSuccess }) {
   const [error, setError]     = useState('')
   const [showReverse, setShowReverse] = useState(false)
   const [showForward, setShowForward] = useState(true)
+  const [pendingUser, setPendingUser] = useState(null)
 
   // Campos
   const [nombre,   setNombre]   = useState('')
@@ -194,6 +195,10 @@ export function SignInPage({ onSuccess }) {
       window.removeEventListener('message', onMessage)
       if (popup && !popup.closed) popup.close()
       if (e.data.token) localStorage.setItem('mp_token', e.data.token)
+      setPendingUser({
+        nombre: e.data.user?.nombre || e.data.user?.name || 'Usuario',
+        foto:   e.data.user?.foto   || e.data.user?.picture || null,
+      })
       setShowReverse(true)
       setTimeout(() => setShowForward(false), 50)
       setTimeout(() => { setStep('success') }, 1200)
@@ -240,6 +245,13 @@ export function SignInPage({ onSuccess }) {
 
       // Guardar token si viene
       if (data.token) localStorage.setItem('mp_token', data.token)
+
+      // Guardar datos del usuario
+      const u = data.user || {}
+      setPendingUser({
+        nombre: u.nombre || nombre || 'Usuario',
+        foto:   u.foto || null,
+      })
 
       // Animar salida y mostrar éxito
       setShowReverse(true)
@@ -400,7 +412,7 @@ export function SignInPage({ onSuccess }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.9 }}
-                  onClick={onSuccess}
+                  onClick={() => onSuccess(pendingUser)}
                   style={{ width: '100%', borderRadius: '999px', background: 'white', color: 'black', fontWeight: 600, padding: '13px', border: 'none', cursor: 'pointer', fontSize: '15px' }}
                 >
                   Ir a las evaluaciones
