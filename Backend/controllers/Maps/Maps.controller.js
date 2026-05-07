@@ -33,7 +33,7 @@ const getNearbyPsychologists = async (req, res) => {
       {
         params: {
           location: `${safeLat},${safeLng}`,
-          radius: 10000, // 🔥 más alcance
+          radius: 3000,
           keyword: "psicologo terapia salud mental psychologist",
           key: GOOGLE_API_KEY_MAPS,
         },
@@ -68,6 +68,7 @@ const getNearbyPsychologists = async (req, res) => {
           types.includes("doctor")
         );
       })
+      .slice(0, 5)
       .map((place) => ({
         name: place.name || "Sin nombre",
         address: place.vicinity || "Sin dirección",
