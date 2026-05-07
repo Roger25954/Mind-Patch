@@ -6,6 +6,25 @@ import { PromptBox } from './PromptBox'
 import { PsychologistsMap } from './PsychologistsMap'
 
 const API = 'http://localhost:3000'
+const DAILY_LIMIT = 5
+const STORAGE_KEY = 'mp_ia_uses'
+
+function getUsageToday() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return 0
+    const { date, count } = JSON.parse(raw)
+    const today = new Date().toISOString().slice(0, 10)
+    return date === today ? count : 0
+  } catch { return 0 }
+}
+
+function incrementUsage() {
+  const today = new Date().toISOString().slice(0, 10)
+  const count = getUsageToday() + 1
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, count }))
+  return count
+}
 
 const games = [
   { id: 1, name: 'Test de Memoria',        duration: '3 min', difficulty: 'Facil',   color: '#6366f1' },
@@ -453,7 +472,7 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap }) {
 }
 
 // ── Main area ─────────────────────────────────────────────────────────────────
-function MainArea({ selected, onSelect, messages, loading, onSend, showMap }) {
+function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usosHoy, limitAlcanzado }) {
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -588,10 +607,27 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap }) {
 
       {/* PromptBox fijo abajo */}
       <div style={{ padding: '12px 24px 20px', width: '100%', maxWidth: '760px', margin: '0 auto', boxSizing: 'border-box' }}>
-        <PromptBox onSend={onSend} disabled={loading} />
-        <p style={{ color: 'rgba(255,255,255,0.15)', fontSize: '11px', textAlign: 'center', margin: '8px 0 0' }}>
-          Mind Patch IA puede cometer errores. Verifica la informacion importante.
-        </p>
+        {limitAlcanzado ? (
+          <div style={{
+            padding: '14px 18px', borderRadius: '16px',
+            background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
+            textAlign: 'center',
+          }}>
+            <p style={{ color: '#f87171', fontSize: '14px', fontWeight: 600, margin: '0 0 4px' }}>
+              Limite diario alcanzado
+            </p>
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '12px', margin: 0 }}>
+              Has usado los {DAILY_LIMIT} mensajes de hoy. Vuelve manana para continuar.
+            </p>
+          </div>
+        ) : (
+          <>
+            <PromptBox onSend={onSend} disabled={loading} />
+            <p style={{ color: 'rgba(255,255,255,0.15)', fontSize: '11px', textAlign: 'center', margin: '8px 0 0' }}>
+              {usosHoy}/{DAILY_LIMIT} mensajes usados hoy · Mind Patch IA puede cometer errores. Verifica la informacion importante.
+            </p>
+          </>
+        )}
       </div>
     </div>
   )
@@ -599,13 +635,17 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap }) {
 
 // ── Componente raiz ───────────────────────────────────────────────────────────
 export function GameMenu({ onBack }) {
-  const [selected, setSelected] = useState(null)
-  const [showMap,  setShowMap]  = useState(false)
-  const [messages, setMessages] = useState([])
-  const [loading,  setLoading]  = useState(false)
+  const [selected,    setSelected]    = useState(null)
+  const [showMap,     setShowMap]     = useState(false)
+  const [messages,    setMessages]    = useState([])
+  const [loading,     setLoading]     = useState(false)
+  const [usosHoy,     setUsosHoy]     = useState(getUsageToday)
+
+  const limitAlcanzado = usosHoy >= DAILY_LIMIT
 
   const handleSend = async ({ text, file, tool }) => {
     if (!text && !file) return
+    if (limitAlcanzado) return
 
     const userMsg = {
       role: 'user',
@@ -644,6 +684,9 @@ export function GameMenu({ onBack }) {
         return
       }
 
+      const nuevosUsos = incrementUsage()
+      setUsosHoy(nuevosUsos)
+
       if (data.tipo === 'tarjetas' && Array.isArray(data.tarjetas)) {
         setMessages(prev => [...prev, { role: 'ai', tipo: 'tarjetas', tarjetas: data.tarjetas }])
       } else if (data.tipo === 'quiz' && Array.isArray(data.preguntas)) {
@@ -674,7 +717,7 @@ export function GameMenu({ onBack }) {
         showMap={showMap}
         onToggleMap={() => { setShowMap(m => !m); setSelected(null) }}
       />
-      <MainArea selected={selected} onSelect={setSelected} messages={messages} loading={loading} onSend={handleSend} showMap={showMap} />
+      <MainArea selected={selected} onSelect={setSelected} messages={messages} loading={loading} onSend={handleSend} showMap={showMap} usosHoy={usosHoy} limitAlcanzado={limitAlcanzado} />
     </div>
   )
 }
