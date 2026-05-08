@@ -1,0 +1,230 @@
+{
+    "items": [
+        {
+            "id": "T3_01",
+            "tipo": "Conteo",
+            "objetivo": 3,
+            "total_disponible": 6,
+            "mensaje": "Pon 3 galletas en el mostrador"
+        },
+        {
+            "id": "T3_02",
+            "tipo": "Magnitud",
+            "opcionA": 5,
+            "opcionB": 2,
+            "mensaje": "¿Dónde hay más dulces?"
+        },
+        
+        {
+            "id": "T3_03",
+            "tipo": "Calculo",
+            "precio": 3,
+            "monedas_dadas": 5,
+            "mensaje": "La paleta cuesta 3 monedas. ¡Quita las que sobran!"
+        },
+        {
+            "id": "T3_04",
+            "tipo": "Conteo",
+            "objetivo": 5,
+            "total_disponible": 8,
+            "mensaje": "¡Qué hambre! Dame 5 pasteles "
+        },
+        {
+            "id": "T3_05",
+            "tipo": "Magnitud",
+            "opcionA": 1,
+            "opcionB": 4,
+            "mensaje": "¿Cuál grupo tiene menos dulces"
+        },
+        {
+            "id": "T3_06",
+            "tipo": "Conteo",
+            "objetivo": 2,
+            "total_disponible": 5,
+            "mensaje": "Solo necesito 2 dulces para mi camino"
+        },
+        {
+            "id": "T3_07",
+            "tipo": "Calculo",
+            "precio": 1,
+            "monedas_dadas": 4,
+            "mensaje": "El pastel vale 1 moneda. ¡Dame el cambio justo!"
+        },
+        {
+            "id": "T3_08",
+            "tipo": "Magnitud",
+            "opcionA": 6,
+            "opcionB": 3,
+            "mensaje": "¿En qué lado hay más dulces?"
+        },
+        {
+            "id": "T3_09",
+            "tipo": "Conteo",
+            "objetivo": 7,
+            "total_disponible": 10,
+            "mensaje": "¡Es una fiesta! Dame 7 paletas"
+        },
+        {
+            "id": "T3_10",
+            "tipo": "Calculo",
+            "precio": 4,
+            "monedas_dadas": 6,
+            "mensaje": "Son 4 monedas por los dulces. ¡Quita las que sobran!"
+        },
+        {
+            "id": "T3_11",
+            "tipo": "Conteo",
+            "objetivo": 8,
+            "total_disponible": 8,
+            "mensaje": "¡Tengo muchos invitados! Pon 8 pasteles en el mostrador"
+        },
+        {
+            "id": "T3_12",
+            "tipo": "Magnitud",
+            "opcionA": 7,
+            "opcionB": 9,
+            "mensaje": "¿Dónde hay menos dulces?"
+        },
+        {
+            "id": "T3_13",
+            "tipo": "Calculo",
+            "precio": 2,
+            "monedas_dadas": 5,
+            "mensaje": "La galleta cuesta 2 monedas. ¡Quita las que sobran!"
+        },
+        {
+            "id": "T3_14",
+            "tipo": "Conteo",
+            "objetivo": 4,
+            "total_disponible": 6,
+            "mensaje": "Solo quiero 4 paletas, por favor"
+        },
+        {
+            "id": "T3_15",
+            "tipo": "Magnitud",
+            "opcionA": 7,
+            "opcionB": 5,
+            "mensaje": "¿Qué lado tiene mas dulces?"
+        },
+        {
+            "id": "T3_16",
+            "tipo": "Calculo",
+            "precio": 5,
+            "monedas_dadas": 6,
+            "mensaje": "El pastel especial cuesta 5 monedas. ¡Dame el cambio!"
+        },
+        {
+            "id": "T3_17",
+            "tipo": "Conteo",
+            "objetivo": 6,
+            "total_disponible": 8,
+            "mensaje": "¡Increíble! Necesito dulces 6 para mi frasco"
+        },
+        {
+            "id": "T3_18",
+            "tipo": "Magnitud",
+            "opcionA": 2,
+            "opcionB": 8,
+            "mensaje": "¿En qué grupo hay más dulces?"
+        },
+        {
+            "id": "T3_19",
+            "tipo": "Calculo",
+            "precio": 1,
+            "monedas_dadas": 3,
+            "mensaje": "La paleta pequeña cuesta 1 moneda. ¡Quita las que sobran!"
+        },
+        {
+            "id": "T3_20",
+            "tipo": "Conteo",
+            "objetivo": 6,
+            "total_disponible": 9,
+            "mensaje": "Para terminar, dame 6 pasteles de chocolate"
+        },
+        {
+            "id": "T3_21",
+            "tipo": "Conteo",
+            "objetivo": 4,
+            "total_disponible": 7,
+            "mensaje": "¡Hola! Pon 4 galletas en mi charola"
+        },
+        {
+            "id": "T3_22",
+            "tipo": "Magnitud",
+            "opcionA": 3,
+            "opcionB": 6,
+            "mensaje": "¿Cuál grupo tiene más dulces?"
+        },
+        {
+            "id": "T3_23",
+            "tipo": "Calculo",
+            "precio": 3,
+            "monedas_dadas": 6,
+            "mensaje": "El dulce cuesta 3 monedas. ¡Quita las que sobran!"
+        },
+        {
+            "id": "T3_24",
+            "tipo": "Conteo",
+            "objetivo": 5,
+            "total_disponible": 8,
+            "mensaje": "Tengo hambre de 5 pasteles"
+        },
+        {
+            "id": "T3_25",
+            "tipo": "Magnitud",
+            "opcionA": 2,
+            "opcionB": 1,
+            "mensaje": "¿Dónde hay menos dulces?"
+        },
+        {
+            "id": "T3_26",
+            "tipo": "Calculo",
+            "precio": 1,
+            "monedas_dadas": 4,
+            "mensaje": "Esta paleta vale 1 moneda. ¡Dame el cambio!"
+        },
+        {
+            "id": "T3_27",
+            "tipo": "Conteo",
+            "objetivo": 7,
+            "total_disponible": 8,
+            "mensaje": " ¡Pon 7 dulces en el mostrador!"
+        },
+        {
+            "id": "T3_28",
+            "tipo": "Magnitud",
+            "opcionA": 4,
+            "opcionB": 4,
+            "mensaje": "¿Qué lado tiene la misma cantidad de dulces?"
+        },
+        {
+            "id": "T3_29",
+            "tipo": "Calculo",
+            "precio": 4,
+            "monedas_dadas": 7,
+            "mensaje": "Son 4 monedas por las galletas. ¡Quita el resto!"
+        },
+        {"id": "T3_30", "tipo": "Magnitud", "opcionA": 2, "opcionB": 3, "mensaje": "¿Cuál es más grande?" },
+        { "id": "T3_31", "tipo": "Conteo", "objetivo": 5, "mensaje": "Toca el número cinco" },
+        { "id": "T3_32", "tipo": "Calculo", "precio": 2 ,"monedas_dadas": 5, "mensaje": "Si tienes 6 y quitas 4, ¿cuánto queda?" },
+        { "id": "T3_33", "tipo": "Magnitud", "opcionA": 8, "opcionB": 5, "mensaje": "¿Cuál es el número mayor?" },
+        { "id": "T3_34", "tipo": "Conteo", "objetivo": 9, "mensaje": "Busca el número nueve" },
+        { "id": "T3_35", "tipo": "Calculo", "precio": 4, "monedas_dadas": 3, "mensaje": "A 5 le quito 1,¿qué número queda?" },
+        { "id": "T3_36", "tipo": "Magnitud", "opcionA": 3, "opcionB": 1, "mensaje": "¿Cuál es más pequeño?" },
+        { "id": "T3_37", "tipo": "Magnitud", "opcionA": 7, "opcionB": 4, "mensaje": "¿Cuál es el número más grande?" },
+        { "id": "T3_38", "tipo": "Conteo", "objetivo": 3, "mensaje": "Encuentra el número tres"},
+        { "id": "T3_39", "tipo": "Calculo", "precio": 1, "monedas_dadas": 4, "mensaje": "Tienes 4 y regalas 3, ¿cuántos quedan?" },
+        { "id": "T3_40", "tipo": "Magnitud", "opcionA": 10, "opcionB": 6, "mensaje": "¿Qué número es mayor?" },
+        { "id": "T3_41", "tipo": "Magnitud", "opcionA": 2, "opcionB": 9, "mensaje": "¿Cuál es menor?" },
+        { "id": "T3_42", "tipo": "Conteo", "objetivo": 8, "mensaje": "Toca el número ocho" },
+        { "id": "T3_43", "tipo": "Calculo", "precio": 0, "monedas_dadas": 2, "mensaje": "Tenías 2 y perdiste 2, ¿qué número queda?" },
+        { "id": "T3_44", "tipo": "Magnitud", "opcionA": 5, "opcionB": 1, "mensaje": "¿Cuál es el número más grande?" },
+        { "id": "T3_45", "tipo": "Magnitud", "opcionA": 4, "opcionB": 8, "mensaje": "¿Cuál es mayor?" },
+        { "id": "T3_46", "tipo": "Conteo", "objetivo": 1, "mensaje": "Busca el número uno" },
+        { "id": "T3_47", "tipo": "Calculo", "precio": 5, "monedas_dadas": 10, "mensaje": "A 10 le quito 5, ¿cuánto es?" },
+        { "id": "T3_48", "tipo": "Magnitud", "opcionA": 9, "opcionB": 10, "mensaje": "¿Qué número es mayor?" },
+        { "id": "T3_49", "tipo": "Magnitud", "opcionA": 6, "opcionB": 2, "mensaje": "¿Cuál es más pequeño?" },
+        { "id": "T3_50", "tipo": "Conteo", "objetivo": 10, "mensaje": "Toca el número diez" }
+        ]
+        }
+
