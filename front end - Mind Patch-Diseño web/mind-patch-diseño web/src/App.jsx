@@ -34,7 +34,7 @@ function App() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.35 }}
       >
-        <GameMenu onBack={() => setView('landing')} />
+        <GameMenu onBack={() => setView('landing')} user={user} />
       </motion.div>
     )
   }

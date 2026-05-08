@@ -365,7 +365,7 @@ function Message({ msg }) {
 }
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
-function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap }) {
+function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) {
   return (
     <aside style={{
       width: '240px', flexShrink: 0,
@@ -466,6 +466,14 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap }) {
         <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px', margin: 0, lineHeight: 1.5 }}>
           Selecciona una evaluacion o usa la IA para comenzar.
         </p>
+        {esMenor && (
+          <div style={{ marginTop: '10px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '10px', padding: '3px 9px', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.2)', color: '#fbbf24', borderRadius: '999px', fontWeight: 700 }}>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Cuenta de menor
+            </span>
+          </div>
+        )}
       </div>
     </aside>
   )
@@ -634,7 +642,7 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
 }
 
 // ── Componente raiz ───────────────────────────────────────────────────────────
-export function GameMenu({ onBack }) {
+export function GameMenu({ onBack, user }) {
   const [selected,    setSelected]    = useState(null)
   const [showMap,     setShowMap]     = useState(false)
   const [messages,    setMessages]    = useState([])
@@ -716,6 +724,7 @@ export function GameMenu({ onBack }) {
         onBack={onBack}
         showMap={showMap}
         onToggleMap={() => { setShowMap(m => !m); setSelected(null) }}
+        esMenor={user?.es_menor}
       />
       <MainArea selected={selected} onSelect={setSelected} messages={messages} loading={loading} onSend={handleSend} showMap={showMap} usosHoy={usosHoy} limitAlcanzado={limitAlcanzado} />
     </div>

@@ -26,7 +26,15 @@ const register = async ({ correo, password, nombre }) => {
         [3, nombre, correo, hash]
     );
 
-    return result.rows[0];
+    const newUser = result.rows[0];
+
+    const token = jwt.sign(
+        { id: newUser.id, correo: newUser.correo },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+    );
+
+    return { user: newUser, token, tiene_perfil: false };
 };
 
 const login = async ({ correo, password }) => {
@@ -62,13 +70,19 @@ const login = async ({ correo, password }) => {
         { expiresIn: '7d' }
     );
 
+    const profileResult = await pool.query(
+        `SELECT id FROM perfiles WHERE usuario_id = $1`,
+        [user.id]
+    );
+
     return {
         user: {
             id: user.id,
             correo: user.correo,
             nombre: user.nombre
         },
-        token
+        token,
+        tiene_perfil: profileResult.rows.length > 0,
     };
 };
 
