@@ -2,8 +2,8 @@ const { register, login } = require('../../modules/Auth/auth.service');
 
 const registerUser = async (req, res) => {
     try {
-        const user = await register(req.body);
-        res.json({ ok: true, user });
+        const data = await register(req.body);
+        res.json({ ok: true, ...data });
     } catch (e) {
         res.status(400).json({ error: e.message });
     }

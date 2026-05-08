@@ -278,6 +278,11 @@ function HeroHeader({ onAuthRequired, isLoggedIn, user, onLogout }) {
                   <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: '13px', fontWeight: 500, maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {user?.nombre || 'Usuario'}
                   </span>
+                  {user?.es_menor && (
+                    <span style={{ fontSize: '9px', padding: '2px 7px', background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.28)', color: '#fbbf24', borderRadius: '999px', fontWeight: 700, flexShrink: 0 }}>
+                      Menor
+                    </span>
+                  )}
                   {/* Chevron */}
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" strokeLinecap="round">
                     <polyline points="6 9 12 15 18 9" />
@@ -300,6 +305,13 @@ function HeroHeader({ onAuthRequired, isLoggedIn, user, onLogout }) {
                         zIndex: 200,
                       }}
                     >
+                      {user?.es_menor && (
+                        <div style={{ padding: '8px 12px 6px', borderBottom: '1px solid rgba(255,255,255,0.06)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '10px', padding: '3px 8px', background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.22)', color: '#fbbf24', borderRadius: '999px', fontWeight: 700 }}>
+                            Cuenta de menor
+                          </span>
+                        </div>
+                      )}
                       <button
                         onClick={() => { setDropOpen(false); onLogout() }}
                         style={{

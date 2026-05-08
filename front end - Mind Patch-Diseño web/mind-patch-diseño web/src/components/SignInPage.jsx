@@ -169,19 +169,53 @@ function Field({ label, type = 'text', value, onChange, placeholder }) {
 // ── Sign In Page ──────────────────────────────────────────────────────────────
 export function SignInPage({ onSuccess }) {
   const [mode, setMode]       = useState('login')    // 'login' | 'register'
-  const [step, setStep]       = useState('form')     // 'form' | 'success'
+  const [step, setStep]       = useState('form')     // 'form' | 'survey' | 'success'
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState('')
   const [showReverse, setShowReverse] = useState(false)
   const [showForward, setShowForward] = useState(true)
   const [pendingUser, setPendingUser] = useState(null)
 
-  // Campos
+  // Campos de formulario
   const [nombre,   setNombre]   = useState('')
   const [correo,   setCorreo]   = useState('')
   const [password, setPassword] = useState('')
 
+  // Campos de encuesta
+  const [edad,          setEdad]          = useState('')
+  const [surveyError,   setSurveyError]   = useState('')
+  const [surveyLoading, setSurveyLoading] = useState(false)
+
   const resetError = () => setError('')
+
+  const handleSurveySubmit = async () => {
+    const edadNum = parseInt(edad, 10)
+    if (!edad || isNaN(edadNum) || edadNum < 5 || edadNum > 120) {
+      setSurveyError('Por favor ingresa una edad válida entre 5 y 120 años.')
+      return
+    }
+    setSurveyLoading(true)
+    try {
+      const token = localStorage.getItem('mp_token')
+      const res = await fetch(`${API}/api/auth/profile/age`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': token },
+        body: JSON.stringify({ edad: edadNum }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setSurveyError(data.error || 'Error al guardar. Intenta de nuevo.')
+        setSurveyLoading(false)
+        return
+      }
+      setPendingUser(prev => ({ ...prev, es_menor: data.es_menor }))
+      setSurveyLoading(false)
+      setStep('success')
+    } catch {
+      setSurveyError('No se pudo conectar al servidor.')
+      setSurveyLoading(false)
+    }
+  }
 
   const handleGoogleLogin = () => {
     const popup = window.open(
@@ -195,13 +229,14 @@ export function SignInPage({ onSuccess }) {
       window.removeEventListener('message', onMessage)
       if (popup && !popup.closed) popup.close()
       if (e.data.token) localStorage.setItem('mp_token', e.data.token)
+      const tienePerfil = e.data.tiene_perfil ?? true
       setPendingUser({
         nombre: e.data.user?.nombre || e.data.user?.name || 'Usuario',
         foto:   e.data.user?.foto   || e.data.user?.picture || null,
       })
       setShowReverse(true)
       setTimeout(() => setShowForward(false), 50)
-      setTimeout(() => { setStep('success') }, 1200)
+      setTimeout(() => { setStep(tienePerfil ? 'success' : 'survey') }, 1200)
     }
 
     window.addEventListener('message', onMessage)
@@ -248,15 +283,16 @@ export function SignInPage({ onSuccess }) {
 
       // Guardar datos del usuario
       const u = data.user || {}
+      const tienePerfil = data.tiene_perfil ?? false
       setPendingUser({
         nombre: u.nombre || nombre || 'Usuario',
         foto:   u.foto || null,
       })
 
-      // Animar salida y mostrar éxito
+      // Animar salida y mostrar encuesta o éxito
       setShowReverse(true)
       setTimeout(() => setShowForward(false), 50)
-      setTimeout(() => { setLoading(false); setStep('success') }, 1200)
+      setTimeout(() => { setLoading(false); setStep(tienePerfil ? 'success' : 'survey') }, 1200)
 
     } catch {
       setError('No se pudo conectar al servidor.')
@@ -377,6 +413,75 @@ export function SignInPage({ onSuccess }) {
                   </p>
 
                 </form>
+              </motion.div>
+            )}
+
+            {/* ── Encuesta de edad ── */}
+            {step === 'survey' && (
+              <motion.div key="survey"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.35 }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '22px', alignItems: 'center' }}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'white', letterSpacing: '-0.02em', margin: 0 }}>
+                    Una pregunta rapida
+                  </h1>
+                  <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.4)', margin: '6px 0 0', lineHeight: 1.5 }}>
+                    Esto nos ayuda a personalizar<br />tu experiencia en Mind Patch
+                  </p>
+                </div>
+
+                <div style={{ width: '100%' }}>
+                  <Field
+                    label="¿Cuántos años tienes?"
+                    type="number"
+                    value={edad}
+                    onChange={e => { setEdad(e.target.value); setSurveyError('') }}
+                    placeholder="Ej: 16"
+                  />
+                </div>
+
+                <AnimatePresence>
+                  {surveyError && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      style={{ color: '#ef4444', fontSize: '13px', margin: 0, textAlign: 'center', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', padding: '8px 12px', width: '100%', boxSizing: 'border-box' }}
+                    >
+                      {surveyError}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+
+                <button
+                  onClick={handleSurveySubmit}
+                  disabled={surveyLoading}
+                  style={{
+                    width: '100%', borderRadius: '999px',
+                    background: surveyLoading ? 'rgba(255,255,255,0.7)' : 'white',
+                    color: 'black', fontWeight: 600,
+                    padding: '12px', border: 'none',
+                    cursor: surveyLoading ? 'not-allowed' : 'pointer',
+                    fontSize: '14px', transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => { if (!surveyLoading) e.currentTarget.style.background = '#e5e5e5' }}
+                  onMouseLeave={e => { if (!surveyLoading) e.currentTarget.style.background = 'white' }}
+                >
+                  {surveyLoading ? 'Guardando...' : 'Continuar'}
+                </button>
+
+                <button
+                  onClick={() => setStep('success')}
+                  style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.25)', fontSize: '12px', cursor: 'pointer', padding: '4px 0' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.25)'}
+                >
+                  Saltar por ahora
+                </button>
               </motion.div>
             )}
 
