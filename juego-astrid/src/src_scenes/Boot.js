@@ -19,10 +19,12 @@ export class Boot extends Phaser.Scene {
         this.load.image('mounstro_1', rutaImg + 'mounstro_1.png');
         this.load.image('mounstro_2', rutaImg + 'mounstro_2.png');
         this.load.image('mounstro_3', rutaImg + 'mounstro_3.png');
+        this.load.image('mounstro_4', rutaImg + 'mounstro_4.png');
         this.load.image('paleta', rutaImg + 'paleta.png');
         this.load.image('listo', rutaImg + 'listo.png');
         this.load.image('siguiente', rutaImg + 'siguiente.png');
         this.load.image('moneda', rutaImg + 'moneda.png');
+        this.load.image('cake', rutaImg + 'cake.png');
 
         // 3. CARGA DE DATOS
         this.load.json('levelData', 'assets/data/levels.json');
