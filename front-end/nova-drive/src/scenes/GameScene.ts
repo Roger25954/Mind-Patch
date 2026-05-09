@@ -12,6 +12,7 @@ import { ItemType, Zone, TrialOutcome } from '../types';
 import type { GameConfig } from '../types';
 import StarItem from '../entities/StarItem';
 import DebrisItem from '../entities/DebrisItem';
+import gsap from 'gsap'; 
 
 type OnZoneComplete = (zone: Zone) => void;
 type OnGameComplete = () => void;
@@ -28,7 +29,6 @@ function isDebris(item: StarItem | DebrisItem): item is DebrisItem {
 
 export default class GameScene {
   public scene: THREE.Scene;
-  private renderer: THREE.WebGLRenderer;
   private camera: THREE.Camera;
   private audioManager: AudioManager;
   private config: GameConfig;
@@ -59,7 +59,6 @@ export default class GameScene {
     onZoneComplete?: OnZoneComplete,
     onGameComplete?: OnGameComplete
   ) {
-    this.renderer = renderer;
     this.camera = camera;
     this.audioManager = audioManager;
     this.config = config;
@@ -105,19 +104,22 @@ export default class GameScene {
     this.spawn.start((item, trialIndex) => this.onSpawn(item, trialIndex));
   }
 
-  private configureCamera(): void {
+private configureCamera(): void {
     const cam = this.camera as THREE.PerspectiveCamera;
     if (!cam || !('isPerspectiveCamera' in cam)) return;
-    cam.fov = 54;
+    
+    cam.fov = 60;   // Zoom óptimo
     cam.near = 0.1;
-    cam.far = 600;
-    cam.position.set(0, 3.1, 11.2);
-    cam.lookAt(0, 0.15, -7.2);
+    cam.far = 10000;
+    
+    // Forzamos la posición cercana a la nave
+    cam.position.set(0, 7, 7 );
+    cam.lookAt(0, 6, 0);
     cam.updateProjectionMatrix();
+    
     // Keep camera accessible for systems that need camera shake.
     this.scene.userData.camera = cam;
   }
-
   // ── Spawn callback ──────────────────────────────────────────────────────────
   private onSpawn(item: StarItem | DebrisItem, trialIndex: number): void {
     const zone = this.energy.currentZone;
@@ -153,7 +155,8 @@ const tId = window.setTimeout(() => {
           // GO Fallido (Omisión): No activó el escudo, el asteroide impacta.
           this.metrics.recordOutcome(trialIndex, TrialOutcome.MISS);
           (existing.item as DebrisItem).onImpact(this.particles);
-          this.audioManager.playSFX('sfx_warning'); 
+          this.audioManager.playSFX('sfx_warning');
+          this.triggerImpactEffect() 
         }
         this.prompt.hide();
         // Removemos de la lista de interactuables
@@ -164,27 +167,7 @@ const tId = window.setTimeout(() => {
       this.trialTimeouts.delete(trialIndex);
     }, this.config.stimulusWindowMs);
 
-    // VVVV --- AÑADE ESTA LÍNEA AQUÍ EXACTAMENTE --- VVVV
     this.trialTimeouts.set(trialIndex, tId);
-  }
-
-  // ── Buscar ítem en frustum ──────────────────────────────────────────────────
-  private findItemInFrustum(
-    type: 'star' | 'debris'
-  ): { item: StarItem | DebrisItem; trialIndex: number } | null {
-    const frustum = new THREE.Frustum();
-    const proj = new THREE.Matrix4().multiplyMatrices(
-      this.camera.projectionMatrix,
-      this.camera.matrixWorldInverse
-    );
-    frustum.setFromProjectionMatrix(proj);
-
-    for (const entry of this.activeItems) {
-      const { item } = entry;
-      if (type === 'star'   && isStar(item)   && item.isInFrustum(frustum)) return entry;
-      if (type === 'debris' && isDebris(item) && item.isInFrustum(frustum)) return entry;
-    }
-    return null;
   }
 
   //logica del teclado espacio para interactuar con los items
@@ -285,6 +268,30 @@ const tId = window.setTimeout(() => {
   // ── Pausa / reanuda (para HyperspaceScene) ──────────────────────────────────
   pause(): void  { this.spawn.pause(); }
   resume(): void { this.spawn.resume(); }
+
+  private triggerImpactEffect(): void {
+    // 1. Guardamos la posición original de la cámara
+    const origX = this.camera.position.x;
+    const origY = this.camera.position.y;
+
+    // 2. Camera Shake usando GSAP
+    gsap.to(this.camera.position, {
+      x: origX + 0.3,
+      y: origY - 0.3,
+      yoyo: true,
+      repeat: 5,        // Se sacude 5 veces
+      duration: 0.05,   // Súper rápido
+      ease: "rough({ template: power0, strength: 1, points: 20, taper: 'none', randomize: true })",
+      onComplete: () => {
+        // Asegurarnos de que la cámara regrese exactamente a su lugar
+        this.camera.position.set(origX, origY, this.camera.position.z);
+      }
+    });
+
+    // 3. Le decimos a la nave que suelte chispas y cabecee
+    // (Asegúrate de haber puesto la función takeDamage en PlayerShip.ts como vimos antes)
+    this.player.takeDamage(this.particles);
+  }
 
   // ── Game loop ───────────────────────────────────────────────────────────────
   update(delta: number, time: number): void {

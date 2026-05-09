@@ -18,12 +18,25 @@ export default class DebrisItem {
     '/models/asteroid_2.glb',
   ];
 
-  constructor(scene: THREE.Scene, speed = 10) {
+constructor(scene: THREE.Scene, reactionTimeMs = 2000) {
     this.scene = scene;
-    this.speed = speed;
+    
+    // 1. Posicionarlo a lo lejos
     this.root.position.set((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 5, -68);
     this.scene.add(this.root);
-    this.rotSpeed.set((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
+    
+    // 2. Calcular la velocidad exacta de impacto (Distancia total: 63.5 unidades)
+    const distanceToTravel = Math.abs(-68 - (-4.5)); 
+    const timeInSeconds = reactionTimeMs / 1000;
+    this.speed = distanceToTravel / timeInSeconds;
+
+    // 3. Darle una rotación mucho más rápida y caótica para mayor realismo
+    this.rotSpeed.set(
+      (Math.random() - 0.5) * 6, 
+      (Math.random() - 0.5) * 6, 
+      (Math.random() - 0.5) * 6
+    );
+    
     this.load();
   }
 
@@ -74,11 +87,6 @@ export default class DebrisItem {
     this.root.rotation.x += this.rotSpeed.x * delta;
     this.root.rotation.y += this.rotSpeed.y * delta;
     this.root.rotation.z += this.rotSpeed.z * delta;
-
-    if (this.root.position.z > -4.5) {
-      this.isExpired = true;
-      try { this.scene.remove(this.root); } catch {}
-    }
   }
 
   onDeflect(shieldEffect: ShieldEffect, particleSystem: ParticleSystem): void {
@@ -105,9 +113,10 @@ export default class DebrisItem {
     });
   }
 
-  onImpact(particleSystem: ParticleSystem): void {
+onImpact(particleSystem: ParticleSystem): void {
     if (this.isExpired) return;
     const worldPos = this.root.getWorldPosition(new THREE.Vector3());
+    
     particleSystem.emit({
       position: worldPos,
       count: 28,
@@ -118,16 +127,14 @@ export default class DebrisItem {
       size: 0.16,
       spread: 2.0,
     });
-    this.isExpired = true;
-    try { this.scene.remove(this.root); } catch {}
-  }
 
-  isInFrustum(frustum: THREE.Frustum): boolean {
-    if (!this.model) return false;
-    try {
-      return frustum.intersectsObject(this.root);
-    } catch {
-      return false;
+    // 🔥 LA OPTIMIZACIÓN AQUÍ 🔥
+    this.isExpired = true;
+    this.root.visible = false; // 1. Lo desaparecemos instantáneamente de la pantalla
+    
+    // 2. Si sigue existiendo en el mundo 3D, lo eliminamos de forma segura sin usar try/catch
+    if (this.root.parent) {
+      this.scene.remove(this.root); 
     }
   }
 }
