@@ -40,7 +40,7 @@ function App() {
   }
 
   return (
-    <div style={{ background: '#080808' }}>
+    <div style={{ background: '#DADBC6' }}>
 
       {/* Modal de login */}
       <AnimatePresence>

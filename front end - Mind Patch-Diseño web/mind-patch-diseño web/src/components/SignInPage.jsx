@@ -60,7 +60,7 @@ const ShaderMat = ({ source, uniforms }) => {
 }
 
 // ── Dot Matrix ────────────────────────────────────────────────────────────────
-const DotMatrix = ({ colors = [[255,255,255]], opacities = [0.04,0.04,0.04,0.04,0.04,0.08,0.08,0.08,0.08,0.14], totalSize = 20, dotSize = 2, reverse = false }) => {
+const DotMatrix = ({ colors = [[218,219,198]], opacities = [0.04,0.04,0.04,0.04,0.04,0.08,0.08,0.08,0.08,0.14], totalSize = 20, dotSize = 2, reverse = false }) => {
   const colorsArray = useMemo(() => {
     let arr = [colors[0],colors[0],colors[0],colors[0],colors[0],colors[0]]
     if (colors.length === 2) arr = [colors[0],colors[0],colors[0],colors[1],colors[1],colors[1]]
@@ -126,10 +126,10 @@ const DotMatrix = ({ colors = [[255,255,255]], opacities = [0.04,0.04,0.04,0.04,
   )
 }
 
-const CanvasReveal = ({ colors = [[255,255,255]], dotSize = 3, reverse = false }) => (
+const CanvasReveal = ({ colors = [[242,112,89]], dotSize = 3, reverse = false }) => (
   <div style={{ position: 'relative', width: '100%', height: '100%' }}>
     <DotMatrix colors={colors} dotSize={dotSize} reverse={reverse} />
-    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, black, transparent)' }} />
+    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #1A1A10, transparent)' }} />
   </div>
 )
 
@@ -138,7 +138,7 @@ function Field({ label, type = 'text', value, onChange, placeholder }) {
   const [focused, setFocused] = useState(false)
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', textAlign: 'left' }}>
-      <label style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+      <label style={{ color: 'rgba(218,219,198,0.5)', fontSize: '11px', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
         {label}
       </label>
       <input
@@ -149,11 +149,11 @@ function Field({ label, type = 'text', value, onChange, placeholder }) {
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={{
-          background: focused ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)',
-          border: `1px solid ${focused ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.1)'}`,
+          background: focused ? 'rgba(218,219,198,0.08)' : 'rgba(218,219,198,0.04)',
+          border: `1px solid ${focused ? 'rgba(218,219,198,0.28)' : 'rgba(218,219,198,0.12)'}`,
           borderRadius: '10px',
           padding: '11px 14px',
-          color: 'white',
+          color: '#DADBC6',
           fontSize: '14px',
           outline: 'none',
           width: '100%',
@@ -278,10 +278,8 @@ export function SignInPage({ onSuccess }) {
         return
       }
 
-      // Guardar token si viene
       if (data.token) localStorage.setItem('mp_token', data.token)
 
-      // Guardar datos del usuario
       const u = data.user || {}
       const tienePerfil = data.tiene_perfil ?? false
       setPendingUser({
@@ -289,7 +287,6 @@ export function SignInPage({ onSuccess }) {
         foto:   u.foto || null,
       })
 
-      // Animar salida y mostrar encuesta o éxito
       setShowReverse(true)
       setTimeout(() => setShowForward(false), 50)
       setTimeout(() => { setLoading(false); setStep(tienePerfil ? 'success' : 'survey') }, 1200)
@@ -301,22 +298,22 @@ export function SignInPage({ onSuccess }) {
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '520px', background: 'black', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '100%', minHeight: '520px', background: '#1A1A10', overflow: 'hidden' }}>
 
       {/* Canvas de fondo animado */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         {showForward && (
           <div style={{ position: 'absolute', inset: 0 }}>
-            <CanvasReveal colors={[[255,255,255],[255,255,255]]} dotSize={6} reverse={false} />
+            <CanvasReveal colors={[[242,112,89],[242,112,89]]} dotSize={6} reverse={false} />
           </div>
         )}
         {showReverse && (
           <div style={{ position: 'absolute', inset: 0 }}>
-            <CanvasReveal colors={[[255,255,255],[255,255,255]]} dotSize={6} reverse={true} />
+            <CanvasReveal colors={[[242,112,89],[242,112,89]]} dotSize={6} reverse={true} />
           </div>
         )}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 100%)' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to bottom, black, transparent)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(20,20,10,0.92) 0%, rgba(20,20,10,0.6) 100%)' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to bottom, #1A1A10, transparent)' }} />
       </div>
 
       {/* Contenido */}
@@ -336,10 +333,10 @@ export function SignInPage({ onSuccess }) {
 
                   {/* Título */}
                   <div style={{ textAlign: 'center', marginBottom: '4px' }}>
-                    <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'white', lineHeight: 1.1, letterSpacing: '-0.02em', margin: 0 }}>
+                    <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#DADBC6', lineHeight: 1.1, letterSpacing: '-0.02em', margin: 0 }}>
                       {mode === 'login' ? 'Bienvenido' : 'Crear cuenta'}
                     </h1>
-                    <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.4)', fontWeight: 300, margin: '6px 0 0' }}>
+                    <p style={{ fontSize: '1rem', color: 'rgba(218,219,198,0.45)', fontWeight: 300, margin: '6px 0 0' }}>
                       {mode === 'login' ? 'Inicia sesion en Mind Patch' : 'Registro en Mind Patch'}
                     </p>
                   </div>
@@ -348,18 +345,18 @@ export function SignInPage({ onSuccess }) {
                   <button
                     type="button"
                     onClick={handleGoogleLogin}
-                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '999px', padding: '11px 16px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'rgba(218,219,198,0.06)', border: '1px solid rgba(218,219,198,0.12)', color: '#DADBC6', borderRadius: '999px', padding: '11px 16px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(218,219,198,0.1)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(218,219,198,0.06)'}
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                     Continuar con Google
                   </button>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
-                    <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px' }}>o</span>
-                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                    <div style={{ flex: 1, height: '1px', background: 'rgba(218,219,198,0.12)' }} />
+                    <span style={{ color: 'rgba(218,219,198,0.35)', fontSize: '12px' }}>o</span>
+                    <div style={{ flex: 1, height: '1px', background: 'rgba(218,219,198,0.12)' }} />
                   </div>
 
                   {/* Campos */}
@@ -389,24 +386,24 @@ export function SignInPage({ onSuccess }) {
                     disabled={loading}
                     style={{
                       width: '100%', borderRadius: '999px',
-                      background: loading ? 'rgba(255,255,255,0.7)' : 'white',
-                      color: 'black', fontWeight: 600,
+                      background: loading ? 'rgba(242,112,89,0.6)' : '#f27059',
+                      color: 'white', fontWeight: 600,
                       padding: '12px', border: 'none',
                       cursor: loading ? 'not-allowed' : 'pointer',
                       fontSize: '14px', transition: 'background 0.2s',
                     }}
-                    onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#e5e5e5' }}
-                    onMouseLeave={e => { if (!loading) e.currentTarget.style.background = 'white' }}
+                    onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#d95e48' }}
+                    onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#f27059' }}
                   >
                     {loading ? 'Cargando...' : mode === 'login' ? 'Iniciar sesion' : 'Registrarse'}
                   </button>
 
                   {/* Toggle login/register */}
-                  <p style={{ textAlign: 'center', fontSize: '13px', color: 'rgba(255,255,255,0.35)', margin: 0 }}>
+                  <p style={{ textAlign: 'center', fontSize: '13px', color: 'rgba(218,219,198,0.4)', margin: 0 }}>
                     {mode === 'login' ? '¿No tienes cuenta? ' : '¿Ya tienes cuenta? '}
                     <span
                       onClick={() => switchMode(mode === 'login' ? 'register' : 'login')}
-                      style={{ color: 'rgba(255,255,255,0.75)', cursor: 'pointer', textDecoration: 'underline' }}
+                      style={{ color: 'rgba(218,219,198,0.8)', cursor: 'pointer', textDecoration: 'underline' }}
                     >
                       {mode === 'login' ? 'Registrate' : 'Inicia sesion'}
                     </span>
@@ -426,10 +423,10 @@ export function SignInPage({ onSuccess }) {
                 style={{ display: 'flex', flexDirection: 'column', gap: '22px', alignItems: 'center' }}
               >
                 <div style={{ textAlign: 'center' }}>
-                  <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: 'white', letterSpacing: '-0.02em', margin: 0 }}>
+                  <h1 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#DADBC6', letterSpacing: '-0.02em', margin: 0 }}>
                     Una pregunta rapida
                   </h1>
-                  <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.4)', margin: '6px 0 0', lineHeight: 1.5 }}>
+                  <p style={{ fontSize: '0.95rem', color: 'rgba(218,219,198,0.45)', margin: '6px 0 0', lineHeight: 1.5 }}>
                     Esto nos ayuda a personalizar<br />tu experiencia en Mind Patch
                   </p>
                 </div>
@@ -462,23 +459,23 @@ export function SignInPage({ onSuccess }) {
                   disabled={surveyLoading}
                   style={{
                     width: '100%', borderRadius: '999px',
-                    background: surveyLoading ? 'rgba(255,255,255,0.7)' : 'white',
-                    color: 'black', fontWeight: 600,
+                    background: surveyLoading ? 'rgba(242,112,89,0.6)' : '#f27059',
+                    color: 'white', fontWeight: 600,
                     padding: '12px', border: 'none',
                     cursor: surveyLoading ? 'not-allowed' : 'pointer',
                     fontSize: '14px', transition: 'background 0.2s',
                   }}
-                  onMouseEnter={e => { if (!surveyLoading) e.currentTarget.style.background = '#e5e5e5' }}
-                  onMouseLeave={e => { if (!surveyLoading) e.currentTarget.style.background = 'white' }}
+                  onMouseEnter={e => { if (!surveyLoading) e.currentTarget.style.background = '#d95e48' }}
+                  onMouseLeave={e => { if (!surveyLoading) e.currentTarget.style.background = '#f27059' }}
                 >
                   {surveyLoading ? 'Guardando...' : 'Continuar'}
                 </button>
 
                 <button
                   onClick={() => setStep('success')}
-                  style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.25)', fontSize: '12px', cursor: 'pointer', padding: '4px 0' }}
-                  onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.25)'}
+                  style={{ background: 'none', border: 'none', color: 'rgba(218,219,198,0.3)', fontSize: '12px', cursor: 'pointer', padding: '4px 0' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'rgba(218,219,198,0.55)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(218,219,198,0.3)'}
                 >
                   Saltar por ahora
                 </button>
@@ -494,10 +491,10 @@ export function SignInPage({ onSuccess }) {
                 style={{ display: 'flex', flexDirection: 'column', gap: '24px', textAlign: 'center', alignItems: 'center' }}
               >
                 <div>
-                  <h1 style={{ fontSize: '2.2rem', fontWeight: 700, color: 'white', letterSpacing: '-0.02em', margin: 0 }}>
+                  <h1 style={{ fontSize: '2.2rem', fontWeight: 700, color: '#DADBC6', letterSpacing: '-0.02em', margin: 0 }}>
                     Estas dentro
                   </h1>
-                  <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.4)', margin: '6px 0 0' }}>
+                  <p style={{ fontSize: '1rem', color: 'rgba(218,219,198,0.45)', margin: '6px 0 0' }}>
                     Bienvenido a Mind Patch
                   </p>
                 </div>
@@ -506,9 +503,9 @@ export function SignInPage({ onSuccess }) {
                   initial={{ scale: 0.7, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.4, type: 'spring' }}
-                  style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#f27059', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
-                  <svg style={{ width: '32px', height: '32px' }} viewBox="0 0 20 20" fill="black">
+                  <svg style={{ width: '32px', height: '32px' }} viewBox="0 0 20 20" fill="white">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </motion.div>
@@ -518,7 +515,9 @@ export function SignInPage({ onSuccess }) {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.9 }}
                   onClick={() => onSuccess(pendingUser)}
-                  style={{ width: '100%', borderRadius: '999px', background: 'white', color: 'black', fontWeight: 600, padding: '13px', border: 'none', cursor: 'pointer', fontSize: '15px' }}
+                  style={{ width: '100%', borderRadius: '999px', background: '#f27059', color: 'white', fontWeight: 600, padding: '13px', border: 'none', cursor: 'pointer', fontSize: '15px', transition: 'background 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#d95e48'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#f27059'}
                 >
                   Ir a las evaluaciones
                 </motion.button>

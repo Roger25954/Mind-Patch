@@ -8,7 +8,7 @@ const TooltipTrigger = TooltipPrimitive.Trigger
 const TooltipContent = React.forwardRef(({ sideOffset = 4, ...props }, ref) => (
   <TooltipPrimitive.Portal>
     <TooltipPrimitive.Content ref={ref} sideOffset={sideOffset}
-      style={{ background: '#1a1a1a', color: 'white', padding: '4px 10px', borderRadius: '8px', fontSize: '12px', border: '1px solid rgba(255,255,255,0.1)', zIndex: 100 }}
+      style={{ background: '#2F2F2F', color: '#DADBC6', padding: '4px 10px', borderRadius: '8px', fontSize: '12px', border: '1px solid rgba(47,47,47,0.2)', zIndex: 100 }}
       {...props}>
       {props.children}
     </TooltipPrimitive.Content>
@@ -20,7 +20,7 @@ const PopoverTrigger = PopoverPrimitive.Trigger
 const PopoverContent = React.forwardRef(({ align = "center", sideOffset = 4, ...props }, ref) => (
   <PopoverPrimitive.Portal>
     <PopoverPrimitive.Content ref={ref} align={align} sideOffset={sideOffset}
-      style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '8px', zIndex: 100, minWidth: '220px' }}
+      style={{ background: '#F5F5E8', border: '1px solid rgba(47,47,47,0.12)', borderRadius: '16px', padding: '8px', zIndex: 100, minWidth: '220px' }}
       {...props} />
   </PopoverPrimitive.Portal>
 ))
@@ -104,9 +104,9 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
       style={{
         display: 'flex', flexDirection: 'column',
         borderRadius: '28px', padding: '8px',
-        background: isDragging ? 'rgba(99,102,241,0.08)' : '#141414',
-        border: isDragging ? '1px solid rgba(99,102,241,0.5)' : '1px solid rgba(255,255,255,0.1)',
-        boxShadow: isDragging ? '0 0 0 3px rgba(99,102,241,0.15), 0 0 40px rgba(0,0,0,0.4)' : '0 0 40px rgba(0,0,0,0.4)',
+        background: isDragging ? 'rgba(190,125,87,0.07)' : 'rgba(47,47,47,0.06)',
+        border: isDragging ? '1px solid rgba(190,125,87,0.45)' : '1px solid rgba(47,47,47,0.14)',
+        boxShadow: isDragging ? '0 0 0 3px rgba(190,125,87,0.12), 0 4px 24px rgba(47,47,47,0.08)' : '0 4px 24px rgba(47,47,47,0.06)',
         transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
         position: 'relative',
       }}>
@@ -118,11 +118,11 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
           gap: '8px', pointerEvents: 'none', zIndex: 10,
         }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(99,102,241,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(190,125,87,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>
             <line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,12 15,15"/>
           </svg>
-          <span style={{ color: 'rgba(99,102,241,0.9)', fontSize: '13px', fontWeight: 500 }}>
+          <span style={{ color: 'rgba(190,125,87,0.9)', fontSize: '13px', fontWeight: 500 }}>
             Suelta el PDF aquí
           </span>
         </div>
@@ -140,17 +140,17 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
         <div style={{ padding: '4px 6px 0' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
-            background: 'rgba(99,102,241,0.12)',
-            border: '1px solid rgba(99,102,241,0.25)',
+            background: 'rgba(190,125,87,0.10)',
+            border: '1px solid rgba(190,125,87,0.22)',
             borderRadius: '8px', padding: '6px 10px',
           }}>
-            <FileIcon style={{ color: '#6366f1', flexShrink: 0 }} />
-            <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <FileIcon style={{ color: '#BE7D57', flexShrink: 0 }} />
+            <span style={{ color: 'rgba(47,47,47,0.7)', fontSize: '12px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {pdfFile.name}
             </span>
             <button
               onClick={() => setPdfFile(null)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', padding: '0 0 0 2px', display: 'flex', alignItems: 'center' }}>
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(47,47,47,0.4)', padding: '0 0 0 2px', display: 'flex', alignItems: 'center' }}>
               <XIcon style={{ width: '12px', height: '12px' }} />
             </button>
           </div>
@@ -168,7 +168,7 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
         disabled={disabled}
         style={{
           width: '100%', resize: 'none', border: 'none', background: 'transparent',
-          padding: '12px', color: 'white', fontSize: '15px', lineHeight: 1.6,
+          padding: '12px', color: '#2F2F2F', fontSize: '15px', lineHeight: 1.6,
           outline: 'none', minHeight: '48px', fontFamily: 'inherit',
           opacity: disabled ? 0.5 : 1,
         }}
@@ -183,8 +183,8 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
             <Tooltip>
               <TooltipTrigger asChild>
                 <button type="button" onClick={() => fileInputRef.current?.click()} disabled={disabled}
-                  style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: 'transparent', color: pdfFile ? '#6366f1' : 'rgba(255,255,255,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                  style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: 'transparent', color: pdfFile ? '#BE7D57' : 'rgba(47,47,47,0.5)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(47,47,47,0.08)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                   <PlusIcon style={{ width: '20px', height: '20px' }} />
                 </button>
@@ -198,8 +198,8 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
                 <TooltipTrigger asChild>
                   <PopoverTrigger asChild>
                     <button type="button" disabled={disabled}
-                      style={{ height: '32px', borderRadius: '999px', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', padding: '0 10px', fontSize: '13px', transition: 'background 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                      style={{ height: '32px', borderRadius: '999px', border: 'none', background: 'transparent', color: 'rgba(47,47,47,0.5)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', padding: '0 10px', fontSize: '13px', transition: 'background 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(47,47,47,0.08)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                       <Settings2Icon style={{ width: '16px', height: '16px' }} />
                       {!selectedTool && <span>Herramientas</span>}
@@ -214,10 +214,10 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
                   {toolsList.map(tool => (
                     <button key={tool.id}
                       onClick={() => { setSelectedTool(tool.id); setIsPopoverOpen(false) }}
-                      style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', background: selectedTool === tool.id ? 'rgba(255,255,255,0.1)' : 'transparent', border: 'none', borderRadius: '10px', color: 'white', fontSize: '13px', cursor: 'pointer', textAlign: 'left', transition: 'background 0.15s' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
-                      onMouseLeave={e => e.currentTarget.style.background = selectedTool === tool.id ? 'rgba(255,255,255,0.1)' : 'transparent'}>
-                      <tool.icon style={{ width: '16px', height: '16px', color: 'rgba(255,255,255,0.6)', flexShrink: 0 }} />
+                      style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', background: selectedTool === tool.id ? 'rgba(47,47,47,0.08)' : 'transparent', border: 'none', borderRadius: '10px', color: 'rgba(47,47,47,0.85)', fontSize: '13px', cursor: 'pointer', textAlign: 'left', transition: 'background 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(47,47,47,0.06)'}
+                      onMouseLeave={e => e.currentTarget.style.background = selectedTool === tool.id ? 'rgba(47,47,47,0.08)' : 'transparent'}>
+                      <tool.icon style={{ width: '16px', height: '16px', color: 'rgba(47,47,47,0.5)', flexShrink: 0 }} />
                       <span>{tool.name}</span>
                     </button>
                   ))}
@@ -228,9 +228,9 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
             {/* Tool activa */}
             {activeTool && (
               <>
-                <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.15)' }} />
+                <div style={{ width: '1px', height: '16px', background: 'rgba(47,47,47,0.15)' }} />
                 <button onClick={() => setSelectedTool(null)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '32px', padding: '0 10px', borderRadius: '999px', border: 'none', background: 'rgba(255,255,255,0.08)', color: 'rgba(150,200,255,1)', fontSize: '13px', cursor: 'pointer' }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', height: '32px', padding: '0 10px', borderRadius: '999px', border: 'none', background: 'rgba(190,125,87,0.1)', color: '#BE7D57', fontSize: '13px', cursor: 'pointer' }}>
                   <activeTool.icon style={{ width: '14px', height: '14px' }} />
                   {activeTool.shortName}
                   <XIcon style={{ width: '14px', height: '14px' }} />
@@ -243,8 +243,8 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button type="button" disabled={disabled}
-                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: 'transparent', color: 'rgba(47,47,47,0.5)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(47,47,47,0.08)'}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                     <MicIcon style={{ width: '18px', height: '18px' }} />
                   </button>
@@ -255,7 +255,7 @@ export const PromptBox = React.forwardRef(({ onSend, disabled, ...props }, ref) 
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button type="button" onClick={handleSubmit} disabled={!hasValue || disabled}
-                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: hasValue && !disabled ? 'white' : 'rgba(255,255,255,0.15)', color: hasValue && !disabled ? 'black' : 'rgba(255,255,255,0.3)', cursor: hasValue && !disabled ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}>
+                    style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: hasValue && !disabled ? '#f27059' : 'rgba(47,47,47,0.08)', color: hasValue && !disabled ? 'white' : 'rgba(47,47,47,0.25)', cursor: hasValue && !disabled ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}>
                     <SendIcon style={{ width: '18px', height: '18px' }} />
                   </button>
                 </TooltipTrigger>

@@ -27,12 +27,12 @@ function incrementUsage() {
 }
 
 const games = [
-  { id: 1, name: 'Test de Memoria',        duration: '3 min', difficulty: 'Facil',   color: '#6366f1' },
+  { id: 1, name: 'Test de Memoria',        duration: '3 min', difficulty: 'Facil',   color: '#BE7D57' },
   { id: 2, name: 'Velocidad de Reaccion',  duration: '2 min', difficulty: 'Media',   color: '#f59e0b' },
   { id: 3, name: 'Test de Ansiedad',       duration: '5 min', difficulty: 'Facil',   color: '#10b981' },
   { id: 4, name: 'Enfoque y Atencion',     duration: '4 min', difficulty: 'Dificil', color: '#ef4444' },
   { id: 5, name: 'Respiracion y Calma',    duration: '2 min', difficulty: 'Facil',   color: '#3b82f6' },
-  { id: 6, name: 'Asociacion de Palabras', duration: '3 min', difficulty: 'Media',   color: '#8b5cf6' },
+  { id: 6, name: 'Asociacion de Palabras', duration: '3 min', difficulty: 'Media',   color: '#9A9F82' },
 ]
 
 const suggestions = [
@@ -64,7 +64,7 @@ function LoadingDots() {
           key={i}
           animate={{ opacity: [0.2, 1, 0.2] }}
           transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
-          style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(255,255,255,0.5)' }}
+          style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(47,47,47,0.45)' }}
         />
       ))}
     </div>
@@ -96,12 +96,12 @@ function Flashcard({ pregunta, respuesta, index }) {
             initial={{ rotateY: -90, opacity: 0 }}
             animate={{ rotateY: 0,   opacity: 1, transition: { duration: 0.25, ease: 'easeOut' } }}
             exit={{   rotateY: 90,   opacity: 0, transition: { duration: 0.2,  ease: 'easeIn'  } }}
-            style={{ ...cardBase, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }}
+            style={{ ...cardBase, background: 'rgba(47,47,47,0.04)', border: '1px solid rgba(47,47,47,0.10)' }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '14px', lineHeight: 1.5, margin: 0 }}>
+            <p style={{ color: 'rgba(47,47,47,0.85)', fontSize: '14px', lineHeight: 1.5, margin: 0 }}>
               {pregunta}
             </p>
-            <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px' }}>Toca para ver respuesta</span>
+            <span style={{ color: 'rgba(47,47,47,0.30)', fontSize: '11px' }}>Toca para ver respuesta</span>
           </motion.div>
         ) : (
           <motion.div
@@ -109,12 +109,12 @@ function Flashcard({ pregunta, respuesta, index }) {
             initial={{ rotateY: -90, opacity: 0 }}
             animate={{ rotateY: 0,   opacity: 1, transition: { duration: 0.25, ease: 'easeOut' } }}
             exit={{   rotateY: 90,   opacity: 0, transition: { duration: 0.2,  ease: 'easeIn'  } }}
-            style={{ ...cardBase, background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}
+            style={{ ...cardBase, background: 'rgba(190,125,87,0.07)', border: '1px solid rgba(190,125,87,0.2)' }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ color: 'rgba(47,47,47,0.80)', fontSize: '13px', lineHeight: 1.6, margin: 0 }}>
               {respuesta}
             </p>
-            <span style={{ color: 'rgba(99,102,241,0.5)', fontSize: '11px' }}>Toca para volver</span>
+            <span style={{ color: 'rgba(190,125,87,0.5)', fontSize: '11px' }}>Toca para volver</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -129,34 +129,34 @@ function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
 
   const getStyle = (i) => {
     if (!answered) return {
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      color: 'rgba(255,255,255,0.75)',
+      background: 'rgba(47,47,47,0.03)',
+      border: '1px solid rgba(47,47,47,0.08)',
+      color: 'rgba(47,47,47,0.70)',
     }
     if (i === correcta) return {
       background: 'rgba(16,185,129,0.12)',
       border: '1px solid rgba(16,185,129,0.35)',
-      color: '#34d399',
+      color: '#059669',
     }
     if (i === selected) return {
       background: 'rgba(239,68,68,0.1)',
       border: '1px solid rgba(239,68,68,0.3)',
-      color: '#f87171',
+      color: '#dc2626',
     }
     return {
       background: 'transparent',
-      border: '1px solid rgba(255,255,255,0.05)',
-      color: 'rgba(255,255,255,0.25)',
+      border: '1px solid rgba(47,47,47,0.06)',
+      color: 'rgba(47,47,47,0.25)',
     }
   }
 
   const getIcon = (i) => {
     if (!answered) return null
     if (i === correcta) return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
     )
     if (i === selected) return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     )
     return null
   }
@@ -167,8 +167,8 @@ function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.1 }}
       style={{
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px solid rgba(255,255,255,0.07)',
+        background: 'rgba(47,47,47,0.03)',
+        border: '1px solid rgba(47,47,47,0.08)',
         borderRadius: '16px', padding: '18px',
         display: 'flex', flexDirection: 'column', gap: '12px',
       }}
@@ -177,11 +177,11 @@ function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
       <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
         <span style={{
           flexShrink: 0, width: '22px', height: '22px', borderRadius: '6px',
-          background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)',
+          background: 'rgba(190,125,87,0.12)', border: '1px solid rgba(190,125,87,0.22)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '11px', fontWeight: 700, color: '#818cf8',
+          fontSize: '11px', fontWeight: 700, color: '#BE7D57',
         }}>{index + 1}</span>
-        <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', lineHeight: 1.5, margin: 0, fontWeight: 500 }}>
+        <p style={{ color: 'rgba(47,47,47,0.90)', fontSize: '14px', lineHeight: 1.5, margin: 0, fontWeight: 500 }}>
           {pregunta}
         </p>
       </div>
@@ -201,8 +201,8 @@ function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
               display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px',
               transition: 'all 0.2s',
             }}
-            onMouseEnter={e => { if (!answered) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)' }}
-            onMouseLeave={e => { if (!answered) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}
+            onMouseEnter={e => { if (!answered) e.currentTarget.style.borderColor = 'rgba(47,47,47,0.18)' }}
+            onMouseLeave={e => { if (!answered) e.currentTarget.style.borderColor = 'rgba(47,47,47,0.08)' }}
           >
             <span>{op}</span>
             {getIcon(i)}
@@ -218,12 +218,12 @@ function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
             animate={{ opacity: 1, height: 'auto' }}
             transition={{ duration: 0.3 }}
             style={{
-              background: selected === correcta ? 'rgba(16,185,129,0.07)' : 'rgba(99,102,241,0.07)',
-              border: `1px solid ${selected === correcta ? 'rgba(16,185,129,0.2)' : 'rgba(99,102,241,0.2)'}`,
+              background: selected === correcta ? 'rgba(16,185,129,0.07)' : 'rgba(190,125,87,0.07)',
+              border: `1px solid ${selected === correcta ? 'rgba(16,185,129,0.2)' : 'rgba(190,125,87,0.2)'}`,
               borderRadius: '10px', padding: '10px 14px',
             }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '12px', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ color: 'rgba(47,47,47,0.60)', fontSize: '12px', lineHeight: 1.6, margin: 0 }}>
               {explicacion}
             </p>
           </motion.div>
@@ -237,7 +237,7 @@ function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
 function QuizBlock({ preguntas }) {
   return (
     <div style={{ paddingLeft: '30px' }}>
-      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', margin: '0 0 14px' }}>
+      <p style={{ color: 'rgba(47,47,47,0.40)', fontSize: '12px', margin: '0 0 14px' }}>
         {preguntas.length} preguntas · Selecciona una opcion para responder
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -260,7 +260,7 @@ function QuizBlock({ preguntas }) {
 function FlashcardsBlock({ tarjetas }) {
   return (
     <div style={{ paddingLeft: '30px' }}>
-      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', margin: '0 0 14px' }}>
+      <p style={{ color: 'rgba(47,47,47,0.40)', fontSize: '12px', margin: '0 0 14px' }}>
         {tarjetas.length} tarjetas · Toca cada una para ver la respuesta
       </p>
       <div style={{
@@ -290,29 +290,29 @@ function Message({ msg }) {
         flexDirection: 'column',
         gap: '6px',
         padding: '20px 0',
-        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        borderBottom: '1px solid rgba(47,47,47,0.08)',
       }}
     >
       {/* Label */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
         <div style={{
           width: '22px', height: '22px', borderRadius: '6px', flexShrink: 0,
-          background: isUser ? 'rgba(255,255,255,0.1)' : 'rgba(99,102,241,0.2)',
-          border: `1px solid ${isUser ? 'rgba(255,255,255,0.15)' : 'rgba(99,102,241,0.3)'}`,
+          background: isUser ? 'rgba(47,47,47,0.08)' : 'rgba(242,112,89,0.12)',
+          border: `1px solid ${isUser ? 'rgba(47,47,47,0.14)' : 'rgba(242,112,89,0.25)'}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '10px', color: isUser ? 'rgba(255,255,255,0.7)' : '#6366f1', fontWeight: 700,
+          fontSize: '10px', color: isUser ? 'rgba(47,47,47,0.6)' : '#f27059', fontWeight: 700,
         }}>
           {isUser ? 'Tu' : 'MP'}
         </div>
-        <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', fontWeight: 500 }}>
+        <span style={{ color: 'rgba(47,47,47,0.40)', fontSize: '12px', fontWeight: 500 }}>
           {isUser ? 'Tu' : 'Mind Patch IA'}
         </span>
         {msg.fileName && (
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: '4px',
             padding: '2px 8px', borderRadius: '999px', fontSize: '10px',
-            background: 'rgba(99,102,241,0.1)', color: '#6366f1',
-            border: '1px solid rgba(99,102,241,0.2)',
+            background: 'rgba(190,125,87,0.10)', color: '#BE7D57',
+            border: '1px solid rgba(190,125,87,0.20)',
           }}>
             <FileIcon /> {msg.fileName}
           </span>
@@ -326,7 +326,7 @@ function Message({ msg }) {
         <QuizBlock preguntas={msg.preguntas} />
       ) : isUser ? (
         <div style={{
-          color: 'rgba(255,255,255,0.85)',
+          color: 'rgba(47,47,47,0.85)',
           fontSize: '15px', lineHeight: 1.75, whiteSpace: 'pre-wrap', paddingLeft: '30px',
         }}>
           {msg.content}
@@ -336,24 +336,24 @@ function Message({ msg }) {
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
-              p:      ({ children }) => <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px' }}>{children}</p>,
-              h1:     ({ children }) => <h1 style={{ color: 'white', fontSize: '20px', fontWeight: 700, margin: '20px 0 10px', letterSpacing: '-0.02em' }}>{children}</h1>,
-              h2:     ({ children }) => <h2 style={{ color: 'white', fontSize: '17px', fontWeight: 600, margin: '18px 0 8px', letterSpacing: '-0.01em' }}>{children}</h2>,
-              h3:     ({ children }) => <h3 style={{ color: 'rgba(255,255,255,0.9)', fontSize: '15px', fontWeight: 600, margin: '14px 0 6px' }}>{children}</h3>,
-              strong: ({ children }) => <strong style={{ color: 'white', fontWeight: 600 }}>{children}</strong>,
-              em:     ({ children }) => <em style={{ color: 'rgba(180,180,255,0.9)', fontStyle: 'italic' }}>{children}</em>,
-              ul:     ({ children }) => <ul style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ul>,
-              ol:     ({ children }) => <ol style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ol>,
+              p:      ({ children }) => <p style={{ color: 'rgba(47,47,47,0.80)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px' }}>{children}</p>,
+              h1:     ({ children }) => <h1 style={{ color: '#2F2F2F', fontSize: '20px', fontWeight: 700, margin: '20px 0 10px', letterSpacing: '-0.02em' }}>{children}</h1>,
+              h2:     ({ children }) => <h2 style={{ color: '#2F2F2F', fontSize: '17px', fontWeight: 600, margin: '18px 0 8px', letterSpacing: '-0.01em' }}>{children}</h2>,
+              h3:     ({ children }) => <h3 style={{ color: 'rgba(47,47,47,0.90)', fontSize: '15px', fontWeight: 600, margin: '14px 0 6px' }}>{children}</h3>,
+              strong: ({ children }) => <strong style={{ color: '#2F2F2F', fontWeight: 600 }}>{children}</strong>,
+              em:     ({ children }) => <em style={{ color: 'rgba(190,125,87,0.9)', fontStyle: 'italic' }}>{children}</em>,
+              ul:     ({ children }) => <ul style={{ color: 'rgba(47,47,47,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ul>,
+              ol:     ({ children }) => <ol style={{ color: 'rgba(47,47,47,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ol>,
               li:     ({ children }) => <li style={{ marginBottom: '4px' }}>{children}</li>,
               code:   ({ inline, children }) => inline
-                ? <code style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: '5px', padding: '1px 6px', fontSize: '13px', color: '#a5b4fc', fontFamily: 'monospace' }}>{children}</code>
-                : <pre style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '14px 16px', overflowX: 'auto', margin: '10px 0' }}><code style={{ color: '#a5b4fc', fontSize: '13px', fontFamily: 'monospace', lineHeight: 1.6 }}>{children}</code></pre>,
-              blockquote: ({ children }) => <blockquote style={{ borderLeft: '3px solid rgba(99,102,241,0.4)', margin: '10px 0', paddingLeft: '14px', color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>{children}</blockquote>,
-              hr:     () => <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.08)', margin: '16px 0' }} />,
-              a:      ({ href, children }) => <a href={href} target="_blank" rel="noreferrer" style={{ color: '#818cf8', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{children}</a>,
+                ? <code style={{ background: 'rgba(190,125,87,0.10)', border: '1px solid rgba(190,125,87,0.20)', borderRadius: '5px', padding: '1px 6px', fontSize: '13px', color: '#BE7D57', fontFamily: 'monospace' }}>{children}</code>
+                : <pre style={{ background: 'rgba(47,47,47,0.04)', border: '1px solid rgba(47,47,47,0.10)', borderRadius: '10px', padding: '14px 16px', overflowX: 'auto', margin: '10px 0' }}><code style={{ color: '#BE7D57', fontSize: '13px', fontFamily: 'monospace', lineHeight: 1.6 }}>{children}</code></pre>,
+              blockquote: ({ children }) => <blockquote style={{ borderLeft: '3px solid rgba(190,125,87,0.35)', margin: '10px 0', paddingLeft: '14px', color: 'rgba(47,47,47,0.55)', fontStyle: 'italic' }}>{children}</blockquote>,
+              hr:     () => <hr style={{ border: 'none', borderTop: '1px solid rgba(47,47,47,0.10)', margin: '16px 0' }} />,
+              a:      ({ href, children }) => <a href={href} target="_blank" rel="noreferrer" style={{ color: '#BE7D57', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{children}</a>,
               table:  ({ children }) => <table style={{ width: '100%', borderCollapse: 'collapse', margin: '10px 0', fontSize: '14px' }}>{children}</table>,
-              th:     ({ children }) => <th style={{ padding: '8px 12px', textAlign: 'left', color: 'white', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)' }}>{children}</th>,
-              td:     ({ children }) => <td style={{ padding: '8px 12px', color: 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>{children}</td>,
+              th:     ({ children }) => <th style={{ padding: '8px 12px', textAlign: 'left', color: '#2F2F2F', fontWeight: 600, borderBottom: '1px solid rgba(47,47,47,0.12)', background: 'rgba(47,47,47,0.04)' }}>{children}</th>,
+              td:     ({ children }) => <td style={{ padding: '8px 12px', color: 'rgba(47,47,47,0.70)', borderBottom: '1px solid rgba(47,47,47,0.07)' }}>{children}</td>,
             }}
           >
             {msg.content}
@@ -370,12 +370,12 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
     <aside style={{
       width: '240px', flexShrink: 0,
       height: '100vh', position: 'sticky', top: 0,
-      background: '#0a0a0a',
-      borderRight: '1px solid rgba(255,255,255,0.06)',
+      background: '#9A9F82',
+      borderRight: '1px solid rgba(47,47,47,0.15)',
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
     }}>
       {/* Logo */}
-      <div style={{ padding: '20px 16px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <div style={{ padding: '20px 16px 16px', borderBottom: '1px solid rgba(47,47,47,0.12)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
           <div style={{ position: 'relative', width: '18px', height: '18px', flexShrink: 0 }}>
             {[
@@ -384,10 +384,10 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
               { top: '50%', right: 0, transform: 'translateY(-50%)' },
               { bottom: 0, left: '50%', transform: 'translateX(-50%)' },
             ].map((s, i) => (
-              <span key={i} style={{ position: 'absolute', width: '5px', height: '5px', borderRadius: '50%', background: 'white', ...s }} />
+              <span key={i} style={{ position: 'absolute', width: '5px', height: '5px', borderRadius: '50%', background: '#2F2F2F', ...s }} />
             ))}
           </div>
-          <span style={{ color: 'white', fontWeight: 700, fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase' }}>
+          <span style={{ color: '#2F2F2F', fontWeight: 700, fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase' }}>
             Mind Patch
           </span>
         </div>
@@ -396,12 +396,12 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
           onClick={onBack}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
-            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: '8px', color: 'rgba(255,255,255,0.5)', fontSize: '13px',
+            background: 'rgba(47,47,47,0.08)', border: '1px solid rgba(47,47,47,0.15)',
+            borderRadius: '8px', color: 'rgba(47,47,47,0.60)', fontSize: '13px',
             padding: '8px 12px', cursor: 'pointer', transition: 'all 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)' }}
-          onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)' }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#2F2F2F'; e.currentTarget.style.borderColor = 'rgba(47,47,47,0.28)' }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'rgba(47,47,47,0.60)'; e.currentTarget.style.borderColor = 'rgba(47,47,47,0.15)' }}
         >
           <BackIcon /> Volver al inicio
         </button>
@@ -409,7 +409,7 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
 
       {/* Lista de juegos */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '12px 8px' }}>
-        <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 8px 10px', margin: 0 }}>
+        <p style={{ color: 'rgba(47,47,47,0.45)', fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 8px 10px', margin: 0 }}>
           Evaluaciones
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -422,17 +422,17 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center', gap: '10px',
                   padding: '9px 10px', borderRadius: '8px',
-                  background: active ? 'rgba(255,255,255,0.07)' : 'transparent',
+                  background: active ? 'rgba(47,47,47,0.12)' : 'transparent',
                   border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'background 0.15s',
                 }}
-                onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'rgba(255,255,255,0.04)' }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'rgba(47,47,47,0.06)' }}
                 onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
               >
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: game.color, flexShrink: 0, opacity: active ? 1 : 0.45 }} />
-                <span style={{ color: active ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.45)', fontSize: '13px', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', transition: 'color 0.15s' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: game.color, flexShrink: 0, opacity: active ? 1 : 0.55 }} />
+                <span style={{ color: active ? 'rgba(47,47,47,0.90)' : 'rgba(47,47,47,0.60)', fontSize: '13px', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', transition: 'color 0.15s' }}>
                   {game.name}
                 </span>
-                <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '10px', flexShrink: 0 }}>{game.duration}</span>
+                <span style={{ color: 'rgba(47,47,47,0.40)', fontSize: '10px', flexShrink: 0 }}>{game.duration}</span>
               </button>
             )
           })}
@@ -446,29 +446,29 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '10px',
             padding: '9px 10px', borderRadius: '8px',
-            background: showMap ? 'rgba(99,102,241,0.12)' : 'transparent',
-            border: showMap ? '1px solid rgba(99,102,241,0.2)' : '1px solid transparent',
+            background: showMap ? 'rgba(190,125,87,0.18)' : 'transparent',
+            border: showMap ? '1px solid rgba(190,125,87,0.30)' : '1px solid transparent',
             cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s',
           }}
-          onMouseEnter={e => { if (!showMap) e.currentTarget.style.background = 'rgba(255,255,255,0.04)' }}
+          onMouseEnter={e => { if (!showMap) e.currentTarget.style.background = 'rgba(47,47,47,0.06)' }}
           onMouseLeave={e => { if (!showMap) e.currentTarget.style.background = 'transparent' }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={showMap ? '#6366f1' : 'rgba(255,255,255,0.35)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={showMap ? '#BE7D57' : 'rgba(47,47,47,0.45)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
           </svg>
-          <span style={{ color: showMap ? '#a5b4fc' : 'rgba(255,255,255,0.45)', fontSize: '13px', transition: 'color 0.15s' }}>
+          <span style={{ color: showMap ? '#BE7D57' : 'rgba(47,47,47,0.60)', fontSize: '13px', transition: 'color 0.15s' }}>
             Psicologos cerca
           </span>
         </button>
       </div>
 
-      <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '8px' }}>
-        <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px', margin: 0, lineHeight: 1.5 }}>
+      <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(47,47,47,0.12)', marginTop: '8px' }}>
+        <p style={{ color: 'rgba(47,47,47,0.45)', fontSize: '11px', margin: 0, lineHeight: 1.5 }}>
           Selecciona una evaluacion o usa la IA para comenzar.
         </p>
         {esMenor && (
           <div style={{ marginTop: '10px' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '10px', padding: '3px 9px', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.2)', color: '#fbbf24', borderRadius: '999px', fontWeight: 700 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '10px', padding: '3px 9px', background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.28)', color: '#92400e', borderRadius: '999px', fontWeight: 700 }}>
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               Cuenta de menor
             </span>
@@ -490,7 +490,7 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
   const hasMessages = messages.length > 0
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#080808' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#DADBC6' }}>
 
       {/* Área de mensajes / bienvenida / mapa */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px' }}>
@@ -521,7 +521,7 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
               >
                 <div style={{
                   width: '52px', height: '52px', borderRadius: '14px',
-                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(47,47,47,0.05)', border: '1px solid rgba(47,47,47,0.10)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px',
                 }}>
                   <div style={{ position: 'relative', width: '20px', height: '20px' }}>
@@ -531,14 +531,14 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
                       { top: '50%', right: 0, transform: 'translateY(-50%)' },
                       { bottom: 0, left: '50%', transform: 'translateX(-50%)' },
                     ].map((s, i) => (
-                      <span key={i} style={{ position: 'absolute', width: '6px', height: '6px', borderRadius: '50%', background: 'white', ...s }} />
+                      <span key={i} style={{ position: 'absolute', width: '6px', height: '6px', borderRadius: '50%', background: '#9A9F82', ...s }} />
                     ))}
                   </div>
                 </div>
-                <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 700, color: 'white', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 12px' }}>
+                <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 700, color: '#2F2F2F', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 12px' }}>
                   Hola, como te sientes hoy?
                 </h1>
-                <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '16px', margin: '0 0 40px', lineHeight: 1.6 }}>
+                <p style={{ color: 'rgba(47,47,47,0.55)', fontSize: '16px', margin: '0 0 40px', lineHeight: 1.6 }}>
                   Selecciona una evaluacion o preguntale algo a tu IA de estudio.
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginBottom: '40px' }}>
@@ -547,12 +547,12 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
                       key={s}
                       onClick={() => onSend({ text: s, file: null, tool: null })}
                       style={{
-                        padding: '8px 14px', background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.08)', borderRadius: '999px',
-                        color: 'rgba(255,255,255,0.5)', fontSize: '13px', cursor: 'pointer', transition: 'all 0.2s',
+                        padding: '8px 14px', background: 'rgba(47,47,47,0.04)',
+                        border: '1px solid rgba(47,47,47,0.10)', borderRadius: '999px',
+                        color: 'rgba(47,47,47,0.55)', fontSize: '13px', cursor: 'pointer', transition: 'all 0.2s',
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)' }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(47,47,47,0.08)'; e.currentTarget.style.color = '#2F2F2F'; e.currentTarget.style.borderColor = 'rgba(47,47,47,0.18)' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(47,47,47,0.04)'; e.currentTarget.style.color = 'rgba(47,47,47,0.55)'; e.currentTarget.style.borderColor = 'rgba(47,47,47,0.10)' }}
                     >
                       {s}
                     </button>
@@ -576,17 +576,17 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
                 }}>
                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: selected.color }} />
                 </div>
-                <h2 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', fontWeight: 700, color: 'white', letterSpacing: '-0.02em', margin: '0 0 10px' }}>
+                <h2 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', fontWeight: 700, color: '#2F2F2F', letterSpacing: '-0.02em', margin: '0 0 10px' }}>
                   {selected.name}
                 </h2>
                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '24px' }}>
-                  <span style={{ padding: '4px 12px', borderRadius: '999px', fontSize: '12px', background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}>{selected.duration}</span>
+                  <span style={{ padding: '4px 12px', borderRadius: '999px', fontSize: '12px', background: 'rgba(47,47,47,0.06)', color: 'rgba(47,47,47,0.50)' }}>{selected.duration}</span>
                   <span style={{ padding: '4px 12px', borderRadius: '999px', fontSize: '12px', background: selected.color + '18', color: selected.color }}>{selected.difficulty}</span>
                 </div>
                 <button
-                  style={{ padding: '12px 36px', background: 'white', color: 'black', border: 'none', borderRadius: '999px', fontSize: '14px', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#e5e5e5'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'white'}
+                  style={{ padding: '12px 36px', background: '#f27059', color: 'white', border: 'none', borderRadius: '999px', fontSize: '14px', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#d95e48'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#f27059'}
                 >
                   Iniciar evaluacion
                 </button>
@@ -599,9 +599,9 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
                   <div style={{ padding: '20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div style={{
                       width: '22px', height: '22px', borderRadius: '6px', flexShrink: 0,
-                      background: 'rgba(99,102,241,0.2)', border: '1px solid rgba(99,102,241,0.3)',
+                      background: 'rgba(242,112,89,0.12)', border: '1px solid rgba(242,112,89,0.25)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '10px', color: '#6366f1', fontWeight: 700,
+                      fontSize: '10px', color: '#f27059', fontWeight: 700,
                     }}>MP</div>
                     <LoadingDots />
                   </div>
@@ -621,17 +621,17 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
             background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
             textAlign: 'center',
           }}>
-            <p style={{ color: '#f87171', fontSize: '14px', fontWeight: 600, margin: '0 0 4px' }}>
+            <p style={{ color: '#dc2626', fontSize: '14px', fontWeight: 600, margin: '0 0 4px' }}>
               Limite diario alcanzado
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '12px', margin: 0 }}>
+            <p style={{ color: 'rgba(47,47,47,0.55)', fontSize: '12px', margin: 0 }}>
               Has usado los {DAILY_LIMIT} mensajes de hoy. Vuelve manana para continuar.
             </p>
           </div>
         ) : (
           <>
             <PromptBox onSend={onSend} disabled={loading} />
-            <p style={{ color: 'rgba(255,255,255,0.15)', fontSize: '11px', textAlign: 'center', margin: '8px 0 0' }}>
+            <p style={{ color: 'rgba(47,47,47,0.35)', fontSize: '11px', textAlign: 'center', margin: '8px 0 0' }}>
               {usosHoy}/{DAILY_LIMIT} mensajes usados hoy · Mind Patch IA puede cometer errores. Verifica la informacion importante.
             </p>
           </>
@@ -717,7 +717,7 @@ export function GameMenu({ onBack, user }) {
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#080808' }}>
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#DADBC6' }}>
       <Sidebar
         selected={selected}
         onSelect={(g) => { setSelected(g); setShowMap(false) }}
