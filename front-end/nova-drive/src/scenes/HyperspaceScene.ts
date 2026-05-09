@@ -18,7 +18,7 @@ const SPEED_WARP   = 180;
 const SPEED_SLOW   =  20;
 
 // FOV de la cámara perspectiva por fase
-const FOV_NORMAL   = 75;
+const FOV_NORMAL   = 60;
 const FOV_WARP     = 30;
 
 export default class HyperspaceScene {

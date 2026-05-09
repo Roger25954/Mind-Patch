@@ -86,12 +86,12 @@ export class GameManager {
     this.renderer.toneMappingExposure = 1.2;
     this.renderer.shadowMap.enabled   = false;
 
-    // ── Cámara ────────────────────────────────────────────────────────────────
+// ── Cámara ────────────────────────────────────────────────────────────────
     this.camera = new THREE.PerspectiveCamera(
-      75, window.innerWidth / window.innerHeight, 0.1, 10_000,
+      60, window.innerWidth / window.innerHeight, 0.1, 10000
     );
-    this.camera.position.set(0, 2, 8);
-    this.camera.lookAt(0, 0, 0);
+    this.camera.position.set(0, 7, 7);
+    this.camera.lookAt(0, 6, 0);
 
     // ── Clock & sistemas ──────────────────────────────────────────────────────
     this.clock   = new THREE.Clock();

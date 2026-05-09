@@ -104,11 +104,12 @@ generateSequence(): ItemType[] {
       const x = (Math.random() * 4) - 2; // -2..2
       const y = (Math.random() - 0.5) * 1.0; // -0.5..0.5
 
-      let item: StarItem | DebrisItem;
+    let item: StarItem | DebrisItem;
       if (type === ItemType.STAR) {
-        item = new StarItem(this.scene);
+        item = new StarItem(this.scene); 
       } else {
-        item = new DebrisItem(this.scene);
+        // Le pasamos el tiempo exacto que configuraste para el nivel
+        item = new DebrisItem(this.scene, this.config.stimulusWindowMs);
       }
 
       // position tweak

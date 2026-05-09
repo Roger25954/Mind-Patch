@@ -145,4 +145,50 @@ update(delta: number, time: number): void {
     // update shield effect timer if active
     this.shieldEffect.update(delta);
   }
+public takeDamage(particleSystem: ParticleSystem): void {
+    const impactPos = this.root.position.clone();
+
+    // 1. EL NÚCLEO DE FUEGO (Glow inmenso y amarillo)
+    particleSystem.emit({
+      position: impactPos,
+      count: 25,
+      texture: '/textures/glow.png', // Usamos el glow para simular fuego denso
+      color: 0xffaa00, // Amarillo fuego intenso
+      speed: 1.5,
+      lifetime: 0.4,   // Desaparece rápido, es solo el flash inicial
+      size: 2.5,       // Partículas GIGANTES
+      spread: 1.5,
+    });
+
+    // 2. EXPLOSIÓN MASIVA DE CHISPAS (Rojas/Naranjas, alta velocidad)
+    particleSystem.emit({
+      position: impactPos,
+      count: 100,      // ¡Subimos de 40 a 100 partículas!
+      texture: '/textures/spark.png',
+      color: 0xff2200, // Rojo anaranjado brillante
+      speed: 10.0,     // Salen disparadas rapidísimo (estaba en 4.0)
+      lifetime: 0.8,
+      size: 0.6,
+      spread: 5.0,     // Cubren casi toda la pantalla
+    });
+
+    // 3. HUMO DENSO Y OSCURO (Se queda flotando más tiempo)
+    particleSystem.emit({
+      position: impactPos,
+      count: 40,       // Más humo
+      texture: '/textures/smoke.png',
+      color: 0x222222, // Humo casi negro (estaba en gris claro)
+      speed: 2.5,
+      lifetime: 2.0,   // Dura 2 segundos en pantalla
+      size: 2.0,       // Nubes de humo enormes
+      spread: 3.5,
+    });
+
+    // 4. FÍSICA DEL IMPACTO EXTREMA
+    const tl = gsap.timeline();
+    // La nave sufre un latigazo salvaje hacia atrás (-0.6 en vez de -0.3)
+    tl.to(this.root.rotation, { x: -0.6, duration: 0.08 });
+    // Regresa temblando (un rebote más agresivo)
+    tl.to(this.root.rotation, { x: 0, duration: 0.7, ease: "elastic.out(1.5, 0.2)" });
+  }
 }
