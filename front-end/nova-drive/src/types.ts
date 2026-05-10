@@ -66,5 +66,6 @@ export interface GameConfig {
     threshold: number;
     skybox: string;
     bgm: string;
+    planet: string;
   }[];
 }

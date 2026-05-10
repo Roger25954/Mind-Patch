@@ -12,7 +12,8 @@ import { ItemType, Zone, TrialOutcome } from '../types';
 import type { GameConfig } from '../types';
 import StarItem from '../entities/StarItem';
 import DebrisItem from '../entities/DebrisItem';
-import gsap from 'gsap'; 
+import gsap from 'gsap';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 type OnZoneComplete = (zone: Zone) => void;
 type OnGameComplete = () => void;
@@ -48,14 +49,17 @@ export default class GameScene {
 
   private onZoneComplete: OnZoneComplete | null = null;
   private onGameComplete: OnGameComplete | null = null;
+  
+  private currentActiveZone: Zone = Zone.EARTH; // Nuestro nuevo controlador
 
+  private gltfLoader = new GLTFLoader();
+  private currentPlanetModel: THREE.Group | null = null;
 // 1. Modifica los parámetros del constructor
-  constructor(
-    renderer: THREE.WebGLRenderer,
+constructor(
     camera: THREE.Camera,
     audioManager: AudioManager,
     config: GameConfig,
-    metrics: MetricsSystem, // <--- AÑADE ESTA LÍNEA AQUÍ
+    metrics: MetricsSystem, 
     onZoneComplete?: OnZoneComplete,
     onGameComplete?: OnGameComplete
   ) {
@@ -120,9 +124,8 @@ private configureCamera(): void {
     // Keep camera accessible for systems that need camera shake.
     this.scene.userData.camera = cam;
   }
-  // ── Spawn callback ──────────────────────────────────────────────────────────
-  private onSpawn(item: StarItem | DebrisItem, trialIndex: number): void {
-    const zone = this.energy.currentZone;
+private onSpawn(item: StarItem | DebrisItem, trialIndex: number): void {
+    const zone = this.currentActiveZone; // Usamos la variable nueva
     const type = isStar(item) ? ItemType.STAR : ItemType.DEBRIS;
     this.metrics.startTrial(trialIndex, type, zone);
 
@@ -137,31 +140,28 @@ private configureCamera(): void {
     const expiresAt = performance.now() + this.config.stimulusWindowMs;
     this.currentPrompt = { trialIndex, expiresAt };
 
-const tId = window.setTimeout(() => {
+    const tId = window.setTimeout(() => {
       const existing = this.activeItems.find((a) => a.trialIndex === trialIndex);
       if (existing) {
         if (isStar(existing.item)) {
-          // NO-GO Exitoso: No presionó espacio. Absorbe automáticamente la estrella.
+          // NO-GO Exitoso
           this.metrics.recordOutcome(trialIndex, TrialOutcome.CORRECT_REJECTION);
           existing.item.onCapture(this.particles);
-          this.energy.addEnergy();
+          this.energy.addEnergy(); // Lo dejamos solo para efecto visual en la barra
           this.audioManager.playSFX('sfx_star_collect');
-          
-          const newZone = this.energy.checkZoneThreshold();
-          if (newZone && this.onZoneComplete) this.onZoneComplete(newZone);
-          if (this.energy.isComplete && this.onGameComplete) this.onGameComplete();
-
         } else {
-          // GO Fallido (Omisión): No activó el escudo, el asteroide impacta.
+          // GO Fallido
           this.metrics.recordOutcome(trialIndex, TrialOutcome.MISS);
           (existing.item as DebrisItem).onImpact(this.particles);
           this.audioManager.playSFX('sfx_warning');
-          this.triggerImpactEffect() 
+          this.triggerImpactEffect(); 
         }
         this.prompt.hide();
-        // Removemos de la lista de interactuables
-       this.removeActiveItem(trialIndex);
+        this.removeActiveItem(trialIndex);
         this.hud.updateTrial(this.spawn.currentTrialIndex, this.config.totalTrials);
+        
+        // 🔥 Llama a la comprobación de niveles (25%, 50%, 75%)
+        this.checkLevelProgress();
       }
       this.currentPrompt = null;
       this.trialTimeouts.delete(trialIndex);
@@ -247,12 +247,20 @@ const tId = window.setTimeout(() => {
     const zoneCfg = this.config.zones.find((z) => z.name === zone);
     if (!zoneCfg) return;
 
-    // Skybox
+
+  // Skybox
     try {
       const loader = new THREE.CubeTextureLoader();
       const urls = ['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg']
         .map((f) => zoneCfg.skybox + f);
-      this.scene.background = loader.load(urls);
+      
+      // Aseguramos de quitar cualquier color sólido previo
+      this.scene.background = null; 
+      
+      loader.load(urls, (texture) => {
+        // Solo lo aplicamos cuando ya cargó con éxito
+        this.scene.background = texture;
+      });
     } catch (e) {
       console.warn('Failed to load skybox for', zone, e);
     }
@@ -263,6 +271,39 @@ const tId = window.setTimeout(() => {
 
     // HUD
     this.hud.updateZone(zone);
+
+    // Cargar Planeta
+    const planetPath = (zoneCfg as any).planet; 
+    if (planetPath) {
+      if (this.currentPlanetModel) {
+        this.scene.remove(this.currentPlanetModel);
+      }
+
+      this.gltfLoader.load(planetPath, (gltf) => {
+        this.currentPlanetModel = gltf.scene;
+        
+        // 🚀 Lógica de escalas personalizadas por planeta
+        if (zone === Zone.EARTH) {
+          // La Tierra (con Sol/Luna) se reduce al máximo
+          this.currentPlanetModel.scale.set(0.5, 0.5, 0.5); 
+          this.currentPlanetModel.position.set(20, -10, -100); 
+        } 
+        else if (zone === Zone.MARS) {
+          // Ajustamos Marte para que no estorbe (escala 5 en lugar de 30)
+          this.currentPlanetModel.scale.set(0.5, 0.5, 0.5); 
+          this.currentPlanetModel.position.set(25, -12, -120); 
+        }
+        else {
+          // Luna y Júpiter mantienen el tamaño épico estándar
+          this.currentPlanetModel.scale.set(30, 30, 30); 
+          this.currentPlanetModel.position.set(20, -10, -150); 
+        }
+
+        this.scene.add(this.currentPlanetModel);
+      }, undefined, (error) => {
+        console.error("Error cargando el planeta:", error);
+      });
+    }
   }
 
   // ── Pausa / reanuda (para HyperspaceScene) ──────────────────────────────────
@@ -291,6 +332,44 @@ const tId = window.setTimeout(() => {
     // 3. Le decimos a la nave que suelte chispas y cabecee
     // (Asegúrate de haber puesto la función takeDamage en PlayerShip.ts como vimos antes)
     this.player.takeDamage(this.particles);
+  }
+
+ // ── 🚀 Verificador de progreso por ítems ────────────────────────────────────
+  private checkLevelProgress(): void {
+    // 1. ¡PRIORIDAD MÁXIMA! Revisar si el juego terminó.
+    // El juego acaba si estamos en el último turno (o mayor) Y ya no quedan ítems activos en pantalla.
+    const isLastTrial = this.spawn.currentTrialIndex >= this.config.totalTrials - 1;
+    const isScreenClear = this.activeItems.length === 0;
+
+    if (isLastTrial && isScreenClear) {
+      // Ocultar el HUD visual y los avisos para que la pantalla de métricas se vea limpia
+      const hudElement = document.getElementById('hud');
+      if (hudElement) hudElement.style.display = 'none';
+
+      const promptElement = document.getElementById('prompt');
+      if (promptElement) promptElement.style.display = 'none';
+
+      // 💥 Disparamos el final (Llama a GameManager -> EndingScene)
+      if (this.onGameComplete) this.onGameComplete();
+      return; 
+    }
+
+    // 2. Si el juego sigue, calculamos el porcentaje de avance (ej. 75 de 100 = 0.75)
+    const progress = this.spawn.currentTrialIndex / this.config.totalTrials;
+
+    // 3. Buscamos qué zona nos toca según este porcentaje
+    let targetZone = this.config.zones[0].name;
+    for (const zoneCfg of this.config.zones) {
+      if (progress >= zoneCfg.threshold) {
+        targetZone = zoneCfg.name;
+      }
+    }
+
+    // 4. Si la zona que nos toca es diferente a la actual, ¡Viajamos!
+    if (targetZone !== this.currentActiveZone) {
+      this.currentActiveZone = targetZone;
+      if (this.onZoneComplete) this.onZoneComplete(targetZone);
+    }
   }
 
   // ── Game loop ───────────────────────────────────────────────────────────────

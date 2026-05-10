@@ -46,8 +46,7 @@ export default class HyperspaceScene {
     this.camera   = camera;
 
     // ── Escena ────────────────────────────────────────────────────────────────
-    this.scene            = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000000);
+    this.scene = new THREE.Scene();
 
     // ── Partículas ─────────────────────────────────────────────────────────────
     const geo = new THREE.BufferGeometry();

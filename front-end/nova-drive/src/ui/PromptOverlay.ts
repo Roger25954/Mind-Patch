@@ -39,7 +39,7 @@ export default class PromptOverlay {
   }
 
   showStarPrompt(): void {
-    this.content.innerHTML = `<div style="font-size:24px;opacity:0.95">⚡ CAPTURA LA ENERGÍA</div><div style="font-size:48px;margin-top:8px; color:#FFD700;">[ESPACIO]</div>`;
+    this.content.innerHTML = `<div style="font-size:24px;opacity:0.95">⚡ CAPTURA LA ENERGÍA</div><div style="font-size:48px;margin-top:8px; color:#FFD700;">[ESPERA]</div>`;
     Object.assign(this.content.style, { color: '#FFF', background: 'rgba(0,0,0,0.18)' });
     gsap.killTweensOf(this.content);
     gsap.fromTo(this.content, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out' });

@@ -5,17 +5,42 @@ import type { GameConfig } from './types';
 // Configuración central del juego
 // ════════════════════════════════════════════════════════════════════════════
 export const GAME_CONFIG: GameConfig = {
-  totalTrials:      400,
+  totalTrials:      100,
   starRatio:        0.2,    // 320 estrellas (Go)
   debrisRatio:      0.8,    // 80  asteroides (No-Go)
   itemIntervalMs:   2000,   // ms entre ítems
   stimulusWindowMs: 1500,   // ventana de respuesta
 
+ // En constants.ts
   zones: [
-    { name: Zone.EARTH,   threshold: 0.0,  skybox: '/skyboxes/earth/',   bgm: '/audio/bgm_earth.ogg'   },
-    { name: Zone.MOON,    threshold: 0.10, skybox: '/skyboxes/moon/',    bgm: '/audio/bgm_moon.ogg'    },
-    { name: Zone.MARS,    threshold: 0.40, skybox: '/skyboxes/mars/',    bgm: '/audio/bgm_mars.ogg'    },
-    { name: Zone.JUPITER, threshold: 0.80, skybox: '/skyboxes/jupiter/', bgm: '/audio/bgm_jupiter.ogg' },
+    { 
+        name: Zone.EARTH, 
+        threshold: 0.0, 
+        skybox: '/skyboxes/skybox_earth_moon/', 
+        bgm: '/audio/bgm_earth.ogg',
+        planet: '/models/planet_earth.glb' // <--- Añade esto
+    },
+    { 
+        name: Zone.MOON, 
+        threshold: 0.25, 
+        skybox: '/skyboxes/skybox_earth_moon/', 
+        bgm: '/audio/bgm_moon.ogg',
+        planet: '/models/planet_moon.glb' // <--- Añade esto
+    },
+    { 
+        name: Zone.MARS, 
+        threshold: 0.50, 
+        skybox: '/skyboxes/skybox_mars_jupyther/', 
+        bgm: '/audio/bgm_mars.ogg',
+        planet: '/models/planet_mars.glb' // <--- Añade esto
+    },
+    { 
+        name: Zone.JUPITER, 
+        threshold: 0.75, 
+        skybox: '/skyboxes/skybox_mars_jupyther/', 
+        bgm: '/audio/bgm_jupiter.ogg',
+        planet: '/models/planet_jupyther.glb' // <--- Añade esto
+    },
   ],
 };
 
@@ -39,10 +64,10 @@ export const ASSET_PATHS = {
 
   // ── Skyboxes (carpeta con 6 imágenes px/nx/py/ny/pz/nz .jpg) ─────────────
   skyboxes: {
-    earth:   '/skyboxes/earth/',
-    moon:    '/skyboxes/moon/',
-    mars:    '/skyboxes/mars/',
-    jupiter: '/skyboxes/jupiter/',
+    earth:   '/skyboxes/skybox_earth_moon/',
+    moon:    '/skyboxes/skybox_earth_moon/',
+    mars:    '/skyboxes/skybox_mars_jupyther/',
+    jupiter: '/skyboxes/skybox_mars_jupyther/',
   },
 
   // ── Texturas de partículas ────────────────────────────────────────────────

@@ -29,7 +29,6 @@ export default class IntroScene {
 
     // ── Escena Three.js (fondo con partículas) ────────────────────────────────
     this.scene            = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000008);
 
     const COUNT = 3000;
     this.positions = new Float32Array(COUNT * 3);
