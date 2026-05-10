@@ -34,7 +34,7 @@ const register = async ({ correo, password, nombre }) => {
         { expiresIn: '7d' }
     );
 
-    return { user: newUser, token, tiene_perfil: false };
+    return { user: newUser, token, tiene_perfil: false, tiene_onboarding: false, userType: null };
 };
 
 const login = async ({ correo, password }) => {
@@ -71,9 +71,13 @@ const login = async ({ correo, password }) => {
     );
 
     const profileResult = await pool.query(
-        `SELECT id FROM perfiles WHERE usuario_id = $1`,
+        `SELECT id, preferencias FROM perfiles WHERE usuario_id = $1`,
         [user.id]
     );
+
+    const tiene_perfil    = profileResult.rows.length > 0;
+    const preferencias    = profileResult.rows[0]?.preferencias || {};
+    const tiene_onboarding = preferencias.onboarding_completado === true;
 
     return {
         user: {
@@ -82,7 +86,9 @@ const login = async ({ correo, password }) => {
             nombre: user.nombre
         },
         token,
-        tiene_perfil: profileResult.rows.length > 0,
+        tiene_perfil,
+        tiene_onboarding,
+        userType: preferencias.userType || null,
     };
 };
 

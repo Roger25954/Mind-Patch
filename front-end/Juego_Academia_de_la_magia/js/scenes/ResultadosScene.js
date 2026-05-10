@@ -46,6 +46,19 @@ class ResultadosScene extends Phaser.Scene {
     DrawHelper.botonMagico(this, W/2 + 210, btnY, 340, 46, '↓ Exportar JSON', 0x090f09, '#66ffaa', () => GameState.exportarJSON());
 
     this.cameras.main.fadeIn(600, 0, 0, 0);
+
+    // Enviar métricas a la app principal si el juego está embebido en un iframe
+    try {
+      window.parent.postMessage({
+        type: 'MINDPATCH_GAME_COMPLETE',
+        gameId: 'academia-magia',
+        metrics: {
+          letras:    GameState.metricas('letras'),
+          palabras:  GameState.metricas('palabras'),
+          oraciones: GameState.metricas('oraciones'),
+        },
+      }, '*');
+    } catch (_) {}
   }
 
   _dibujarSeccion(s, W) {

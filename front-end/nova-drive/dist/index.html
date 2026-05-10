@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#000000" />
+    <title>NOVA DRIVE — The Last Energy Run</title>
+
+    <!-- ── Google Fonts ─────────────────────────────────────────────────── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ── Estilos ──────────────────────────────────────────────────────── -->
+    <script type="module" crossorigin src="/nova-drive/assets/index-B5Egjw3p.js"></script>
+    <link rel="stylesheet" crossorigin href="/nova-drive/assets/index-B14nAH6q.css">
+  </head>
+
+  <body>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- Canvas WebGL — Three.js renderiza aquí                            -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- Cursor personalizado (div que sigue al mouse vía JS)              -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div id="custom-cursor"></div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- Radar (esquina superior derecha)                                  -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div id="radar-container" aria-hidden="true">
+      <!-- RadarSystem.ts inyecta el <canvas> aquí -->
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- Pantalla de carga                                                  -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div id="loading-screen">
+      <div id="loading-inner">
+        <h2 id="loading-title">NOVA DRIVE</h2>
+        <p  id="loading-sub">Inicializando sistemas…</p>
+        <div id="loading-bar-track">
+          <div id="loading-bar-fill"></div>
+        </div>
+        <p id="loading-pct">0%</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- Cursor JS (sigue al mouse) — sin cursor nativo                    -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <script>
+      const cur = document.getElementById('custom-cursor');
+      document.addEventListener('mousemove', (e) => {
+        cur.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+      });
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- Punto de entrada TypeScript                                        -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+
+  </body>
+</html>

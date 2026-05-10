@@ -30,25 +30,24 @@ router.get('/google/callback',
             );
 
             const profileResult = await pool.query(
-                'SELECT id FROM perfiles WHERE usuario_id = $1',
+                'SELECT id, preferencias FROM perfiles WHERE usuario_id = $1',
                 [req.user.id]
             );
-            const tiene_perfil = profileResult.rows.length > 0;
+            const tiene_perfil     = profileResult.rows.length > 0;
+            const preferencias     = profileResult.rows[0]?.preferencias || {};
+            const tiene_onboarding = preferencias.onboarding_completado === true;
+            const userType         = preferencias.userType || null;
 
-            const safeUser = JSON.stringify({
-                nombre: req.user.nombre,
-                foto: req.user.foto || null,
+            const payload = JSON.stringify({
+                type: 'GOOGLE_AUTH_SUCCESS',
+                token,
+                tiene_perfil,
+                tiene_onboarding,
+                userType,
+                user: { nombre: req.user.nombre, foto: req.user.foto || null },
             });
 
-            res.send(`
-                <script>
-                    window.opener.postMessage(
-                        { type: 'GOOGLE_AUTH_SUCCESS', token: '${token}', user: ${safeUser}, tiene_perfil: ${tiene_perfil} },
-                        '*'
-                    );
-                    window.close();
-                </script>
-            `);
+            res.send(`<script>window.opener.postMessage(${payload},'*');window.close();</script>`);
         } catch {
             res.send('<script>window.close();</script>');
         }
@@ -76,6 +75,44 @@ router.post('/profile/age', verificarToken, async (req, res) => {
         );
 
         res.json({ ok: true, es_menor });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Guardar datos completos del onboarding (3 pasos)
+router.post('/profile/onboarding', verificarToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { userType, tutorName, tutorRel, age, gender, education, job, reason, sleep, anxiety, attention } = req.body;
+
+        const edadNum = parseInt(age, 10) || null;
+        const es_menor = edadNum ? edadNum < 18 : false;
+
+        const preferencias = {
+            es_menor,
+            onboarding_completado: true,
+            userType:   userType   || null,
+            tutorName:  tutorName  || null,
+            tutorRel:   tutorRel   || null,
+            gender:     gender     || null,
+            education:  education  || null,
+            job:        job        || null,
+            reason:     reason     || null,
+            sleep:      sleep      ?? null,
+            anxiety:    anxiety    ?? null,
+            attention:  attention  ?? null,
+        };
+
+        await pool.query(
+            `INSERT INTO perfiles (usuario_id, edad, preferencias)
+             VALUES ($1, $2, $3::jsonb)
+             ON CONFLICT (usuario_id) DO UPDATE
+             SET edad = COALESCE($2, perfiles.edad), preferencias = $3::jsonb`,
+            [userId, edadNum, JSON.stringify(preferencias)]
+        );
+
+        res.json({ ok: true });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
