@@ -1,11 +1,23 @@
+// components/GameMenu.jsx
+// Menú principal post-onboarding.
+// Recibe userType ('adult' | 'adolescent' | 'child') y muestra
+// las tareas cognitivas correspondientes en el sidebar y en el área principal.
+
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { PromptBox } from './PromptBox'
+import { PromptBox }        from './PromptBox'
 import { PsychologistsMap } from './PsychologistsMap'
 
-const API = 'http://localhost:3000'
+// Tareas cognitivas adulto (módulos individuales; default exports)
+import AdultAsrs from './AdultAsrs'
+import AdultDyslexiaChecklist from './AdultDyslexiaChecklist'
+import AdultStroop from './AdultStroop'
+import AdultSubitizing from './AdultSubitizing'
+import AdultLexicalDecision from './AdultLexicalDecision'
+
+const API         = 'http://localhost:3000'
 const DAILY_LIMIT = 5
 const STORAGE_KEY = 'mp_ia_uses'
 
@@ -14,11 +26,9 @@ function getUsageToday() {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return 0
     const { date, count } = JSON.parse(raw)
-    const today = new Date().toISOString().slice(0, 10)
-    return date === today ? count : 0
+    return new Date().toISOString().slice(0, 10) === date ? count : 0
   } catch { return 0 }
 }
-
 function incrementUsage() {
   const today = new Date().toISOString().slice(0, 10)
   const count = getUsageToday() + 1
@@ -26,20 +36,98 @@ function incrementUsage() {
   return count
 }
 
-const games = [
-  { id: 1, name: 'Test de Memoria',        duration: '3 min', difficulty: 'Facil',   color: '#BE7D57' },
-  { id: 2, name: 'Velocidad de Reaccion',  duration: '2 min', difficulty: 'Media',   color: '#f59e0b' },
-  { id: 3, name: 'Test de Ansiedad',       duration: '5 min', difficulty: 'Facil',   color: '#10b981' },
-  { id: 4, name: 'Enfoque y Atencion',     duration: '4 min', difficulty: 'Dificil', color: '#ef4444' },
-  { id: 5, name: 'Respiracion y Calma',    duration: '2 min', difficulty: 'Facil',   color: '#3b82f6' },
-  { id: 6, name: 'Asociacion de Palabras', duration: '3 min', difficulty: 'Media',   color: '#9A9F82' },
+/**
+ * Abre un juego externo: URL completa (http...) o ruta relativa al origen actual
+ * (p. ej. "/nova-drive/" → window.location.origin + "/nova-drive/").
+ */
+function resolveMinorGameHref(href) {
+  const h = String(href ?? '').trim()
+  if (!h) return ''
+  if (/^https?:\/\//i.test(h)) return h
+  const path = h.startsWith('/') ? h : `/${h}`
+  if (typeof window === 'undefined') return path
+  return `${window.location.origin}${path}`
+}
+
+/**
+ * Sale del sitio hacia el juego. Si la app va dentro de un iframe (p. ej. preview del IDE),
+ * window.location a veces no cambia la pestaña completa; probamos top y luego nueva pestaña.
+ */
+function navigateToMinorGame(url) {
+  if (!url || typeof window === 'undefined') return
+  try {
+    const target = window.top ?? window
+    target.location.assign(url)
+  } catch {
+    try {
+      window.location.assign(url)
+    } catch {
+      const opened = window.open(url, '_blank', 'noopener,noreferrer')
+      if (!opened) window.location.href = url
+    }
+  }
+}
+
+/** URL final del juego (por si `task.href` falla tras HMR o caché). */
+function getMinorTaskUrl(task) {
+  if (!task?.href) {
+    const byId = {
+      'juego-astrid': import.meta.env.VITE_MINOR_GAME_ASTRID_URL || 'http://localhost:5174',
+      // Academia solo expone juego.html en la raíz del proyecto
+      'academia-magia': import.meta.env.VITE_MINOR_GAME_ACADEMIA_URL || 'http://localhost:5175/juego.html',
+      'nova-drive': import.meta.env.VITE_MINOR_GAME_NOVA_URL || 'http://localhost:5176',
+    }
+    const raw = byId[task?.id]
+    if (!raw) return ''
+    return resolveMinorGameHref(raw)
+  }
+  return resolveMinorGameHref(task.href)
+}
+
+// ── Catálogos de tareas por perfil ───────────────────────────────────────────
+const ADULT_TASKS = [
+  { id: 'asrs',     name: 'Cuestionario ASRS', duration: '5 min', difficulty: 'Fácil',   color: '#10b981', component: AdultAsrs },
+  { id: 'dyslexia', name: 'Lista de Dislexia',  duration: '4 min', difficulty: 'Fácil',   color: '#3b82f6', component: AdultDyslexiaChecklist },
+  { id: 'stroop',   name: 'Tarea Stroop',       duration: '3 min', difficulty: 'Media',   color: '#f59e0b', component: AdultStroop },
+  { id: 'subit',    name: 'Subitización',       duration: '5 min', difficulty: 'Media',   color: '#BE7D57', component: AdultSubitizing },
+  { id: 'lexical',  name: 'Decisión Léxica',    duration: '4 min', difficulty: 'Difícil', color: '#ef4444', component: AdultLexicalDecision },
+]
+
+// Juegos en proyectos aparte: al elegirlos se navega con window.location (mismo origen o URL absoluta).
+// Motor: Astrid y Academia = Phaser · Nova Drive = Three.js (da igual para esta shell: solo importa la URL del dev server).
+// Ajusta VITE_* en .env al puerto/ruta que imprima cada `npm run dev`.
+const MINOR_TASKS = [
+  {
+    id: 'juego-astrid',
+    name: 'Juego Astrid',
+    duration: 'Juego',
+    difficulty: 'Menores',
+    color: '#BE7D57',
+    href: import.meta.env.VITE_MINOR_GAME_ASTRID_URL || 'http://localhost:5174',
+  },
+  {
+    id: 'academia-magia',
+    name: 'Academia de la Magia',
+    duration: 'Juego',
+    difficulty: 'Menores',
+    color: '#3b82f6',
+    href: import.meta.env.VITE_MINOR_GAME_ACADEMIA_URL || 'http://localhost:5175/juego.html',
+  },
+  {
+    id: 'nova-drive',
+    name: 'Nova Drive',
+    duration: 'Juego',
+    difficulty: 'Menores',
+    color: '#10b981',
+    href: import.meta.env.VITE_MINOR_GAME_NOVA_URL || 'http://localhost:5176',
+  },
 ]
 
 const suggestions = [
-  'Como mejorar mi memoria',
-  'Tecnicas para reducir ansiedad',
-  'Como concentrarme mejor',
-  'Que evaluacion hacer primero',
+  'Cómo mejorar mi memoria',
+  'Técnicas para reducir ansiedad',
+  'Cómo concentrarme mejor',
+  'Qué evaluación hacer primero',
 ]
 
 // ── Iconos ────────────────────────────────────────────────────────────────────
@@ -49,13 +137,6 @@ const BackIcon = () => (
   </svg>
 )
 
-const FileIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>
-  </svg>
-)
-
-// ── Loading dots ──────────────────────────────────────────────────────────────
 function LoadingDots() {
   return (
     <div style={{ display: 'flex', gap: '4px', alignItems: 'center', padding: '4px 0' }}>
@@ -71,229 +152,14 @@ function LoadingDots() {
   )
 }
 
-// ── Tarjeta individual con flip ───────────────────────────────────────────────
-function Flashcard({ pregunta, respuesta, index }) {
-  const [flipped, setFlipped] = useState(false)
-
-  const cardBase = {
-    position: 'absolute', inset: 0,
-    borderRadius: '14px', padding: '18px',
-    display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.07 }}
-      onClick={() => setFlipped(f => !f)}
-      style={{ cursor: 'pointer', height: '140px', userSelect: 'none', position: 'relative' }}
-    >
-      <AnimatePresence initial={false} mode="wait">
-        {!flipped ? (
-          <motion.div
-            key="front"
-            initial={{ rotateY: -90, opacity: 0 }}
-            animate={{ rotateY: 0,   opacity: 1, transition: { duration: 0.25, ease: 'easeOut' } }}
-            exit={{   rotateY: 90,   opacity: 0, transition: { duration: 0.2,  ease: 'easeIn'  } }}
-            style={{ ...cardBase, background: 'rgba(47,47,47,0.04)', border: '1px solid rgba(47,47,47,0.10)' }}
-          >
-            <p style={{ color: 'rgba(47,47,47,0.85)', fontSize: '14px', lineHeight: 1.5, margin: 0 }}>
-              {pregunta}
-            </p>
-            <span style={{ color: 'rgba(47,47,47,0.30)', fontSize: '11px' }}>Toca para ver respuesta</span>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="back"
-            initial={{ rotateY: -90, opacity: 0 }}
-            animate={{ rotateY: 0,   opacity: 1, transition: { duration: 0.25, ease: 'easeOut' } }}
-            exit={{   rotateY: 90,   opacity: 0, transition: { duration: 0.2,  ease: 'easeIn'  } }}
-            style={{ ...cardBase, background: 'rgba(190,125,87,0.07)', border: '1px solid rgba(190,125,87,0.2)' }}
-          >
-            <p style={{ color: 'rgba(47,47,47,0.80)', fontSize: '13px', lineHeight: 1.6, margin: 0 }}>
-              {respuesta}
-            </p>
-            <span style={{ color: 'rgba(190,125,87,0.5)', fontSize: '11px' }}>Toca para volver</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  )
-}
-
-// ── Pregunta individual del quiz ──────────────────────────────────────────────
-function QuizQuestion({ pregunta, opciones, correcta, explicacion, index }) {
-  const [selected, setSelected] = useState(null)
-  const answered = selected !== null
-
-  const getStyle = (i) => {
-    if (!answered) return {
-      background: 'rgba(47,47,47,0.03)',
-      border: '1px solid rgba(47,47,47,0.08)',
-      color: 'rgba(47,47,47,0.70)',
-    }
-    if (i === correcta) return {
-      background: 'rgba(16,185,129,0.12)',
-      border: '1px solid rgba(16,185,129,0.35)',
-      color: '#059669',
-    }
-    if (i === selected) return {
-      background: 'rgba(239,68,68,0.1)',
-      border: '1px solid rgba(239,68,68,0.3)',
-      color: '#dc2626',
-    }
-    return {
-      background: 'transparent',
-      border: '1px solid rgba(47,47,47,0.06)',
-      color: 'rgba(47,47,47,0.25)',
-    }
-  }
-
-  const getIcon = (i) => {
-    if (!answered) return null
-    if (i === correcta) return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-    )
-    if (i === selected) return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    )
-    return null
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.1 }}
-      style={{
-        background: 'rgba(47,47,47,0.03)',
-        border: '1px solid rgba(47,47,47,0.08)',
-        borderRadius: '16px', padding: '18px',
-        display: 'flex', flexDirection: 'column', gap: '12px',
-      }}
-    >
-      {/* Número + pregunta */}
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-        <span style={{
-          flexShrink: 0, width: '22px', height: '22px', borderRadius: '6px',
-          background: 'rgba(190,125,87,0.12)', border: '1px solid rgba(190,125,87,0.22)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '11px', fontWeight: 700, color: '#BE7D57',
-        }}>{index + 1}</span>
-        <p style={{ color: 'rgba(47,47,47,0.90)', fontSize: '14px', lineHeight: 1.5, margin: 0, fontWeight: 500 }}>
-          {pregunta}
-        </p>
-      </div>
-
-      {/* Opciones */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {opciones.map((op, i) => (
-          <button
-            key={i}
-            onClick={() => !answered && setSelected(i)}
-            disabled={answered}
-            style={{
-              ...getStyle(i),
-              width: '100%', textAlign: 'left', borderRadius: '10px',
-              padding: '10px 14px', fontSize: '13px', lineHeight: 1.4,
-              cursor: answered ? 'default' : 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={e => { if (!answered) e.currentTarget.style.borderColor = 'rgba(47,47,47,0.18)' }}
-            onMouseLeave={e => { if (!answered) e.currentTarget.style.borderColor = 'rgba(47,47,47,0.08)' }}
-          >
-            <span>{op}</span>
-            {getIcon(i)}
-          </button>
-        ))}
-      </div>
-
-      {/* Explicación */}
-      <AnimatePresence>
-        {answered && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            transition={{ duration: 0.3 }}
-            style={{
-              background: selected === correcta ? 'rgba(16,185,129,0.07)' : 'rgba(190,125,87,0.07)',
-              border: `1px solid ${selected === correcta ? 'rgba(16,185,129,0.2)' : 'rgba(190,125,87,0.2)'}`,
-              borderRadius: '10px', padding: '10px 14px',
-            }}
-          >
-            <p style={{ color: 'rgba(47,47,47,0.60)', fontSize: '12px', lineHeight: 1.6, margin: 0 }}>
-              {explicacion}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  )
-}
-
-// ── Bloque de quiz en el chat ──────────────────────────────────────────────────
-function QuizBlock({ preguntas }) {
-  return (
-    <div style={{ paddingLeft: '30px' }}>
-      <p style={{ color: 'rgba(47,47,47,0.40)', fontSize: '12px', margin: '0 0 14px' }}>
-        {preguntas.length} preguntas · Selecciona una opcion para responder
-      </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {preguntas.map((p, i) => (
-          <QuizQuestion
-            key={i}
-            index={i}
-            pregunta={p.pregunta}
-            opciones={p.opciones}
-            correcta={p.correcta}
-            explicacion={p.explicacion}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ── Bloque de tarjetas en el chat ─────────────────────────────────────────────
-function FlashcardsBlock({ tarjetas }) {
-  return (
-    <div style={{ paddingLeft: '30px' }}>
-      <p style={{ color: 'rgba(47,47,47,0.40)', fontSize: '12px', margin: '0 0 14px' }}>
-        {tarjetas.length} tarjetas · Toca cada una para ver la respuesta
-      </p>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-        gap: '10px',
-      }}>
-        {tarjetas.map((t, i) => (
-          <Flashcard key={i} index={i} pregunta={t.pregunta} respuesta={t.respuesta} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ── Mensaje individual ────────────────────────────────────────────────────────
+// ── Mensaje del chat ──────────────────────────────────────────────────────────
 function Message({ msg }) {
   const isUser = msg.role === 'user'
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '6px',
-        padding: '20px 0',
-        borderBottom: '1px solid rgba(47,47,47,0.08)',
-      }}
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
+      style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '20px 0', borderBottom: '1px solid rgba(47,47,47,0.08)' }}
     >
-      {/* Label */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
         <div style={{
           width: '22px', height: '22px', borderRadius: '6px', flexShrink: 0,
@@ -305,76 +171,43 @@ function Message({ msg }) {
           {isUser ? 'Tu' : 'MP'}
         </div>
         <span style={{ color: 'rgba(47,47,47,0.40)', fontSize: '12px', fontWeight: 500 }}>
-          {isUser ? 'Tu' : 'Mind Patch IA'}
+          {isUser ? 'Tú' : 'Mind Patch IA'}
         </span>
-        {msg.fileName && (
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: '4px',
-            padding: '2px 8px', borderRadius: '999px', fontSize: '10px',
-            background: 'rgba(190,125,87,0.10)', color: '#BE7D57',
-            border: '1px solid rgba(190,125,87,0.20)',
-          }}>
-            <FileIcon /> {msg.fileName}
-          </span>
-        )}
       </div>
-
-      {/* Contenido */}
-      {msg.tipo === 'tarjetas' ? (
-        <FlashcardsBlock tarjetas={msg.tarjetas} />
-      ) : msg.tipo === 'quiz' ? (
-        <QuizBlock preguntas={msg.preguntas} />
-      ) : isUser ? (
-        <div style={{
-          color: 'rgba(47,47,47,0.85)',
-          fontSize: '15px', lineHeight: 1.75, whiteSpace: 'pre-wrap', paddingLeft: '30px',
-        }}>
-          {msg.content}
-        </div>
-      ) : (
-        <div style={{ paddingLeft: '30px' }}>
+      <div style={{ paddingLeft: '30px' }}>
+        {isUser ? (
+          <div style={{ color: 'rgba(47,47,47,0.85)', fontSize: '15px', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>
+            {msg.content}
+          </div>
+        ) : (
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               p:      ({ children }) => <p style={{ color: 'rgba(47,47,47,0.80)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px' }}>{children}</p>,
-              h1:     ({ children }) => <h1 style={{ color: '#2F2F2F', fontSize: '20px', fontWeight: 700, margin: '20px 0 10px', letterSpacing: '-0.02em' }}>{children}</h1>,
-              h2:     ({ children }) => <h2 style={{ color: '#2F2F2F', fontSize: '17px', fontWeight: 600, margin: '18px 0 8px', letterSpacing: '-0.01em' }}>{children}</h2>,
-              h3:     ({ children }) => <h3 style={{ color: 'rgba(47,47,47,0.90)', fontSize: '15px', fontWeight: 600, margin: '14px 0 6px' }}>{children}</h3>,
               strong: ({ children }) => <strong style={{ color: '#2F2F2F', fontWeight: 600 }}>{children}</strong>,
-              em:     ({ children }) => <em style={{ color: 'rgba(190,125,87,0.9)', fontStyle: 'italic' }}>{children}</em>,
               ul:     ({ children }) => <ul style={{ color: 'rgba(47,47,47,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ul>,
-              ol:     ({ children }) => <ol style={{ color: 'rgba(47,47,47,0.75)', fontSize: '15px', lineHeight: 1.8, margin: '0 0 12px', paddingLeft: '20px' }}>{children}</ol>,
               li:     ({ children }) => <li style={{ marginBottom: '4px' }}>{children}</li>,
-              code:   ({ inline, children }) => inline
-                ? <code style={{ background: 'rgba(190,125,87,0.10)', border: '1px solid rgba(190,125,87,0.20)', borderRadius: '5px', padding: '1px 6px', fontSize: '13px', color: '#BE7D57', fontFamily: 'monospace' }}>{children}</code>
-                : <pre style={{ background: 'rgba(47,47,47,0.04)', border: '1px solid rgba(47,47,47,0.10)', borderRadius: '10px', padding: '14px 16px', overflowX: 'auto', margin: '10px 0' }}><code style={{ color: '#BE7D57', fontSize: '13px', fontFamily: 'monospace', lineHeight: 1.6 }}>{children}</code></pre>,
-              blockquote: ({ children }) => <blockquote style={{ borderLeft: '3px solid rgba(190,125,87,0.35)', margin: '10px 0', paddingLeft: '14px', color: 'rgba(47,47,47,0.55)', fontStyle: 'italic' }}>{children}</blockquote>,
-              hr:     () => <hr style={{ border: 'none', borderTop: '1px solid rgba(47,47,47,0.10)', margin: '16px 0' }} />,
-              a:      ({ href, children }) => <a href={href} target="_blank" rel="noreferrer" style={{ color: '#BE7D57', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{children}</a>,
-              table:  ({ children }) => <table style={{ width: '100%', borderCollapse: 'collapse', margin: '10px 0', fontSize: '14px' }}>{children}</table>,
-              th:     ({ children }) => <th style={{ padding: '8px 12px', textAlign: 'left', color: '#2F2F2F', fontWeight: 600, borderBottom: '1px solid rgba(47,47,47,0.12)', background: 'rgba(47,47,47,0.04)' }}>{children}</th>,
-              td:     ({ children }) => <td style={{ padding: '8px 12px', color: 'rgba(47,47,47,0.70)', borderBottom: '1px solid rgba(47,47,47,0.07)' }}>{children}</td>,
             }}
           >
             {msg.content}
           </ReactMarkdown>
-        </div>
-      )}
+        )}
+      </div>
     </motion.div>
   )
 }
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
-function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) {
+function Sidebar({ tasks, selected, onSelect, onBack, showMap, onToggleMap, userType, esMenor, moduleLabel }) {
+  const profileLabel = { adult: 'Adulto', adolescent: 'Adolescente', child: 'Niño / Niña' }
+
   return (
     <aside style={{
-      width: '240px', flexShrink: 0,
-      height: '100vh', position: 'sticky', top: 0,
-      background: '#9A9F82',
-      borderRight: '1px solid rgba(47,47,47,0.15)',
+      width: '240px', flexShrink: 0, height: '100vh', position: 'sticky', top: 0,
+      background: '#9A9F82', borderRight: '1px solid rgba(47,47,47,0.15)',
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
     }}>
-      {/* Logo */}
+      {/* Logo + perfil */}
       <div style={{ padding: '20px 16px 16px', borderBottom: '1px solid rgba(47,47,47,0.12)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
           <div style={{ position: 'relative', width: '18px', height: '18px', flexShrink: 0 }}>
@@ -391,7 +224,6 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
             Mind Patch
           </span>
         </div>
-
         <button
           onClick={onBack}
           style={{
@@ -407,18 +239,27 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
         </button>
       </div>
 
-      {/* Lista de juegos */}
+      {/* Lista de tareas */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '12px 8px' }}>
         <p style={{ color: 'rgba(47,47,47,0.45)', fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', padding: '4px 8px 10px', margin: 0 }}>
-          Evaluaciones
+          {moduleLabel} · {profileLabel[userType] || 'General'}
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          {games.map((game) => {
-            const active = selected?.id === game.id
+          {tasks.map(task => {
+            const active = selected?.id === task.id
             return (
               <button
-                key={game.id}
-                onClick={() => onSelect(active ? null : game)}
+                type="button"
+                key={task.id}
+                onClick={() => {
+                  const next = active ? null : task
+                  const minorUrl = next ? getMinorTaskUrl(next) : ''
+                  if (minorUrl) {
+                    navigateToMinorGame(minorUrl)
+                    return
+                  }
+                  onSelect(next)
+                }}
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center', gap: '10px',
                   padding: '9px 10px', borderRadius: '8px',
@@ -428,11 +269,11 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
                 onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'rgba(47,47,47,0.06)' }}
                 onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
               >
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: game.color, flexShrink: 0, opacity: active ? 1 : 0.55 }} />
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: task.color, flexShrink: 0, opacity: active ? 1 : 0.55 }} />
                 <span style={{ color: active ? 'rgba(47,47,47,0.90)' : 'rgba(47,47,47,0.60)', fontSize: '13px', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', transition: 'color 0.15s' }}>
-                  {game.name}
+                  {task.name}
                 </span>
-                <span style={{ color: 'rgba(47,47,47,0.40)', fontSize: '10px', flexShrink: 0 }}>{game.duration}</span>
+                <span style={{ color: 'rgba(47,47,47,0.40)', fontSize: '10px', flexShrink: 0 }}>{task.duration}</span>
               </button>
             )
           })}
@@ -448,7 +289,7 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
             padding: '9px 10px', borderRadius: '8px',
             background: showMap ? 'rgba(190,125,87,0.18)' : 'transparent',
             border: showMap ? '1px solid rgba(190,125,87,0.30)' : '1px solid transparent',
-            cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s',
+            cursor: 'pointer', transition: 'all 0.15s',
           }}
           onMouseEnter={e => { if (!showMap) e.currentTarget.style.background = 'rgba(47,47,47,0.06)' }}
           onMouseLeave={e => { if (!showMap) e.currentTarget.style.background = 'transparent' }}
@@ -457,19 +298,21 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
           </svg>
           <span style={{ color: showMap ? '#BE7D57' : 'rgba(47,47,47,0.60)', fontSize: '13px', transition: 'color 0.15s' }}>
-            Psicologos cerca
+            Psicólogos cerca
           </span>
         </button>
       </div>
 
+      {/* Footer */}
       <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(47,47,47,0.12)', marginTop: '8px' }}>
         <p style={{ color: 'rgba(47,47,47,0.45)', fontSize: '11px', margin: 0, lineHeight: 1.5 }}>
-          Selecciona una evaluacion o usa la IA para comenzar.
+          {esMenor
+            ? 'Selecciona un juego o usa la IA para comenzar.'
+            : 'Selecciona una tarea cognitiva o usa la IA para comenzar.'}
         </p>
         {esMenor && (
           <div style={{ marginTop: '10px' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '10px', padding: '3px 9px', background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.28)', color: '#92400e', borderRadius: '999px', fontWeight: 700 }}>
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               Cuenta de menor
             </span>
           </div>
@@ -479,8 +322,8 @@ function Sidebar({ selected, onSelect, onBack, showMap, onToggleMap, esMenor }) 
   )
 }
 
-// ── Main area ─────────────────────────────────────────────────────────────────
-function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usosHoy, limitAlcanzado }) {
+// ── Área principal ────────────────────────────────────────────────────────────
+function MainArea({ selected, messages, loading, onSend, showMap, usosHoy, limitAlcanzado, isAdultModule }) {
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -488,151 +331,83 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
   }, [messages, loading])
 
   const hasMessages = messages.length > 0
+  const TaskComponent = selected?.component
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#DADBC6' }}>
-
-      {/* Área de mensajes / bienvenida / mapa */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px' }}>
         <div style={{ maxWidth: showMap ? '100%' : '680px', margin: '0 auto', height: showMap ? 'calc(100% - 24px)' : 'auto' }}>
-
           <AnimatePresence mode="wait">
-            {showMap ? (
-              /* ── Mapa de psicólogos ── */
-              <motion.div
-                key="map"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
-                style={{ height: '100%' }}
-              >
+
+            {/* Mapa */}
+            {showMap && (
+              <motion.div key="map" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} style={{ height: '100%' }}>
                 <PsychologistsMap />
               </motion.div>
-            ) : !hasMessages && !selected ? (
-              /* ── Bienvenida ── */
-              <motion.div
-                key="welcome"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                style={{ paddingTop: '80px', textAlign: 'center' }}
-              >
-                <div style={{
-                  width: '52px', height: '52px', borderRadius: '14px',
-                  background: 'rgba(47,47,47,0.05)', border: '1px solid rgba(47,47,47,0.10)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px',
-                }}>
-                  <div style={{ position: 'relative', width: '20px', height: '20px' }}>
-                    {[
-                      { top: 0, left: '50%', transform: 'translateX(-50%)' },
-                      { top: '50%', left: 0, transform: 'translateY(-50%)' },
-                      { top: '50%', right: 0, transform: 'translateY(-50%)' },
-                      { bottom: 0, left: '50%', transform: 'translateX(-50%)' },
-                    ].map((s, i) => (
-                      <span key={i} style={{ position: 'absolute', width: '6px', height: '6px', borderRadius: '50%', background: '#9A9F82', ...s }} />
-                    ))}
-                  </div>
-                </div>
+            )}
+
+            {/* Bienvenida */}
+            {!showMap && !hasMessages && !selected && (
+              <motion.div key="welcome" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} style={{ paddingTop: '80px', textAlign: 'center' }}>
                 <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 700, color: '#2F2F2F', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 12px' }}>
-                  Hola, como te sientes hoy?
+                  Hola, ¿cómo te sientes hoy?
                 </h1>
                 <p style={{ color: 'rgba(47,47,47,0.55)', fontSize: '16px', margin: '0 0 40px', lineHeight: 1.6 }}>
-                  Selecciona una evaluacion o preguntale algo a tu IA de estudio.
+                  {isAdultModule
+                    ? 'Selecciona una tarea cognitiva o pregúntale algo a tu IA de estudio.'
+                    : 'Selecciona un juego o pregúntale algo a tu IA de estudio.'}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginBottom: '40px' }}>
                   {suggestions.map(s => (
-                    <button
-                      key={s}
-                      onClick={() => onSend({ text: s, file: null, tool: null })}
-                      style={{
-                        padding: '8px 14px', background: 'rgba(47,47,47,0.04)',
-                        border: '1px solid rgba(47,47,47,0.10)', borderRadius: '999px',
-                        color: 'rgba(47,47,47,0.55)', fontSize: '13px', cursor: 'pointer', transition: 'all 0.2s',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(47,47,47,0.08)'; e.currentTarget.style.color = '#2F2F2F'; e.currentTarget.style.borderColor = 'rgba(47,47,47,0.18)' }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(47,47,47,0.04)'; e.currentTarget.style.color = 'rgba(47,47,47,0.55)'; e.currentTarget.style.borderColor = 'rgba(47,47,47,0.10)' }}
+                    <button key={s} onClick={() => onSend({ text: s, file: null, tool: null })}
+                      style={{ padding: '8px 14px', background: 'rgba(47,47,47,0.04)', border: '1px solid rgba(47,47,47,0.10)', borderRadius: '999px', color: 'rgba(47,47,47,0.55)', fontSize: '13px', cursor: 'pointer', transition: 'all 0.2s' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(47,47,47,0.08)'; e.currentTarget.style.color = '#2F2F2F' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(47,47,47,0.04)'; e.currentTarget.style.color = 'rgba(47,47,47,0.55)' }}
                     >
                       {s}
                     </button>
                   ))}
                 </div>
               </motion.div>
-            ) : !hasMessages && selected ? (
-              /* ── Juego seleccionado ── */
-              <motion.div
-                key={`game-${selected.id}`}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
-                style={{ paddingTop: '80px', textAlign: 'center' }}
-              >
-                <div style={{
-                  width: '52px', height: '52px', borderRadius: '14px',
-                  background: selected.color + '18', border: `1px solid ${selected.color}35`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
-                }}>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: selected.color }} />
-                </div>
-                <h2 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', fontWeight: 700, color: '#2F2F2F', letterSpacing: '-0.02em', margin: '0 0 10px' }}>
-                  {selected.name}
-                </h2>
-                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '24px' }}>
-                  <span style={{ padding: '4px 12px', borderRadius: '999px', fontSize: '12px', background: 'rgba(47,47,47,0.06)', color: 'rgba(47,47,47,0.50)' }}>{selected.duration}</span>
-                  <span style={{ padding: '4px 12px', borderRadius: '999px', fontSize: '12px', background: selected.color + '18', color: selected.color }}>{selected.difficulty}</span>
-                </div>
-                <button
-                  style={{ padding: '12px 36px', background: '#f27059', color: 'white', border: 'none', borderRadius: '999px', fontSize: '14px', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#d95e48'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#f27059'}
-                >
-                  Iniciar evaluacion
-                </button>
+            )}
+
+            {/* Tarea seleccionada — renderiza el componente individual */}
+            {!showMap && !hasMessages && selected && TaskComponent && !selected.href && (
+              <motion.div key={`task-${selected.id}`} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} style={{ paddingTop: '40px' }}>
+                <TaskComponent task={selected} />
               </motion.div>
-            ) : (
-              /* ── Chat ── */
+            )}
+
+            {/* Chat */}
+            {!showMap && hasMessages && (
               <motion.div key="chat" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ paddingTop: '32px' }}>
                 {messages.map((msg, i) => <Message key={i} msg={msg} />)}
                 {loading && (
                   <div style={{ padding: '20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{
-                      width: '22px', height: '22px', borderRadius: '6px', flexShrink: 0,
-                      background: 'rgba(242,112,89,0.12)', border: '1px solid rgba(242,112,89,0.25)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '10px', color: '#f27059', fontWeight: 700,
-                    }}>MP</div>
+                    <div style={{ width: '22px', height: '22px', borderRadius: '6px', flexShrink: 0, background: 'rgba(242,112,89,0.12)', border: '1px solid rgba(242,112,89,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#f27059', fontWeight: 700 }}>MP</div>
                     <LoadingDots />
                   </div>
                 )}
                 <div ref={bottomRef} />
               </motion.div>
             )}
+
           </AnimatePresence>
         </div>
       </div>
 
-      {/* PromptBox fijo abajo */}
+      {/* PromptBox */}
       <div style={{ padding: '12px 24px 20px', width: '100%', maxWidth: '760px', margin: '0 auto', boxSizing: 'border-box' }}>
         {limitAlcanzado ? (
-          <div style={{
-            padding: '14px 18px', borderRadius: '16px',
-            background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
-            textAlign: 'center',
-          }}>
-            <p style={{ color: '#dc2626', fontSize: '14px', fontWeight: 600, margin: '0 0 4px' }}>
-              Limite diario alcanzado
-            </p>
-            <p style={{ color: 'rgba(47,47,47,0.55)', fontSize: '12px', margin: 0 }}>
-              Has usado los {DAILY_LIMIT} mensajes de hoy. Vuelve manana para continuar.
-            </p>
+          <div style={{ padding: '14px 18px', borderRadius: '16px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', textAlign: 'center' }}>
+            <p style={{ color: '#dc2626', fontSize: '14px', fontWeight: 600, margin: '0 0 4px' }}>Límite diario alcanzado</p>
+            <p style={{ color: 'rgba(47,47,47,0.55)', fontSize: '12px', margin: 0 }}>Has usado los {DAILY_LIMIT} mensajes de hoy. Vuelve mañana para continuar.</p>
           </div>
         ) : (
           <>
             <PromptBox onSend={onSend} disabled={loading} />
             <p style={{ color: 'rgba(47,47,47,0.35)', fontSize: '11px', textAlign: 'center', margin: '8px 0 0' }}>
-              {usosHoy}/{DAILY_LIMIT} mensajes usados hoy · Mind Patch IA puede cometer errores. Verifica la informacion importante.
+              {usosHoy}/{DAILY_LIMIT} mensajes usados hoy · Mind Patch IA puede cometer errores.
             </p>
           </>
         )}
@@ -641,8 +416,13 @@ function MainArea({ selected, onSelect, messages, loading, onSend, showMap, usos
   )
 }
 
-// ── Componente raiz ───────────────────────────────────────────────────────────
-export function GameMenu({ onBack, user }) {
+// ── Componente raíz ───────────────────────────────────────────────────────────
+// Adulto → tareas cognitivas (ASRS, Stroop, etc.). Niño / adolescente → juegos (menores).
+export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
+  const isAdultModule = userType === 'adult'
+  const tasks = isAdultModule ? ADULT_TASKS : MINOR_TASKS
+  const esMenor = userType === 'adolescent' || userType === 'child'
+
   const [selected,    setSelected]    = useState(null)
   const [showMap,     setShowMap]     = useState(false)
   const [messages,    setMessages]    = useState([])
@@ -655,62 +435,32 @@ export function GameMenu({ onBack, user }) {
     if (!text && !file) return
     if (limitAlcanzado) return
 
-    const userMsg = {
-      role: 'user',
-      content: text || '',
-      fileName: file?.name || null,
-    }
-    setMessages(prev => [...prev, userMsg])
+    setMessages(prev => [...prev, { role: 'user', content: text || '', fileName: file?.name || null }])
     setLoading(true)
 
     try {
-      let res, text_body
-
+      let res
       if (file) {
-        // PDF → FormData
         const form = new FormData()
         form.append('pdf', file)
-        if (text)  form.append('prompt', text)
-        if (tool)  form.append('tool', tool)
+        if (text) form.append('prompt', text)
+        if (tool) form.append('tool', tool)
         res = await fetch(`${API}/api/ia`, { method: 'POST', body: form })
       } else {
-        // Texto → JSON
-        res = await fetch(`${API}/api/ia`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mensaje: text, tool }),
-        })
+        res = await fetch(`${API}/api/ia`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mensaje: text, tool }) })
       }
 
-      text_body = await res.text()
-
+      const text_body = await res.text()
       let data
-      try {
-        data = JSON.parse(text_body)
-      } catch {
-        setMessages(prev => [...prev, { role: 'ai', content: `Error del servidor: ${text_body.slice(0, 200)}` }])
-        return
-      }
+      try { data = JSON.parse(text_body) }
+      catch { setMessages(prev => [...prev, { role: 'ai', content: `Error del servidor: ${text_body.slice(0, 200)}` }]); return }
 
-      const nuevosUsos = incrementUsage()
-      setUsosHoy(nuevosUsos)
-
-      if (data.tipo === 'tarjetas' && Array.isArray(data.tarjetas)) {
-        setMessages(prev => [...prev, { role: 'ai', tipo: 'tarjetas', tarjetas: data.tarjetas }])
-      } else if (data.tipo === 'quiz' && Array.isArray(data.preguntas)) {
-        setMessages(prev => [...prev, { role: 'ai', tipo: 'quiz', preguntas: data.preguntas }])
-      } else {
-        const content = data.resultado || data.respuesta || data.error || 'Sin respuesta.'
-        setMessages(prev => [...prev, { role: 'ai', content }])
-      }
+      setUsosHoy(incrementUsage())
+      const content = data.resultado || data.respuesta || data.error || 'Sin respuesta.'
+      setMessages(prev => [...prev, { role: 'ai', content }])
 
     } catch (err) {
-      setMessages(prev => [...prev, {
-        role: 'ai',
-        content: err.message?.includes('fetch')
-          ? 'No se pudo conectar con el servidor. Verifica que el backend este corriendo en el puerto 3000.'
-          : `Error: ${err.message}`,
-      }])
+      setMessages(prev => [...prev, { role: 'ai', content: err.message?.includes('fetch') ? 'No se pudo conectar con el servidor.' : `Error: ${err.message}` }])
     } finally {
       setLoading(false)
     }
@@ -719,14 +469,30 @@ export function GameMenu({ onBack, user }) {
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#DADBC6' }}>
       <Sidebar
+        tasks={tasks}
         selected={selected}
-        onSelect={(g) => { setSelected(g); setShowMap(false) }}
+        onSelect={g => {
+          if (g?.href) return
+          setSelected(g)
+          setShowMap(false)
+        }}
         onBack={onBack}
         showMap={showMap}
         onToggleMap={() => { setShowMap(m => !m); setSelected(null) }}
-        esMenor={user?.es_menor}
+        userType={userType}
+        esMenor={esMenor}
+        moduleLabel={isAdultModule ? 'Tareas cognitivas' : 'Juegos'}
       />
-      <MainArea selected={selected} onSelect={setSelected} messages={messages} loading={loading} onSend={handleSend} showMap={showMap} usosHoy={usosHoy} limitAlcanzado={limitAlcanzado} />
+      <MainArea
+        selected={selected}
+        messages={messages}
+        loading={loading}
+        onSend={handleSend}
+        showMap={showMap}
+        usosHoy={usosHoy}
+        limitAlcanzado={limitAlcanzado}
+        isAdultModule={isAdultModule}
+      />
     </div>
   )
 }
