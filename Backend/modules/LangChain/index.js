@@ -39,10 +39,14 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY
 });
 
-const enviarMensaje = async (mensaje) => {
+const enviarMensaje = async (mensaje, contexto = null) => {
+  const contenido = contexto
+    ? `[CONTEXTO DEL SISTEMA - No menciones este bloque al usuario]\n${contexto}\n[FIN CONTEXTO]\n\nUsuario: ${mensaje}`
+    : mensaje;
+
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: mensaje
+    contents: contenido
   });
 
   return response.text;

@@ -10,9 +10,10 @@ function extractJSON(text) {
 
 exports.procesarIA = async (req, res) => {
     try {
-        const prompt  = req.body.prompt;
-        const mensaje = req.body.mensaje;
-        const tool    = req.body.tool;
+        const prompt   = req.body.prompt;
+        const mensaje  = req.body.mensaje;
+        const tool     = req.body.tool;
+        const contexto = req.body.contexto || null;
 
         if (req.file) {
             const promptFinal = tool === "tarjetas"
@@ -34,7 +35,7 @@ exports.procesarIA = async (req, res) => {
         if (mensaje) {
             if (tool === "tarjetas") {
                 const promptTarjetas = `${mensaje}\n\nIMPORTANTE: Responde SOLO con JSON válido sin texto extra ni bloques de código:\n{"tarjetas":[{"pregunta":"...","respuesta":"..."}]}\nGenera entre 5 y 8 tarjetas didácticas claras y concisas.`;
-                const raw = await enviarMensaje(promptTarjetas);
+                const raw = await enviarMensaje(promptTarjetas, contexto);
                 const parsed = extractJSON(raw);
                 if (parsed?.tarjetas) {
                     return res.json({ tipo: "tarjetas", tarjetas: parsed.tarjetas });
@@ -44,7 +45,7 @@ exports.procesarIA = async (req, res) => {
 
             if (tool === "quiz") {
                 const promptQuiz = `${mensaje}\n\nIMPORTANTE: Responde SOLO con JSON válido sin texto extra ni bloques de código:\n{"preguntas":[{"pregunta":"...","opciones":["...","...","...","..."],"correcta":0,"explicacion":"..."}]}\nEl campo "correcta" es el índice (0-3) de la opción correcta. Genera entre 4 y 6 preguntas de opción múltiple con exactamente 4 opciones cada una. La explicación debe ser breve (1-2 oraciones).`;
-                const raw = await enviarMensaje(promptQuiz);
+                const raw = await enviarMensaje(promptQuiz, contexto);
                 const parsed = extractJSON(raw);
                 if (parsed?.preguntas) {
                     return res.json({ tipo: "quiz", preguntas: parsed.preguntas });
@@ -52,7 +53,7 @@ exports.procesarIA = async (req, res) => {
                 return res.json({ tipo: "chat", respuesta: raw });
             }
 
-            const respuesta = await enviarMensaje(mensaje);
+            const respuesta = await enviarMensaje(mensaje, contexto);
             return res.json({ tipo: "chat", respuesta });
         }
 

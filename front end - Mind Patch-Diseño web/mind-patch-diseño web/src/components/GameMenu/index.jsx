@@ -71,12 +71,32 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
     setReplayKey(k => k + 1)
   }
 
+  function buildMetricsContext(metrics) {
+    const entries = Object.entries(metrics)
+    if (!entries.length) return null
+    const lines = entries.map(([gameId, { metrics: m }]) => {
+      if (!m) return null
+      const parts = []
+      if (m.accuracy != null)          parts.push(`precisión ${Math.round(m.accuracy * 100)}%`)
+      if (m.hits != null)              parts.push(`aciertos ${m.hits}`)
+      if (m.misses != null)            parts.push(`errores ${m.misses}`)
+      if (m.commissionErrors != null)  parts.push(`errores por impulsividad ${m.commissionErrors}`)
+      if (m.avgReactionTime != null)   parts.push(`tiempo de reacción promedio ${Math.round(m.avgReactionTime)}ms`)
+      if (!parts.length) return null
+      return `- ${gameId}: ${parts.join(', ')}`
+    }).filter(Boolean)
+    if (!lines.length) return null
+    return `Perfil cognitivo del usuario (basado en sus últimas sesiones de juego):\n${lines.join('\n')}\n\nUsa estos datos de forma sutil para personalizar tus explicaciones. Si el usuario tiene tiempos de reacción altos, sé más paciente y detallado. Si hay muchos errores por impulsividad, sugiere hacer pausas. No menciones explícitamente los datos a menos que el usuario lo pida.`
+  }
+
   const handleSend = async ({ text, file, tool }) => {
     if (!text && !file) return
     if (limitAlcanzado) return
 
     setMessages(prev => [...prev, { role: 'user', content: text || '', fileName: file?.name || null }])
     setLoading(true)
+
+    const contexto = buildMetricsContext(savedMetrics)
 
     try {
       let res
@@ -85,9 +105,10 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
         form.append('pdf', file)
         if (text) form.append('prompt', text)
         if (tool) form.append('tool', tool)
+        if (contexto) form.append('contexto', contexto)
         res = await fetch(`${API}/api/ia`, { method: 'POST', body: form })
       } else {
-        res = await fetch(`${API}/api/ia`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mensaje: text, tool }) })
+        res = await fetch(`${API}/api/ia`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mensaje: text, tool, contexto }) })
       }
 
       const text_body = await res.text()
