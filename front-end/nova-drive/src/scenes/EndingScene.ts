@@ -52,8 +52,7 @@ export default class EndingScene {
     this.onReplay  = onReplay;
 
     // ── Escena ────────────────────────────────────────────────────────────────
-    this.scene            = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x000000);
+    this.scene  = new THREE.Scene();
 
     // ── Partículas (galaxia que se aleja) ─────────────────────────────────────
     const COUNT    = 4000;

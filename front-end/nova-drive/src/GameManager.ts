@@ -86,6 +86,12 @@ export class GameManager {
     this.renderer.toneMappingExposure = 1.2;
     this.renderer.shadowMap.enabled   = false;
 
+
+    // --- MEJORAS DE COLOR ---
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace; // Colores más vibrantes
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping; // Look de película
+    this.renderer.toneMappingExposure = 1.2; // Ajusta el brillo general
+
 // ── Cámara ────────────────────────────────────────────────────────────────
     this.camera = new THREE.PerspectiveCamera(
       60, window.innerWidth / window.innerHeight, 0.1, 10000
@@ -189,7 +195,6 @@ export class GameManager {
     const loader  = new THREE.CubeTextureLoader();
     const faces   = ['px.jpg','nx.jpg','py.jpg','ny.jpg','pz.jpg','nz.jpg'];
     const entries = Object.entries((ASSET_PATHS as any).skyboxes) as [string, string][];
-
     return Promise.all(
       entries.map(([zone, basePath]) =>
         new Promise<void>((resolve) => {
@@ -252,11 +257,11 @@ private startGame(): void {
     this.activeScene = 'game';
 
     this.gameScene = new GameScene(
-      this.renderer,
+      // 🛑 BORRA EL this.renderer AQUÍ TAMBIÉN
       this.camera,
       this.audio,
       { ...GAME_CONFIG, sessionId: (this.metrics as any)['sessionId'] } as any,
-      this.metrics, // <--- AÑADE ESTA LÍNEA AQUÍ
+      this.metrics, 
       (newZone) => this.startHyperspace(newZone),
       ()        => this.startEnding(),
     );
@@ -300,6 +305,9 @@ private startGame(): void {
   // ════════════════════════════════════════════════════════════════════════════
   // GAME LOOP
   // ════════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
+  // GAME LOOP
+  // ════════════════════════════════════════════════════════════════════════════
   private loop(): void {
     this.animFrameId = requestAnimationFrame(() => this.loop());
     const delta = Math.min(this.clock.getDelta(), 0.05);
@@ -309,30 +317,31 @@ private startGame(): void {
       case 'intro':
         if (this.introScene) {
           this.introScene.update(delta);
-          this.renderer.render(this.introScene.scene, this.camera);
+          // Validamos nuevamente antes de renderizar
+          if (this.introScene) this.renderer.render(this.introScene.scene, this.camera);
         }
         break;
       case 'game':
         if (this.gameScene) {
           this.gameScene.update(delta, time);
-          this.renderer.render(this.gameScene.scene, this.camera);
+          if (this.gameScene) this.renderer.render(this.gameScene.scene, this.camera);
         }
         break;
       case 'hyperspace':
         if (this.hyperspaceScene) {
           this.hyperspaceScene.update(delta);
-          this.renderer.render(this.hyperspaceScene.scene, this.camera);
+          // 🔥 AQUÍ ESTABA EL BUG CRÍTICO 🔥
+          if (this.hyperspaceScene) this.renderer.render(this.hyperspaceScene.scene, this.camera);
         }
         break;
       case 'ending':
         if (this.endingScene) {
           this.endingScene.update(delta);
-          this.renderer.render(this.endingScene.scene, this.camera);
+          if (this.endingScene) this.renderer.render(this.endingScene.scene, this.camera);
         }
         break;
     }
   }
-
   // ── Resize ────────────────────────────────────────────────────────────────
   private onResize(): void {
     const w = window.innerWidth;
