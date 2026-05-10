@@ -18,8 +18,15 @@ export class GameScene extends Phaser.Scene {
         this.add.image(400, 380, monstruoActual).setDisplaySize(280, 280); 
         this.add.image(400, 530, 'mostrador').setDisplaySize(600, 220); 
 
+        // Contador de progreso
+        const total = allData.items.length;
+        this.add.text(780, 16, `${indexActual}/${total}`, {
+            fontSize: '22px', fill: '#ffffff', fontStyle: 'bold',
+            stroke: '#000000', strokeThickness: 4,
+        }).setOrigin(1, 0);
+
         // Instrucción
-        this.instruccionText = this.add.text(400, 85, itemActual.mensaje, { 
+        this.instruccionText = this.add.text(400, 85, itemActual.mensaje, {
             fontSize: '28px', fill: '#2c3e50', fontStyle: 'bold', 
             backgroundColor: '#ffffffcc', padding: {x: 20, y: 10},
             wordWrap: { width: 700 }, align: 'center'
