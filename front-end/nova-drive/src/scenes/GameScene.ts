@@ -333,30 +333,24 @@ private onSpawn(item: StarItem | DebrisItem, trialIndex: number): void {
     this.player.takeDamage(this.particles);
   }
 
- // ── 🚀 Verificador de progreso por ítems ────────────────────────────────────
+ // ── Verificador de progreso por ítems ───────────────────────────────────────
   private checkLevelProgress(): void {
-    // 1. ¡PRIORIDAD MÁXIMA! Revisar si el juego terminó.
-    // El juego acaba si estamos en el último turno (o mayor) Y ya no quedan ítems activos en pantalla.
-    const isLastTrial = this.spawn.currentTrialIndex >= this.config.totalTrials - 1;
-    const isScreenClear = this.activeItems.length === 0;
+    // El juego termina cuando la barra de energía llega al 100% y la pantalla queda limpia.
+    if (this.energy.isComplete && this.activeItems.length === 0) {
+      this.spawn.stopSpawning();
 
-    if (isLastTrial && isScreenClear) {
-      // Ocultar el HUD visual y los avisos para que la pantalla de métricas se vea limpia
       const hudElement = document.getElementById('hud');
       if (hudElement) hudElement.style.display = 'none';
-
       const promptElement = document.getElementById('prompt');
       if (promptElement) promptElement.style.display = 'none';
 
-      // 💥 Disparamos el final (Llama a GameManager -> EndingScene)
       if (this.onGameComplete) this.onGameComplete();
-      return; 
+      return;
     }
 
-    // 2. Si el juego sigue, calculamos el porcentaje de avance (ej. 75 de 100 = 0.75)
-    const progress = this.spawn.currentTrialIndex / this.config.totalTrials;
+    // Cambio de zona basado en el porcentaje de energía acumulada
+    const progress = this.energy.energyPercent;
 
-    // 3. Buscamos qué zona nos toca según este porcentaje
     let targetZone = this.config.zones[0].name;
     for (const zoneCfg of this.config.zones) {
       if (progress >= zoneCfg.threshold) {
@@ -364,7 +358,6 @@ private onSpawn(item: StarItem | DebrisItem, trialIndex: number): void {
       }
     }
 
-    // 4. Si la zona que nos toca es diferente a la actual, ¡Viajamos!
     if (targetZone !== this.currentActiveZone) {
       this.currentActiveZone = targetZone;
       if (this.onZoneComplete) this.onZoneComplete(targetZone);
