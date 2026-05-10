@@ -1,20 +1,14 @@
-import AdultAsrs               from '../AdultAsrs'
-import AdultDyslexiaChecklist  from '../AdultDyslexiaChecklist'
-import AdultStroop              from '../AdultStroop'
-import AdultSubitizing          from '../AdultSubitizing'
-import AdultLexicalDecision     from '../AdultLexicalDecision'
-
 export const API             = 'http://localhost:3000'
 export const DAILY_LIMIT     = 5
 export const STORAGE_KEY     = 'mp_ia_uses'
 export const METRICS_STORAGE = 'mp_game_metrics'
 
-export const ADULT_TASKS = [
-  { id: 'asrs',     name: 'Cuestionario ASRS', duration: '5 min', difficulty: 'Fácil',   color: '#10b981', component: AdultAsrs },
-  { id: 'dyslexia', name: 'Lista de Dislexia',  duration: '4 min', difficulty: 'Fácil',   color: '#3b82f6', component: AdultDyslexiaChecklist },
-  { id: 'stroop',   name: 'Tarea Stroop',       duration: '3 min', difficulty: 'Media',   color: '#f59e0b', component: AdultStroop },
-  { id: 'subit',    name: 'Subitización',       duration: '5 min', difficulty: 'Media',   color: '#BE7D57', component: AdultSubitizing },
-  { id: 'lexical',  name: 'Decisión Léxica',    duration: '4 min', difficulty: 'Difícil', color: '#ef4444', component: AdultLexicalDecision },
+export const ADULT_TASK_DEFS = [
+  { id: 'asrs',     name: 'Cuestionario ASRS', duration: '5 min', difficulty: 'Fácil',   color: '#10b981', componentKey: 'AdultAsrs' },
+  { id: 'dyslexia', name: 'Lista de Dislexia',  duration: '4 min', difficulty: 'Fácil',   color: '#3b82f6', componentKey: 'AdultDyslexiaChecklist' },
+  { id: 'stroop',   name: 'Tarea Stroop',       duration: '3 min', difficulty: 'Media',   color: '#f59e0b', componentKey: 'AdultStroop' },
+  { id: 'subit',    name: 'Subitización',       duration: '5 min', difficulty: 'Media',   color: '#BE7D57', componentKey: 'AdultSubitizing' },
+  { id: 'lexical',  name: 'Decisión Léxica',    duration: '4 min', difficulty: 'Difícil', color: '#ef4444', componentKey: 'AdultLexicalDecision' },
 ]
 
 export const MINOR_TASKS = [

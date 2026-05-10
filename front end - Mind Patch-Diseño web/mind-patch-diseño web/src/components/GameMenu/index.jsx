@@ -3,8 +3,16 @@ import Sidebar        from './Sidebar'
 import MainArea       from './MainArea'
 import MinorGameFrame from './MinorGameFrame'
 import AnalysisPanel  from './AnalysisPanel'
-import { ADULT_TASKS, MINOR_TASKS, API, DAILY_LIMIT } from './constants'
+import { ADULT_TASK_DEFS, MINOR_TASKS, API, DAILY_LIMIT } from './constants'
 import { saveGameMetrics, loadAllGameMetrics, getUsageToday, incrementUsage } from './utils'
+import AdultAsrs              from '../AdultAsrs'
+import AdultDyslexiaChecklist from '../AdultDyslexiaChecklist'
+import AdultStroop            from '../AdultStroop'
+import AdultSubitizing        from '../AdultSubitizing'
+import AdultLexicalDecision   from '../AdultLexicalDecision'
+
+const adultComponents = { AdultAsrs, AdultDyslexiaChecklist, AdultStroop, AdultSubitizing, AdultLexicalDecision }
+const ADULT_TASKS = ADULT_TASK_DEFS.map(t => ({ ...t, component: adultComponents[t.componentKey] }))
 
 export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
   const isAdultModule = userType === 'adult'
