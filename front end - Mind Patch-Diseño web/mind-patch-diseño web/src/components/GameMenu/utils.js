@@ -1,15 +1,20 @@
-import { METRICS_STORAGE, STORAGE_KEY } from './constants'
+import { STORAGE_KEY } from './constants'
 
-export function saveGameMetrics(gameId, metrics) {
+function metricsKey(userId) {
+  return `mp_game_metrics_${userId || 'guest'}`
+}
+
+export function saveGameMetrics(gameId, metrics, userId) {
   try {
-    const all = JSON.parse(localStorage.getItem(METRICS_STORAGE) || '{}')
+    const key = metricsKey(userId)
+    const all = JSON.parse(localStorage.getItem(key) || '{}')
     all[gameId] = { savedAt: new Date().toISOString(), metrics }
-    localStorage.setItem(METRICS_STORAGE, JSON.stringify(all))
+    localStorage.setItem(key, JSON.stringify(all))
   } catch (_) {}
 }
 
-export function loadAllGameMetrics() {
-  try { return JSON.parse(localStorage.getItem(METRICS_STORAGE) || '{}') }
+export function loadAllGameMetrics(userId) {
+  try { return JSON.parse(localStorage.getItem(metricsKey(userId)) || '{}') }
   catch { return {} }
 }
 

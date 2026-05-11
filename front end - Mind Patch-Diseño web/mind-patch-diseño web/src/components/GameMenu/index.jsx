@@ -18,11 +18,12 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
   const isAdultModule = userType === 'adult'
   const esMenor       = userType === 'adolescent' || userType === 'child'
   const tasks         = isAdultModule ? ADULT_TASKS : MINOR_TASKS
+  const userId        = user?.id || null
 
   const [selected,       setSelected]       = useState(null)
   const [activeMinorGame, setActiveMinorGame] = useState(null)
   const [gameMetrics,    setGameMetrics]    = useState(null)
-  const [savedMetrics,   setSavedMetrics]   = useState(loadAllGameMetrics)
+  const [savedMetrics,   setSavedMetrics]   = useState(() => loadAllGameMetrics(userId))
   const [replayKey,      setReplayKey]      = useState(0)
 
   const [showMap,      setShowMap]      = useState(false)
@@ -37,8 +38,8 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
     function onMessage(event) {
       if (event.data?.type !== 'MINDPATCH_GAME_COMPLETE') return
       const { gameId, metrics } = event.data
-      saveGameMetrics(gameId, metrics)
-      setSavedMetrics(loadAllGameMetrics())
+      saveGameMetrics(gameId, metrics, userId)
+      setSavedMetrics(loadAllGameMetrics(userId))
       setGameMetrics({ gameId, metrics })
     }
     window.addEventListener('message', onMessage)
