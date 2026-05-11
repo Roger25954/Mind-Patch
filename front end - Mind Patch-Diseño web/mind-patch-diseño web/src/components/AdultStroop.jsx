@@ -128,10 +128,11 @@ export default function AdultStroop({ onNext, onBack }) {
     if (phase === 'running' && trials.length && idx < trials.length) {
       trialStart.current = performance.now();
     }
-    return () => {
-      if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
-    };
   }, [phase, idx, trials.length]);
+
+  React.useEffect(() => {
+    return () => { if (feedbackTimer.current) clearTimeout(feedbackTimer.current); };
+  }, []);
 
   const pct = trials.length ? Math.round((idx / trials.length) * 100) : 0;
   const t = trials[idx];

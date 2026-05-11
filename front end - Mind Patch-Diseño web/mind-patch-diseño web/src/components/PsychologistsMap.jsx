@@ -214,7 +214,7 @@ export function PsychologistsMap() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      style={{ display: 'flex', gap: '16px', height: '100%', paddingTop: '24px' }}
+      style={{ display: 'flex', gap: '16px', height: 'calc(100vh - 32px)', paddingTop: '24px' }}
     >
       {/* ── Mapa ── */}
       <div style={{

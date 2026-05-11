@@ -257,13 +257,150 @@ function AstridChart({ metrics: m }) {
   )
 }
 
-export default function AnalysisPanel({ savedMetrics }) {
-  const games = [
-    { id: 'nova-drive',     label: 'Nova Drive',               sub: 'Atención sostenida e impulsividad',    color: '#10b981', Chart: NovaDriveChart },
-    { id: 'academia-magia', label: 'Academia de la Magia',     sub: 'Lectura — PROLEC-R',                   color: '#3b82f6', Chart: AcademiaChart  },
-    { id: 'juego-astrid',   label: 'Juego Astrid',             sub: 'Habilidades numéricas — Discalculia',  color: '#BE7D57', Chart: AstridChart    },
+function AsrsChart({ metrics: m }) {
+  const shaded = m.shadedCount ?? 0
+  const total  = m.totalAnswered ?? Object.keys(m.answers ?? {}).length ?? 18
+  const pct    = Math.round((shaded / 6) * 100)
+  const interp = []
+  if (shaded >= 4) interp.push(`· ${shaded}/6 indicadores clave marcados — sugiere exploración adicional para TDAH.`)
+  else if (shaded >= 2) interp.push(`· ${shaded}/6 indicadores clave marcados — algunos síntomas presentes, seguimiento recomendado.`)
+  else interp.push(`· ${shaded}/6 indicadores clave marcados — sin señales de alerta significativas en Parte A.`)
+  if (total < 18) interp.push(`· Cuestionario parcial (${total}/18 preguntas respondidas).`)
+  return (
+    <>
+      <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <CircleGauge pct={pct} color={shaded >= 4 ? '#ef4444' : shaded >= 2 ? '#f59e0b' : '#10b981'} label={`${shaded}/6 indicadores`} />
+        <div style={{ flex: 1 }}>
+          <Hbar label="Indicadores clave (Parte A)" value={shaded} max={6} color={shaded >= 4 ? '#ef4444' : '#f59e0b'} unit={` / 6`} />
+          <Hbar label="Preguntas respondidas"       value={total}  max={18} color="#10b981" unit={` / 18`} />
+        </div>
+      </div>
+      <InterpretBox lines={interp} />
+    </>
+  )
+}
+
+function DyslexiaChart({ metrics: m }) {
+  const count = m.count ?? 0
+  const total = m.total ?? 20
+  const pct   = Math.round((count / total) * 100)
+  const interp = []
+  if (count >= 10) interp.push(`· ${count}/${total} ítems presentes — perfil compatible con indicadores de dislexia. Se recomienda evaluación clínica.`)
+  else if (count >= 5) interp.push(`· ${count}/${total} ítems presentes — algunos indicadores de dislexia. Monitoreo recomendado.`)
+  else interp.push(`· ${count}/${total} ítems presentes — sin señales de alerta significativas.`)
+  return (
+    <>
+      <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <CircleGauge pct={pct} color={count >= 10 ? '#ef4444' : count >= 5 ? '#f59e0b' : '#10b981'} label={`${count}/${total} ítems`} />
+        <div style={{ flex: 1 }}>
+          <Hbar label="Indicadores presentes" value={count} max={total} color={count >= 10 ? '#ef4444' : '#f59e0b'} unit={` / ${total}`} />
+        </div>
+      </div>
+      <InterpretBox lines={interp} />
+    </>
+  )
+}
+
+function StroopChart({ metrics: m }) {
+  const accPct = m.acc ?? 0
+  const mean   = Math.round(m.mean ?? 0)
+  const errs   = m.errs ?? 0
+  const interp = []
+  if (accPct >= 85) interp.push(`· Precisión alta (${accPct}%): buen control inhibitorio.`)
+  else if (accPct >= 65) interp.push(`· Precisión moderada (${accPct}%): interferencia Stroop presente.`)
+  else interp.push(`· Precisión baja (${accPct}%): dificultades en control inhibitorio.`)
+  if (mean > 700) interp.push(`· Tiempo de respuesta elevado (${mean} ms): posible lentitud en procesamiento cognitivo.`)
+  return (
+    <>
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        <CircleGauge pct={accPct} color={perfColor(accPct)} label="Precisión" />
+        <div style={{ flex: 1 }}>
+          <Hbar label="Tiempo de respuesta (ms)" value={mean} max={1200} unit=" ms" color={mean < 500 ? '#10b981' : mean < 800 ? '#f59e0b' : '#ef4444'} />
+          <Hbar label="Errores" value={errs} max={20} color="#ef4444" />
+        </div>
+      </div>
+      <InterpretBox lines={interp} />
+    </>
+  )
+}
+
+function SubitizingChart({ metrics: m }) {
+  const accPct = m.acc ?? 0
+  const mean   = Math.round(m.mean ?? 0)
+  const risk   = m.risk ?? ''
+  const smallE = m.smallErrs ?? 0
+  const riskColor = risk === 'Alto' ? '#ef4444' : risk === 'Medio' ? '#f59e0b' : '#10b981'
+  const interp = []
+  if (risk) interp.push(`· Riesgo de discalculia: ${risk}.`)
+  if (smallE > 2) interp.push(`· ${smallE} errores en cantidades pequeñas (1–3): posible dificultad de subitización.`)
+  if (accPct >= 80) interp.push(`· Precisión general alta (${accPct}%).`)
+  else interp.push(`· Precisión general: ${accPct}%.`)
+  return (
+    <>
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        <CircleGauge pct={accPct} color={perfColor(accPct)} label="Precisión" />
+        <div style={{ flex: 1 }}>
+          <Hbar label="Tiempo medio (ms)"      value={mean}   max={2000} unit=" ms" color={mean < 800 ? '#10b981' : mean < 1400 ? '#f59e0b' : '#ef4444'} />
+          <Hbar label="Errores en 1–3 puntos"  value={smallE} max={18}   color="#ef4444" />
+        </div>
+        {risk && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: `${riskColor}18`, border: `2px solid ${riskColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: riskColor }}>{risk}</span>
+            </div>
+            <span style={{ fontSize: '10px', color: 'rgba(47,47,47,0.45)' }}>Riesgo</span>
+          </div>
+        )}
+      </div>
+      <InterpretBox lines={interp} />
+    </>
+  )
+}
+
+function LexicalChart({ metrics: m }) {
+  const accPct = m.acc ?? 0
+  const rtW    = Math.round(m.rtW ?? 0)
+  const rtP    = Math.round(m.rtP ?? 0)
+  const fp     = m.fp ?? 0
+  const interp = []
+  if (accPct >= 85) interp.push(`· Precisión alta (${accPct}%): reconocimiento léxico adecuado.`)
+  else if (accPct >= 65) interp.push(`· Precisión moderada (${accPct}%): algunas dificultades en decisión léxica.`)
+  else interp.push(`· Precisión baja (${accPct}%): posibles dificultades de reconocimiento de palabras.`)
+  if (rtP > rtW + 200) interp.push(`· Mayor latencia en pseudopalabras (${rtP} ms vs ${rtW} ms): uso de ruta léxica adecuado.`)
+  if (fp > 5) interp.push(`· ${fp} falsos positivos en pseudopalabras — tendencia a aceptar palabras no reales.`)
+  return (
+    <>
+      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        <CircleGauge pct={accPct} color={perfColor(accPct)} label="Precisión" />
+        <div style={{ flex: 1 }}>
+          <Hbar label="TR palabras reales (ms)"   value={rtW} max={1500} unit=" ms" color={rtW < 600 ? '#10b981' : rtW < 900 ? '#f59e0b' : '#ef4444'} />
+          <Hbar label="TR pseudopalabras (ms)"    value={rtP} max={1500} unit=" ms" color={rtP < 800 ? '#10b981' : rtP < 1100 ? '#f59e0b' : '#ef4444'} />
+          <Hbar label="Falsos positivos"          value={fp}  max={20}   color="#ef4444" />
+        </div>
+      </div>
+      <InterpretBox lines={interp} />
+    </>
+  )
+}
+
+const MINOR_GAME_IDS = ['nova-drive', 'academia-magia', 'juego-astrid']
+const ADULT_TASK_IDS = ['asrs', 'dyslexia', 'stroop', 'subit', 'lexical']
+
+export default function AnalysisPanel({ savedMetrics, isAdultModule }) {
+  const allGames = [
+    { id: 'nova-drive',     label: 'Nova Drive',               sub: 'Atención sostenida e impulsividad',    color: '#10b981', Chart: NovaDriveChart  },
+    { id: 'academia-magia', label: 'Academia de la Magia',     sub: 'Lectura — PROLEC-R',                   color: '#3b82f6', Chart: AcademiaChart   },
+    { id: 'juego-astrid',   label: 'Mercadito de monstruos',   sub: 'Habilidades numéricas — Discalculia',  color: '#BE7D57', Chart: AstridChart     },
+    { id: 'asrs',           label: 'ASRS v1.1',                sub: 'Tamizaje TDAH — Autoinforme',          color: '#10b981', Chart: AsrsChart       },
+    { id: 'dyslexia',       label: 'Lista de Dislexia',        sub: 'Indicadores de dislexia',              color: '#3b82f6', Chart: DyslexiaChart   },
+    { id: 'stroop',         label: 'Tarea Stroop',             sub: 'Control inhibitorio — Atención',       color: '#f59e0b', Chart: StroopChart     },
+    { id: 'subit',          label: 'Subitización',             sub: 'Habilidades numéricas básicas',        color: '#BE7D57', Chart: SubitizingChart },
+    { id: 'lexical',        label: 'Decisión Léxica',          sub: 'Reconocimiento de palabras',           color: '#ef4444', Chart: LexicalChart    },
   ]
-  const available = games.filter(g => savedMetrics[g.id])
+
+  const allowedIds = isAdultModule ? ADULT_TASK_IDS : MINOR_GAME_IDS
+  const games      = allGames.filter(g => allowedIds.includes(g.id))
+  const available  = games.filter(g => savedMetrics[g.id])
 
   return (
     <div style={{ flex: 1, overflowY: 'auto', background: '#DADBC6' }}>
@@ -285,7 +422,7 @@ export default function AnalysisPanel({ savedMetrics }) {
               Aún no hay datos para analizar
             </p>
             <p style={{ fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
-              Completa al menos uno de los juegos (Nova Drive, Academia de la Magia o Juego Astrid) para ver tu análisis aquí.
+              Completa al menos una evaluación o juego para ver tu análisis aquí.
             </p>
           </div>
         )}

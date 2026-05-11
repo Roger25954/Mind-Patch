@@ -30,7 +30,7 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
   const [showAnalysis, setShowAnalysis] = useState(false)
   const [messages,     setMessages]     = useState([])
   const [loading,      setLoading]      = useState(false)
-  const [usosHoy,      setUsosHoy]      = useState(getUsageToday)
+  const [usosHoy,      setUsosHoy]      = useState(() => getUsageToday(userId))
 
   const limitAlcanzado = usosHoy >= DAILY_LIMIT
 
@@ -72,6 +72,12 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
     setReplayKey(k => k + 1)
   }
 
+  function handleAdultTaskComplete(taskId, result) {
+    saveGameMetrics(taskId, result, userId)
+    setSavedMetrics(loadAllGameMetrics(userId))
+    setSelected(null)
+  }
+
   function buildMetricsContext(metrics) {
     const BASE = `Eres el asistente de IA de Mind Patch, una plataforma de evaluación y apoyo cognitivo. Responde siempre en español. Sé empático, claro y motivador. Adapta tus respuestas al perfil cognitivo del usuario cuando tengas datos disponibles. REGLA CRÍTICA: Si el prompt del usuario contiene instrucciones de formato JSON (por ejemplo "Responde SOLO con JSON válido"), responde ÚNICAMENTE con el JSON solicitado, sin texto adicional, sin explicaciones y sin bloques de código markdown.`
 
@@ -80,18 +86,29 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
 
     const GAME_NAMES = {
       'nova-drive':     'Nova Drive (atención sostenida)',
-      'juego-astrid':   'Juego Astrid (habilidades numéricas)',
+      'juego-astrid':   'Mercadito de monstruos (habilidades numéricas)',
       'academia-magia': 'Academia de la Magia (lectura)',
+      'asrs':           'ASRS v1.1 (tamizaje TDAH)',
+      'dyslexia':       'Lista de Dislexia',
+      'stroop':         'Tarea Stroop (control inhibitorio)',
+      'subit':          'Subitización (habilidades numéricas)',
+      'lexical':        'Decisión Léxica (reconocimiento de palabras)',
     }
 
     const lines = entries.map(([gameId, { metrics: m }]) => {
       if (!m) return null
       const parts = []
-      if (m.accuracy != null)          parts.push(`precisión ${Math.round(m.accuracy * 100)}%`)
-      if (m.hits != null)              parts.push(`${m.hits} aciertos`)
-      if (m.misses != null)            parts.push(`${m.misses} errores por omisión`)
-      if (m.commissionErrors != null)  parts.push(`${m.commissionErrors} errores por impulsividad`)
-      if (m.avgReactionTime != null)   parts.push(`tiempo de reacción ${Math.round(m.avgReactionTime)}ms`)
+      // Minor games
+      if (m.accuracy != null)         parts.push(`precisión ${Math.round(m.accuracy * 100)}%`)
+      if (m.hits != null)             parts.push(`${m.hits} aciertos`)
+      if (m.misses != null)           parts.push(`${m.misses} errores por omisión`)
+      if (m.commissionErrors != null) parts.push(`${m.commissionErrors} errores por impulsividad`)
+      if (m.avgReactionTime != null)  parts.push(`tiempo de reacción ${Math.round(m.avgReactionTime)}ms`)
+      // Adult tasks
+      if (m.shadedCount != null)      parts.push(`${m.shadedCount}/6 indicadores TDAH marcados`)
+      if (m.count != null && m.total != null) parts.push(`${m.count}/${m.total} indicadores de dislexia`)
+      if (m.acc != null && m.mean != null)    parts.push(`precisión ${m.acc}%, TR medio ${Math.round(m.mean)}ms`)
+      if (m.risk != null)             parts.push(`riesgo discalculia: ${m.risk}`)
       if (!parts.length) return null
       const name = GAME_NAMES[gameId] || gameId
       return `• ${name}: ${parts.join(', ')}`
@@ -100,6 +117,8 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
     if (!lines.length) return BASE
 
     return `${BASE}
+
+Le vas a ayudar basado en el puntaje de métricas de esta persona:
 
 PERFIL COGNITIVO DEL USUARIO (última sesión de juego):
 ${lines.join('\n')}
@@ -139,7 +158,7 @@ Instrucciones de personalización:
       try { data = JSON.parse(text_body) }
       catch { setMessages(prev => [...prev, { role: 'ai', content: `Error del servidor: ${text_body.slice(0, 200)}` }]); return }
 
-      setUsosHoy(incrementUsage())
+      setUsosHoy(incrementUsage(userId))
       if (data.tipo === 'tarjetas' && Array.isArray(data.tarjetas)) {
         setMessages(prev => [...prev, { role: 'ai', tipo: 'tarjetas', tarjetas: data.tarjetas }])
       } else if (data.tipo === 'quiz' && Array.isArray(data.preguntas)) {
@@ -176,7 +195,7 @@ Instrucciones de personalización:
       />
 
       {showAnalysis ? (
-        <AnalysisPanel savedMetrics={savedMetrics} />
+        <AnalysisPanel savedMetrics={savedMetrics} isAdultModule={isAdultModule} />
       ) : activeMinorGame ? (
         <MinorGameFrame
           key={`${activeMinorGame.id}-${replayKey}`}
@@ -196,6 +215,8 @@ Instrucciones de personalización:
           usosHoy={usosHoy}
           limitAlcanzado={limitAlcanzado}
           isAdultModule={isAdultModule}
+          onTaskComplete={handleAdultTaskComplete}
+          onTaskBack={() => setSelected(null)}
         />
       )}
     </div>
