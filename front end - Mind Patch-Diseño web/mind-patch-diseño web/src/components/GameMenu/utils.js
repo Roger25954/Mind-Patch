@@ -1,15 +1,20 @@
-import { METRICS_STORAGE, STORAGE_KEY } from './constants'
+import { STORAGE_KEY } from './constants'
 
-export function saveGameMetrics(gameId, metrics) {
+function metricsKey(userId) {
+  return `mp_game_metrics_${userId || 'guest'}`
+}
+
+export function saveGameMetrics(gameId, metrics, userId) {
   try {
-    const all = JSON.parse(localStorage.getItem(METRICS_STORAGE) || '{}')
+    const key = metricsKey(userId)
+    const all = JSON.parse(localStorage.getItem(key) || '{}')
     all[gameId] = { savedAt: new Date().toISOString(), metrics }
-    localStorage.setItem(METRICS_STORAGE, JSON.stringify(all))
+    localStorage.setItem(key, JSON.stringify(all))
   } catch (_) {}
 }
 
-export function loadAllGameMetrics() {
-  try { return JSON.parse(localStorage.getItem(METRICS_STORAGE) || '{}') }
+export function loadAllGameMetrics(userId) {
+  try { return JSON.parse(localStorage.getItem(metricsKey(userId)) || '{}') }
   catch { return {} }
 }
 
@@ -20,18 +25,22 @@ export function formatSavedAt(iso) {
   } catch { return '' }
 }
 
-export function getUsageToday() {
+function usageKey(userId) {
+  return `${STORAGE_KEY}_${userId || 'guest'}`
+}
+
+export function getUsageToday(userId) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(usageKey(userId))
     if (!raw) return 0
     const { date, count } = JSON.parse(raw)
     return new Date().toISOString().slice(0, 10) === date ? count : 0
   } catch { return 0 }
 }
 
-export function incrementUsage() {
+export function incrementUsage(userId) {
   const today = new Date().toISOString().slice(0, 10)
-  const count = getUsageToday() + 1
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, count }))
+  const count = getUsageToday(userId) + 1
+  localStorage.setItem(usageKey(userId), JSON.stringify({ date: today, count }))
   return count
 }

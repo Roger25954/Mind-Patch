@@ -199,6 +199,7 @@ export function SignInPage({ onSuccess }) {
       setPendingUser({
         nombre:           e.data.user?.nombre || e.data.user?.name || 'Usuario',
         foto:             e.data.user?.foto   || e.data.user?.picture || null,
+        id:               e.data.user?.id     || e.data.user?._id   || e.data.user?.email,
         tiene_onboarding: tieneOnboarding,
         userType:         e.data.userType || null,
       })
@@ -253,6 +254,7 @@ export function SignInPage({ onSuccess }) {
       setPendingUser({
         nombre:           u.nombre || nombre || 'Usuario',
         foto:             u.foto || null,
+        id:               u.id || u._id || correo,
         tiene_onboarding: tieneOnboarding,
         userType:         data.userType || null,
       })

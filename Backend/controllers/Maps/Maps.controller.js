@@ -54,20 +54,23 @@ const getNearbyPsychologists = async (req, res) => {
 
     const results = response.data.results || [];
 
-    // 🧠 FILTRO INTELIGENTE (evita hoteles, clubs, etc.)
-    const psychologists = results
-      .filter((place) => {
-        const name = place.name?.toLowerCase() || "";
-        const types = place.types || [];
+    const PSYCH_TERMS = [
+      "psic", "terapia", "terapeuta", "therapy", "mental", "counseling",
+      "consultorio", "clínica", "clinica", "salud", "bienestar", "wellness",
+    ];
+    const PSYCH_TYPES = ["health", "doctor", "physiotherapist", "hospital"];
 
-        return (
-          name.includes("psic") ||
-          name.includes("therapy") ||
-          name.includes("mental") ||
-          types.includes("health") ||
-          types.includes("doctor")
-        );
-      })
+    const filtered = results.filter((place) => {
+      const name  = place.name?.toLowerCase() || "";
+      const types = place.types || [];
+      return (
+        PSYCH_TERMS.some(t => name.includes(t)) ||
+        PSYCH_TYPES.some(t => types.includes(t))
+      );
+    });
+
+    // Si el filtro elimina todo, usar los resultados originales de Google
+    const psychologists = (filtered.length > 0 ? filtered : results)
       .slice(0, 5)
       .map((place) => ({
         name: place.name || "Sin nombre",

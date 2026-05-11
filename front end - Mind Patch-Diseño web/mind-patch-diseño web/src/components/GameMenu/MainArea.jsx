@@ -194,7 +194,7 @@ function Message({ msg }) {
   )
 }
 
-export default function MainArea({ selected, messages, loading, onSend, showMap, usosHoy, limitAlcanzado, isAdultModule }) {
+export default function MainArea({ selected, messages, loading, onSend, showMap, usosHoy, limitAlcanzado, isAdultModule, onTaskComplete, onTaskBack }) {
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -206,17 +206,19 @@ export default function MainArea({ selected, messages, loading, onSend, showMap,
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#DADBC6' }}>
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px' }}>
-        <div style={{ maxWidth: showMap ? '100%' : '680px', margin: '0 auto', height: showMap ? 'calc(100% - 24px)' : 'auto' }}>
+
+      {showMap && (
+        <motion.div key="map" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}
+          style={{ flex: 1, overflow: 'hidden', padding: '0 24px' }}>
+          <PsychologistsMap />
+        </motion.div>
+      )}
+
+      <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px', display: showMap ? 'none' : 'block' }}>
+        <div style={{ maxWidth: '680px', margin: '0 auto' }}>
           <AnimatePresence mode="wait">
 
-            {showMap && (
-              <motion.div key="map" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} style={{ height: '100%' }}>
-                <PsychologistsMap />
-              </motion.div>
-            )}
-
-            {!showMap && !hasMessages && !selected && (
+            {!hasMessages && !selected && (
               <motion.div key="welcome" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} style={{ paddingTop: '80px', textAlign: 'center' }}>
                 <h1 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', fontWeight: 700, color: '#2F2F2F', letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 12px' }}>
                   Hola, ¿cómo te sientes hoy?
@@ -240,13 +242,18 @@ export default function MainArea({ selected, messages, loading, onSend, showMap,
               </motion.div>
             )}
 
-            {!showMap && !hasMessages && selected && TaskComponent && (
+            {!hasMessages && selected && TaskComponent && (
               <motion.div key={`task-${selected.id}`} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} style={{ paddingTop: '40px' }}>
-                <TaskComponent task={selected} />
+                <TaskComponent
+                  task={selected}
+                  onNext={(result) => onTaskComplete?.(selected.id, result)}
+                  onComplete={(result) => onTaskComplete?.(selected.id, result)}
+                  onBack={onTaskBack}
+                />
               </motion.div>
             )}
 
-            {!showMap && hasMessages && (
+            {hasMessages && (
               <motion.div key="chat" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ paddingTop: '32px' }}>
                 {messages.map((msg, i) => <Message key={i} msg={msg} />)}
                 {loading && (
@@ -263,7 +270,7 @@ export default function MainArea({ selected, messages, loading, onSend, showMap,
         </div>
       </div>
 
-      <div style={{ padding: '12px 24px 20px', width: '100%', maxWidth: '760px', margin: '0 auto', boxSizing: 'border-box' }}>
+      {!showMap && <div style={{ padding: '12px 24px 20px', width: '100%', maxWidth: '760px', margin: '0 auto', boxSizing: 'border-box' }}>
         {limitAlcanzado ? (
           <div style={{ padding: '14px 18px', borderRadius: '16px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', textAlign: 'center' }}>
             <p style={{ color: '#dc2626', fontSize: '14px', fontWeight: 600, margin: '0 0 4px' }}>Límite diario alcanzado</p>
@@ -277,7 +284,7 @@ export default function MainArea({ selected, messages, loading, onSend, showMap,
             </p>
           </>
         )}
-      </div>
+      </div>}
     </div>
   )
 }

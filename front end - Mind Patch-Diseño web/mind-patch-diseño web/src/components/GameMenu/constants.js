@@ -14,7 +14,7 @@ export const ADULT_TASK_DEFS = [
 export const MINOR_TASKS = [
   {
     id: 'juego-astrid',
-    name: 'Juego Astrid',
+    name: 'Mercadito de monstruos',
     duration: 'Discalculia',
     difficulty: 'Menores',
     color: '#BE7D57',
@@ -49,7 +49,7 @@ export const suggestions = [
 ]
 
 export const GAME_LABELS = {
-  'juego-astrid':   'Juego Astrid — Habilidades numéricas',
+  'juego-astrid':   'Mercadito de monstruos — Habilidades numéricas',
   'academia-magia': 'Academia de la Magia — Lectura PROLEC-R',
   'nova-drive':     'Nova Drive — Atención sostenida',
 }
