@@ -20,7 +20,7 @@ exports.procesarIA = async (req, res) => {
                 ? `${prompt || "Analiza este documento"}\n\nIMPORTANTE: Responde SOLO con JSON válido sin texto extra:\n{"tarjetas":[{"pregunta":"...","respuesta":"..."}]}\nGenera entre 5 y 8 tarjetas.`
                 : (prompt || "Analiza este documento");
 
-            const resultado = await analizarPdf(req.file.buffer, promptFinal);
+            const resultado = await analizarPdf(req.file.buffer, promptFinal, contexto);
 
             if (tool === "tarjetas") {
                 const parsed = extractJSON(resultado);

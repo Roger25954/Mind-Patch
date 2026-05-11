@@ -72,21 +72,43 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
   }
 
   function buildMetricsContext(metrics) {
+    const BASE = `Eres el asistente de IA de Mind Patch, una plataforma de evaluación y apoyo cognitivo. Responde siempre en español. Sé empático, claro y motivador. Adapta tus respuestas al perfil cognitivo del usuario cuando tengas datos disponibles.`
+
     const entries = Object.entries(metrics)
-    if (!entries.length) return null
+    if (!entries.length) return BASE
+
+    const GAME_NAMES = {
+      'nova-drive':     'Nova Drive (atención sostenida)',
+      'juego-astrid':   'Juego Astrid (habilidades numéricas)',
+      'academia-magia': 'Academia de la Magia (lectura)',
+    }
+
     const lines = entries.map(([gameId, { metrics: m }]) => {
       if (!m) return null
       const parts = []
       if (m.accuracy != null)          parts.push(`precisión ${Math.round(m.accuracy * 100)}%`)
-      if (m.hits != null)              parts.push(`aciertos ${m.hits}`)
-      if (m.misses != null)            parts.push(`errores ${m.misses}`)
-      if (m.commissionErrors != null)  parts.push(`errores por impulsividad ${m.commissionErrors}`)
-      if (m.avgReactionTime != null)   parts.push(`tiempo de reacción promedio ${Math.round(m.avgReactionTime)}ms`)
+      if (m.hits != null)              parts.push(`${m.hits} aciertos`)
+      if (m.misses != null)            parts.push(`${m.misses} errores por omisión`)
+      if (m.commissionErrors != null)  parts.push(`${m.commissionErrors} errores por impulsividad`)
+      if (m.avgReactionTime != null)   parts.push(`tiempo de reacción ${Math.round(m.avgReactionTime)}ms`)
       if (!parts.length) return null
-      return `- ${gameId}: ${parts.join(', ')}`
+      const name = GAME_NAMES[gameId] || gameId
+      return `• ${name}: ${parts.join(', ')}`
     }).filter(Boolean)
-    if (!lines.length) return null
-    return `Perfil cognitivo del usuario (basado en sus últimas sesiones de juego):\n${lines.join('\n')}\n\nUsa estos datos de forma sutil para personalizar tus explicaciones. Si el usuario tiene tiempos de reacción altos, sé más paciente y detallado. Si hay muchos errores por impulsividad, sugiere hacer pausas. No menciones explícitamente los datos a menos que el usuario lo pida.`
+
+    if (!lines.length) return BASE
+
+    return `${BASE}
+
+PERFIL COGNITIVO DEL USUARIO (última sesión de juego):
+${lines.join('\n')}
+
+Instrucciones de personalización:
+- Si el tiempo de reacción es alto (>700ms), usa explicaciones más pausadas y detalladas.
+- Si hay muchos errores por impulsividad, incluye recordatorios de tomarse el tiempo para pensar.
+- Si la precisión es baja (<60%), refuerza los conceptos básicos antes de avanzar.
+- Si la precisión es alta (>85%), puedes ofrecer retos más avanzados.
+- Menciona el perfil cognitivo si el usuario lo pregunta o si es relevante para la conversación.`
   }
 
   const handleSend = async ({ text, file, tool }) => {
