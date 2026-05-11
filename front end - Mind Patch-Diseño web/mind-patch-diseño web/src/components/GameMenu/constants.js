@@ -1,5 +1,5 @@
 export const API             = 'http://localhost:3000'
-export const DAILY_LIMIT     = 5
+export const DAILY_LIMIT     = 12
 export const STORAGE_KEY     = 'mp_ia_uses'
 export const METRICS_STORAGE = 'mp_game_metrics'
 
