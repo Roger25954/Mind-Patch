@@ -23,27 +23,50 @@ function LoadingDots() {
 
 function FlipCard({ pregunta, respuesta, index }) {
   const [flipped, setFlipped] = useState(false)
+
+  const faceBase = {
+    position: 'absolute', inset: 0, borderRadius: '12px', padding: '16px',
+    display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+    backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.06 }}
       onClick={() => setFlipped(f => !f)}
-      style={{
-        cursor: 'pointer', borderRadius: '12px', minHeight: '120px',
-        background: flipped ? '#2F2F2F' : '#fff',
-        border: `1px solid ${flipped ? 'rgba(47,47,47,0.4)' : 'rgba(47,47,47,0.12)'}`,
-        padding: '16px', transition: 'background 0.25s, border 0.25s',
-        display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '8px',
-        boxShadow: '0 1px 4px rgba(47,47,47,0.06)',
-      }}
+      style={{ cursor: 'pointer', perspective: '1000px', minHeight: '140px' }}
     >
-      <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: flipped ? 'rgba(218,219,198,0.5)' : 'rgba(47,47,47,0.35)' }}>
-        {flipped ? 'Respuesta' : `Pregunta ${index + 1}`}
-      </div>
-      <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: flipped ? '#DADBC6' : 'rgba(47,47,47,0.85)', fontWeight: flipped ? 400 : 500 }}>
-        {flipped ? respuesta : pregunta}
-      </p>
-      <div style={{ fontSize: '10px', color: flipped ? 'rgba(218,219,198,0.3)' : 'rgba(47,47,47,0.25)', textAlign: 'right' }}>
-        {flipped ? 'Clic para ver pregunta' : 'Clic para ver respuesta'}
+      <div style={{
+        position: 'relative', width: '100%', height: '100%', minHeight: '140px',
+        transformStyle: 'preserve-3d',
+        transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        transition: 'transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}>
+        {/* Frente */}
+        <div style={{ ...faceBase, background: '#fff', border: '1px solid rgba(47,47,47,0.12)', boxShadow: '0 1px 4px rgba(47,47,47,0.06)' }}>
+          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'rgba(47,47,47,0.35)' }}>
+            Pregunta {index + 1}
+          </div>
+          <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: 'rgba(47,47,47,0.85)', fontWeight: 500 }}>
+            {pregunta}
+          </p>
+          <div style={{ fontSize: '10px', color: 'rgba(47,47,47,0.25)', textAlign: 'right' }}>
+            Clic para ver respuesta
+          </div>
+        </div>
+
+        {/* Reverso */}
+        <div style={{ ...faceBase, background: '#2F2F2F', border: '1px solid rgba(47,47,47,0.4)', transform: 'rotateY(180deg)' }}>
+          <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'rgba(218,219,198,0.45)' }}>
+            Respuesta
+          </div>
+          <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: '#DADBC6' }}>
+            {respuesta}
+          </p>
+          <div style={{ fontSize: '10px', color: 'rgba(218,219,198,0.25)', textAlign: 'right' }}>
+            Clic para ver pregunta
+          </div>
+        </div>
       </div>
     </motion.div>
   )
