@@ -72,7 +72,7 @@ export function GameMenu({ onBack, user, userType = 'adult', contextData }) {
   }
 
   function buildMetricsContext(metrics) {
-    const BASE = `Eres el asistente de IA de Mind Patch, una plataforma de evaluación y apoyo cognitivo. Responde siempre en español. Sé empático, claro y motivador. Adapta tus respuestas al perfil cognitivo del usuario cuando tengas datos disponibles.`
+    const BASE = `Eres el asistente de IA de Mind Patch, una plataforma de evaluación y apoyo cognitivo. Responde siempre en español. Sé empático, claro y motivador. Adapta tus respuestas al perfil cognitivo del usuario cuando tengas datos disponibles. REGLA CRÍTICA: Si el prompt del usuario contiene instrucciones de formato JSON (por ejemplo "Responde SOLO con JSON válido"), responde ÚNICAMENTE con el JSON solicitado, sin texto adicional, sin explicaciones y sin bloques de código markdown.`
 
     const entries = Object.entries(metrics)
     if (!entries.length) return BASE

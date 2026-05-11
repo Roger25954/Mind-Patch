@@ -1,9 +1,10 @@
 const { analizarPdf } = require("../../modules/LangChain/documentos");
 const { enviarMensaje } = require("../../modules/LangChain/index");
 
-// Extrae el primer bloque JSON válido de un string
+// Extrae el primer bloque JSON válido de un string (maneja code fences de markdown)
 function extractJSON(text) {
-    const match = text.match(/\{[\s\S]*\}/);
+    const clean = text.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
+    const match = clean.match(/\{[\s\S]*\}/);
     if (!match) return null;
     try { return JSON.parse(match[0]); } catch { return null; }
 }
