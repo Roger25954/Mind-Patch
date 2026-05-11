@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-mindpatch}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mindpatch}
+      POSTGRES_DB: ${POSTGRES_DB:-mindpatch}
+    ports:
+      - "5432:5432"
+    volumes:
+      - mindpatch_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./Backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=db
+      - DB_USER=${POSTGRES_USER:-mindpatch}
+      - DB_PASS=${POSTGRES_PASSWORD:-mindpatch}
+      - DB_NAME=${POSTGRES_DB:-mindpatch}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: "./front-end/front end - Mind Patch-Diseño web/mind-patch-diseño web"
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mindpatch_data:
