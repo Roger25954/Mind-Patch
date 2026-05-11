@@ -13,6 +13,7 @@ export default class SpawnSystem {
   private timerId: number | null = null;
   private _currentIndex = 0;
   private isPaused = false;
+  private _forceStop = false;
 
   constructor(scene: THREE.Scene, config: GameConfig) {
     this.scene = scene;
@@ -91,15 +92,16 @@ generateSequence(): ItemType[] {
     this._currentIndex = 0;
 
     const spawnOne = () => {
-      if (this._currentIndex >= this.sequence.length) {
-        if (this.timerId !== null) {
-          clearInterval(this.timerId);
-          this.timerId = null;
-        }
-        return;
-      }
+      if (this._forceStop) return;
 
-      const type = this.sequence[this._currentIndex];
+      // Si la secuencia base terminó, generar items extra hasta que el juego
+      // indique explícitamente que pare (la barra se llenó).
+      let type: ItemType;
+      if (this._currentIndex < this.sequence.length) {
+        type = this.sequence[this._currentIndex];
+      } else {
+        type = Math.random() < this.config.starRatio ? ItemType.STAR : ItemType.DEBRIS;
+      }
       // random x,y jitter
       const x = (Math.random() * 4) - 2; // -2..2
       const y = (Math.random() - 0.5) * 1.0; // -0.5..0.5
@@ -135,11 +137,19 @@ generateSequence(): ItemType[] {
     this.isPaused = false;
   }
 
+  stopSpawning(): void {
+    this._forceStop = true;
+    if (this.timerId !== null) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+  }
+
   get currentTrialIndex(): number {
     return this._currentIndex;
   }
 
   get isComplete(): boolean {
-    return this._currentIndex >= this.sequence.length;
+    return this._forceStop;
   }
 }

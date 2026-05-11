@@ -18,8 +18,15 @@ export class GameScene extends Phaser.Scene {
         this.add.image(400, 380, monstruoActual).setDisplaySize(280, 280); 
         this.add.image(400, 530, 'mostrador').setDisplaySize(600, 220); 
 
+        // Contador de progreso
+        const total = allData.items.length;
+        this.add.text(780, 16, `${indexActual}/${total}`, {
+            fontSize: '22px', fill: '#ffffff', fontStyle: 'bold',
+            stroke: '#000000', strokeThickness: 4,
+        }).setOrigin(1, 0);
+
         // Instrucción
-        this.instruccionText = this.add.text(400, 85, itemActual.mensaje, { 
+        this.instruccionText = this.add.text(400, 85, itemActual.mensaje, {
             fontSize: '28px', fill: '#2c3e50', fontStyle: 'bold', 
             backgroundColor: '#ffffffcc', padding: {x: 20, y: 10},
             wordWrap: { width: 700 }, align: 'center'
@@ -313,7 +320,24 @@ export class GameScene extends Phaser.Scene {
             this.scene.start('GameScene', { levelIndex: indexActual + 1 });
         } else {
             this.feedbackText.setText("¡SESIÓN TERMINADA!").setFill('#2ecc71').setY(300);
-            this.time.delayedCall(2000, () => this.descargarJSON());
+            this.time.delayedCall(2000, () => {
+                this.descargarJSON();
+                // Enviar métricas a la app principal si el juego está en un iframe
+                try {
+                    const reporte = {
+                        fecha: new Date().toLocaleString(),
+                        resumen: {
+                            total_items: this.game.reporteJSON.length,
+                            aciertos: this.game.reporteJSON.filter(r => r.acierto === 'Sí').length,
+                        },
+                        resultados: this.game.reporteJSON || [],
+                    };
+                    window.parent.postMessage(
+                        { type: 'MINDPATCH_GAME_COMPLETE', gameId: 'juego-astrid', metrics: reporte },
+                        '*'
+                    );
+                } catch (_) {}
+            });
         }
     }
 }

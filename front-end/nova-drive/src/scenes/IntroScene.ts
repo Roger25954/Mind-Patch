@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import AudioManager from '../systems/AudioManager';
+import { assetUrl } from '../assetUrl';
 
 export default class IntroScene {
   public  scene:    THREE.Scene;
@@ -45,7 +46,7 @@ export default class IntroScene {
       transparent: true, opacity: 0.7,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
-    new THREE.TextureLoader().load('/textures/glow.png', (t) => { mat.map = t; mat.needsUpdate = true; });
+    new THREE.TextureLoader().load(assetUrl('/textures/glow.png'), (t) => { mat.map = t; mat.needsUpdate = true; });
 
     this.points = new THREE.Points(geo, mat);
     this.scene.add(this.points);

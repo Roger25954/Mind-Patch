@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import gsap from 'gsap';
 import ParticleSystem from '../systems/ParticleSystem';
 import ShieldEffect from '../systems/ShieldEffect';
+import { assetUrl } from '../assetUrl';
 
 
 
@@ -37,7 +38,7 @@ private enginePositions: THREE.Vector3[] = [
   }
 
   private loadModel() {
-    const url = '/models/space_shuttle.glb';
+    const url = assetUrl('/models/space_shuttle.glb');
     this.loader.load(
       url,
       (gltf: any) => {
@@ -119,7 +120,7 @@ update(delta: number, time: number): void {
           this.particleSystem.emit({
             position: basePos.clone(), // <--- ¡CLON AQUÍ!
             count: 3,
-            texture: '/textures/glow.png', 
+            texture: assetUrl('/textures/glow.png'), 
             color: 0xffdd44, 
             speed: 3.0,
             lifetime: 0.2,
@@ -131,7 +132,7 @@ update(delta: number, time: number): void {
           this.particleSystem.emit({
             position: basePos.clone(), // <--- ¡Y CLON AQUÍ TAMBIÉN!
             count: 5,
-            texture: '/textures/glow.png',
+            texture: assetUrl('/textures/glow.png'),
             color: 0xff4400, 
             speed: 2.0,
             lifetime: 0.4,
@@ -152,7 +153,7 @@ public takeDamage(particleSystem: ParticleSystem): void {
     particleSystem.emit({
       position: impactPos,
       count: 25,
-      texture: '/textures/glow.png', // Usamos el glow para simular fuego denso
+      texture: assetUrl('/textures/glow.png'), // Usamos el glow para simular fuego denso
       color: 0xffaa00, // Amarillo fuego intenso
       speed: 1.5,
       lifetime: 0.4,   // Desaparece rápido, es solo el flash inicial
@@ -164,7 +165,7 @@ public takeDamage(particleSystem: ParticleSystem): void {
     particleSystem.emit({
       position: impactPos,
       count: 100,      // ¡Subimos de 40 a 100 partículas!
-      texture: '/textures/spark.png',
+      texture: assetUrl('/textures/star.png'),
       color: 0xff2200, // Rojo anaranjado brillante
       speed: 10.0,     // Salen disparadas rapidísimo (estaba en 4.0)
       lifetime: 0.8,
@@ -176,7 +177,7 @@ public takeDamage(particleSystem: ParticleSystem): void {
     particleSystem.emit({
       position: impactPos,
       count: 40,       // Más humo
-      texture: '/textures/smoke.png',
+      texture: assetUrl('/textures/smoke.png'),
       color: 0x222222, // Humo casi negro (estaba en gris claro)
       speed: 2.5,
       lifetime: 2.0,   // Dura 2 segundos en pantalla

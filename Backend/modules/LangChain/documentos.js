@@ -52,11 +52,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY
 });
 
-const analizarPdf = async (buffer, prompt) => {
-
-  console.log("PDF recibido en memoria");
-  console.log("Tamaño:", buffer.length, "bytes");
-  console.log("Prompt:", prompt);
+const analizarPdf = async (buffer, prompt, contexto = null) => {
 
   const contents = [
     { text: prompt },
@@ -68,16 +64,18 @@ const analizarPdf = async (buffer, prompt) => {
     }
   ];
 
-  const response = await ai.models.generateContent({
+  const params = {
     model: "gemini-3-flash-preview",
-    contents
-  });
+    contents,
+  };
 
-  console.log("Respuesta IA:", response.text);
+  if (contexto) {
+    params.config = { systemInstruction: contexto };
+  }
+
+  const response = await ai.models.generateContent(params);
 
   buffer = null;
-
-  console.log("Buffer liberado de memoria");
   return response.text;
 };
 

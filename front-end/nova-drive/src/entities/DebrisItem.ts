@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import gsap from 'gsap';
 import ParticleSystem from '../systems/ParticleSystem';
 import ShieldEffect from '../systems/ShieldEffect';
+import { assetUrl } from '../assetUrl';
 
 export default class DebrisItem {
   public isExpired = false;
@@ -14,8 +15,8 @@ export default class DebrisItem {
   private scene: THREE.Scene;
 
   private static ASTEROID_MODELS = [
-    '/models/asteroid_1.glb',
-    '/models/asteroid_2.glb',
+    assetUrl('/models/asteroid_1.glb'),
+    assetUrl('/models/asteroid_2.glb'),
   ];
 
 constructor(scene: THREE.Scene, reactionTimeMs = 2000) {
@@ -104,7 +105,7 @@ constructor(scene: THREE.Scene, reactionTimeMs = 2000) {
     particleSystem.emit({
       position: worldPos,
       count: 20,
-      texture: '/textures/debris.png',
+      texture: assetUrl('/textures/debris.png'),
       color: 0xcccccc,
       speed: 2,
       lifetime: 1.0,
@@ -120,7 +121,7 @@ onImpact(particleSystem: ParticleSystem): void {
     particleSystem.emit({
       position: worldPos,
       count: 28,
-      texture: '/textures/debris.png',
+      texture: assetUrl('/textures/debris.png'),
       color: 0xff4444,
       speed: 2.4,
       lifetime: 1.2,

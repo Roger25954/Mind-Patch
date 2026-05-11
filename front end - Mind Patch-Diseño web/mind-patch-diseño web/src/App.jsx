@@ -56,16 +56,16 @@ function OnboardingProgress({ step }) {
                 width: '22px', height: '22px', borderRadius: '6px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '11px', fontWeight: 700,
-                background: done ? '#3D7A5F' : active ? 'rgba(61,122,95,0.15)' : 'rgba(47,47,47,0.06)',
-                border: `1.5px solid ${done ? '#3D7A5F' : active ? '#7AAF97' : 'rgba(47,47,47,0.12)'}`,
-                color: done ? '#fff' : active ? '#2A5A45' : 'rgba(47,47,47,0.30)',
+                background: done ? '#f27059' : active ? 'rgba(242,112,89,0.12)' : 'rgba(218,219,198,0.06)',
+                border: `1.5px solid ${done ? '#f27059' : active ? 'rgba(242,112,89,0.5)' : 'rgba(218,219,198,0.12)'}`,
+                color: done ? '#fff' : active ? '#f27059' : 'rgba(218,219,198,0.3)',
                 transition: 'all .3s',
               }}>
                 {done ? '✓' : num}
               </div>
               <span style={{
                 fontSize: '11px', fontWeight: active ? 600 : 400,
-                color: done ? '#3D7A5F' : active ? '#2A5A45' : 'rgba(47,47,47,0.30)',
+                color: done ? '#f27059' : active ? 'rgba(218,219,198,0.9)' : 'rgba(218,219,198,0.3)',
                 transition: 'color .3s',
               }}>
                 {label}
@@ -74,7 +74,7 @@ function OnboardingProgress({ step }) {
             {i < steps.length - 1 && (
               <div style={{
                 flex: 1, height: '1px',
-                background: done ? '#7AAF97' : 'rgba(47,47,47,0.10)',
+                background: done ? 'rgba(242,112,89,0.5)' : 'rgba(218,219,198,0.1)',
                 transition: 'background .3s',
               }} />
             )}
@@ -113,17 +113,30 @@ function App() {
     setUser(userData)
     setIsLoggedIn(true)
     setShowAuth(false)
-    // Arrancar onboarding desde paso 1
-    setOnboardStep(1)
-    setFormData(INITIAL_FORM)
-    setShowOnboarding(true)
+    if (userData?.tiene_onboarding) {
+      // Onboarding ya completado → ir directo a juegos
+      setFormData(prev => ({ ...prev, userType: userData.userType || '' }))
+      setView('games')
+    } else {
+      setOnboardStep(1)
+      setFormData(INITIAL_FORM)
+      setShowOnboarding(true)
+    }
   }
 
-  const handleOnboardNext = () => {
+  const handleOnboardNext = async () => {
     if (onboardStep < 3) {
       setOnboardStep(s => s + 1)
     } else {
-      // Onboarding completo → ir a GameMenu
+      // Guardar onboarding en BD
+      try {
+        const token = localStorage.getItem('mp_token')
+        await fetch('http://localhost:3000/api/auth/profile/onboarding', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': token },
+          body: JSON.stringify(formData),
+        })
+      } catch (_) {}
       setShowOnboarding(false)
       setView('games')
     }
@@ -221,7 +234,7 @@ function App() {
                 position: 'relative', zIndex: 1,
                 width: '100%', maxWidth: '560px', margin: '0 24px',
                 borderRadius: '24px', overflow: 'hidden',
-                background: '#FAFBF9',
+                background: '#1A1A10',
                 boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08)',
                 maxHeight: '90vh', overflowY: 'auto',
               }}

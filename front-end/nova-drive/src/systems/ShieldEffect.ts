@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import ParticleSystem from './ParticleSystem';
 import type { ParticleConfig } from './ParticleSystem';
+import { assetUrl } from '../assetUrl';
 
 export default class ShieldEffect {
   private scene: THREE.Scene;
@@ -72,7 +73,7 @@ export default class ShieldEffect {
     const cfg: ParticleConfig = {
       position: position.clone(),
       count: 32,
-      texture: '/textures/glow.png',
+      texture: assetUrl('/textures/glow.png'),
       color: 0x4fc3f7,
       speed: 1.5,
       lifetime: this.duration,

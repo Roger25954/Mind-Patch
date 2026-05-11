@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import MetricsSystem from '../systems/MetricsSystem';
 import AudioManager  from '../systems/AudioManager';
 import type { SessionMetrics } from '../types';
+import { assetUrl } from '../assetUrl';
 
 // Duración total de la animación en segundos
 const ANIM_DURATION = 8;
@@ -79,7 +80,7 @@ export default class EndingScene {
       blending: THREE.AdditiveBlending, depthWrite: false,
       vertexColors: false,
     });
-    new THREE.TextureLoader().load('/textures/glow.png', (t) => { mat.map = t; mat.needsUpdate = true; });
+    new THREE.TextureLoader().load(assetUrl('/textures/glow.png'), (t) => { mat.map = t; mat.needsUpdate = true; });
 
     this.points = new THREE.Points(geo, mat);
     this.scene.add(this.points);
@@ -241,6 +242,14 @@ export default class EndingScene {
       // Mostrar resumen y botón
       const sessionData = this.metrics.getSessionMetrics();
       this.showSummary(sessionData);
+
+      // Enviar métricas a la app principal si el juego está embebido en un iframe
+      try {
+        window.parent.postMessage(
+          { type: 'MINDPATCH_GAME_COMPLETE', gameId: 'nova-drive', metrics: sessionData },
+          '*'
+        );
+      } catch (_) {}
 
       this.msgEl.textContent   = '✦  MISIÓN COMPLETADA  ✦';
       this.msgEl.style.opacity = '1';

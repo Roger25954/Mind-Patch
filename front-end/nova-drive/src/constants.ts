@@ -1,5 +1,6 @@
 import { Zone } from './types';
 import type { GameConfig } from './types';
+import { assetUrl } from './assetUrl';
 
 // ════════════════════════════════════════════════════════════════════════════
 // Configuración central del juego
@@ -11,85 +12,84 @@ export const GAME_CONFIG: GameConfig = {
   itemIntervalMs:   2000,   // ms entre ítems
   stimulusWindowMs: 1500,   // ventana de respuesta
 
- // En constants.ts
   zones: [
-    { 
-        name: Zone.EARTH, 
-        threshold: 0.0, 
-        skybox: '/skyboxes/skybox_earth_moon/', 
-        bgm: '/audio/bgm_earth.ogg',
-        planet: '/models/planet_earth.glb' // <--- Añade esto
+    {
+      name:      Zone.EARTH,
+      threshold: 0.0,
+      skybox:    assetUrl('/skyboxes/skybox_earth_moon/'),
+      bgm:       'bgm_earth',
+      planet:    assetUrl('/models/planet_earth.glb'),
     },
-    { 
-        name: Zone.MOON, 
-        threshold: 0.25, 
-        skybox: '/skyboxes/skybox_earth_moon/', 
-        bgm: '/audio/bgm_moon.ogg',
-        planet: '/models/planet_moon.glb' // <--- Añade esto
+    {
+      name:      Zone.MOON,
+      threshold: 0.25,
+      skybox:    assetUrl('/skyboxes/skybox_earth_moon/'),
+      bgm:       'bgm_moon',
+      planet:    assetUrl('/models/planet_moon.glb'),
     },
-    { 
-        name: Zone.MARS, 
-        threshold: 0.50, 
-        skybox: '/skyboxes/skybox_mars_jupyther/', 
-        bgm: '/audio/bgm_mars.ogg',
-        planet: '/models/planet_mars.glb' // <--- Añade esto
+    {
+      name:      Zone.MARS,
+      threshold: 0.50,
+      skybox:    assetUrl('/skyboxes/skybox_mars_jupyther/'),
+      bgm:       'bgm_mars',
+      planet:    assetUrl('/models/planet_mars.glb'),
     },
-    { 
-        name: Zone.JUPITER, 
-        threshold: 0.75, 
-        skybox: '/skyboxes/skybox_mars_jupyther/', 
-        bgm: '/audio/bgm_jupiter.ogg',
-        planet: '/models/planet_jupyther.glb' // <--- Añade esto
+    {
+      name:      Zone.JUPITER,
+      threshold: 0.75,
+      skybox:    assetUrl('/skyboxes/skybox_mars_jupyther/'),
+      bgm:       'bgm_jupiter',
+      planet:    assetUrl('/models/planet_jupyther.glb'),
     },
   ],
 };
 
 // ════════════════════════════════════════════════════════════════════════════
-// Rutas de todos los assets (relativas a /public)
+// Rutas de todos los assets
 // ════════════════════════════════════════════════════════════════════════════
 export const ASSET_PATHS = {
 
   // ── Modelos 3D ────────────────────────────────────────────────────────────
   models: {
-    player_ship:       '/models/player_ship.glb',
-    star_collectible:  '/models/star_collectible.glb',
-    asteroid_1:        '/models/asteroid_1.glb',
-    asteroid_2:        '/models/asteroid_2.glb',
-    asteroid_3:        '/models/asteroid_3.glb',
-    planet_earth:      '/models/planet_earth.glb',
-    planet_moon:       '/models/planet_moon.glb',
-    planet_mars:       '/models/planet_mars.glb',
-    planet_jupiter:    '/models/planet_jupiter.glb',
+    player_ship:      assetUrl('/models/space_shuttle.glb'),   // space_shuttle es el archivo real
+    star_collectible: assetUrl('/models/star_collectible.glb'),
+    asteroid_1:       assetUrl('/models/asteroid_1.glb'),
+    asteroid_2:       assetUrl('/models/asteroid_2.glb'),
+    asteroid_3:       assetUrl('/models/asteroid_1.glb'),      // asteroid_3 no existe → fallback
+    planet_earth:     assetUrl('/models/planet_earth.glb'),
+    planet_moon:      assetUrl('/models/planet_moon.glb'),
+    planet_mars:      assetUrl('/models/planet_mars.glb'),
+    planet_jupiter:   assetUrl('/models/planet_jupyther.glb'), // jupyther es el nombre real del archivo
   },
 
-  // ── Skyboxes (carpeta con 6 imágenes px/nx/py/ny/pz/nz .jpg) ─────────────
+  // ── Skyboxes ──────────────────────────────────────────────────────────────
   skyboxes: {
-    earth:   '/skyboxes/skybox_earth_moon/',
-    moon:    '/skyboxes/skybox_earth_moon/',
-    mars:    '/skyboxes/skybox_mars_jupyther/',
-    jupiter: '/skyboxes/skybox_mars_jupyther/',
+    earth:   assetUrl('/skyboxes/skybox_earth_moon/'),
+    moon:    assetUrl('/skyboxes/skybox_earth_moon/'),
+    mars:    assetUrl('/skyboxes/skybox_mars_jupyther/'),
+    jupiter: assetUrl('/skyboxes/skybox_mars_jupyther/'),
   },
 
   // ── Texturas de partículas ────────────────────────────────────────────────
   textures: {
-    spark:   '/textures/spark.png',
-    glow:    '/textures/glow.png',
-    debris:  '/textures/debris.png',
-    smoke:   '/textures/smoke.png',
+    spark:  assetUrl('/textures/star.png'),    // spark.png no existe → usar star.png
+    glow:   assetUrl('/textures/glow.png'),
+    debris: assetUrl('/textures/debris.png'),
+    smoke:  assetUrl('/textures/smoke.png'),
   },
 
-  // ── Audio ─────────────────────────────────────────────────────────────────
+  // ── Audio (archivos no incluidos; AudioManager maneja el fallo con timeout) ──
   audio: {
-    bgm_earth:          '/audio/bgm_earth.ogg',
-    bgm_moon:           '/audio/bgm_moon.ogg',
-    bgm_mars:           '/audio/bgm_mars.ogg',
-    bgm_jupiter:        '/audio/bgm_jupiter.ogg',
-    sfx_star_collect:   '/audio/sfx_star_collect.ogg',
-    sfx_shield_activate:'/audio/sfx_shield_activate.ogg',
-    sfx_shield_hit:     '/audio/sfx_shield_hit.ogg',
-    sfx_asteroid_damage:'/audio/sfx_asteroid_damage.ogg',
-    sfx_warp_start:     '/audio/sfx_warp_start.ogg',
-    sfx_warp_end:       '/audio/sfx_warp_end.ogg',
-    sfx_warning:        '/audio/sfx_warning.ogg',
+    bgm_earth:           assetUrl('/audio/bgm_earth.ogg'),
+    bgm_moon:            assetUrl('/audio/bgm_moon.ogg'),
+    bgm_mars:            assetUrl('/audio/bgm_mars.ogg'),
+    bgm_jupiter:         assetUrl('/audio/bgm_jupiter.ogg'),
+    sfx_star_collect:    assetUrl('/audio/sfx_star_collect.ogg'),
+    sfx_shield_activate: assetUrl('/audio/sfx_shield_activate.ogg'),
+    sfx_shield_hit:      assetUrl('/audio/sfx_shield_hit.ogg'),
+    sfx_asteroid_damage: assetUrl('/audio/sfx_asteroid_damage.ogg'),
+    sfx_warp_start:      assetUrl('/audio/sfx_warp_start.ogg'),
+    sfx_warp_end:        assetUrl('/audio/sfx_warp_end.ogg'),
+    sfx_warning:         assetUrl('/audio/sfx_warning.ogg'),
   },
-} as const;
+};

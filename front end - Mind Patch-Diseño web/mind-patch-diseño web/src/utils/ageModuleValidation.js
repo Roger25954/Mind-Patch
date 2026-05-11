@@ -1,49 +1,18 @@
-/**
- * Rangos de edad por módulo (deben coincidir con el perfil elegido en el paso 2).
- * - Niño: 4–11
- * - Adolescente: 11–17
- * - Adulto: 18+
- */
-export const AGE_RANGES = {
-  child: { min: 4, max: 11, label: '4 y 11' },
-  adolescent: { min: 11, max: 17, label: '11 y 17' },
-  adult: { min: 18, max: 120, label: '18 o más' },
-}
+// Valida que la edad ingresada sea consistente con el tipo de usuario seleccionado.
+// Devuelve un mensaje de error si hay discrepancia, o cadena vacía si todo está bien.
 
-/**
- * @param {'adult' | 'adolescent' | 'child' | ''} userType
- * @param {string | number} ageRaw
- * @returns {string} Mensaje de error vacío si es válido
- */
-export function getAgeMismatchMessage(userType, ageRaw) {
-  if (!userType) return 'Selecciona un perfil en el paso anterior.'
+export function getAgeMismatchMessage(userType, age) {
+  const n = parseInt(age, 10)
+  if (!userType || isNaN(n)) return ''
 
-  const age = typeof ageRaw === 'number' ? ageRaw : Number(String(ageRaw).trim())
+  if (userType === 'child' && n >= 13)
+    return 'La edad no corresponde al perfil de Niño/Niña (menores de 13 años).'
 
-  if (ageRaw === '' || ageRaw == null || Number.isNaN(age) || age < 1) {
-    return 'Indica una edad válida.'
-  }
+  if (userType === 'adolescent' && (n < 13 || n > 17))
+    return 'La edad no corresponde al perfil de Adolescente (13 a 17 años).'
 
-  const r = AGE_RANGES[userType]
-  if (!r) return 'Perfil no reconocido.'
-
-  if (age < r.min || age > r.max) {
-    if (userType === 'child') {
-      return `Para el módulo Niño, la edad debe estar entre ${r.min} y ${r.max} años.`
-    }
-    if (userType === 'adolescent') {
-      return `Para el módulo Adolescente, la edad debe estar entre ${r.min} y ${r.max} años.`
-    }
-    return `Para el módulo Adulto, la edad debe ser de ${r.min} años en adelante.`
-  }
+  if (userType === 'adult' && n < 18)
+    return 'La edad no corresponde al perfil de Adulto (18 años o más).'
 
   return ''
-}
-
-/**
- * @param {'adult' | 'adolescent' | 'child' | ''} userType
- * @param {string | number} ageRaw
- */
-export function ageMatchesModule(userType, ageRaw) {
-  return getAgeMismatchMessage(userType, ageRaw) === ''
 }

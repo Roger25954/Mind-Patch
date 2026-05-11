@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Zone } from '../types';
+import { assetUrl } from '../assetUrl';
 
 const ZONE_NAMES: Record<Zone, string> = {
   [Zone.EARTH]:   'TIERRA',
@@ -70,10 +71,10 @@ export default class HyperspaceScene {
     });
 
     texLoader.load(
-      '/textures/glow.png',
+      assetUrl('/textures/glow.png'),
       (tex) => { mat.map = tex; mat.needsUpdate = true; },
       undefined,
-      () => texLoader.load('/textures/smoke.png', (tex) => { mat.map = tex; mat.needsUpdate = true; })
+      () => texLoader.load(assetUrl('/textures/smoke.png'), (tex) => { mat.map = tex; mat.needsUpdate = true; })
     );
 
     this.points = new THREE.Points(geo, mat);

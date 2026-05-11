@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import gsap from 'gsap';
 import ParticleSystem from '../systems/ParticleSystem';
 import ShieldEffect from '../systems/ShieldEffect';
+import { assetUrl } from '../assetUrl';
 
 export default class StarItem {
   public isExpired = false;
@@ -22,7 +23,7 @@ export default class StarItem {
   }
 
   private load() {
-    const url = '/models/star_collectible.glb';
+    const url = assetUrl('/models/star_collectible.glb');
     this.loader.load(
       url,
       (gltf: any) => {
@@ -97,7 +98,7 @@ export default class StarItem {
     particleSystem.emit({
       position: worldPos,
       count: 24,
-      texture: '/textures/spark.png',
+      texture: assetUrl('/textures/star.png'),
       color: 0xffd700,
       speed: 1.6,
       lifetime: 0.8,
@@ -122,7 +123,7 @@ export default class StarItem {
     particleSystem.emit({
       position: worldPos,
       count: 20,
-      texture: '/textures/spark.png',
+      texture: assetUrl('/textures/star.png'),
       color: 0xff4444, // Reflejo rojo o neutro para indicar error
       speed: 2,
       lifetime: 1.0,

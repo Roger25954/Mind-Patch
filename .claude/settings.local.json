@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Emilio\\\\Desktop\\\\Mind-Patch\\\\front end - Mind Patch-Diseño web\\\\mind-patch-diseño web\\\\src\\\\components\" -Recurse -File | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Emilio\\\\Desktop\\\\Mind-Patch\\\\db\" -File | ForEach-Object { $_.FullName })"
+    ]
+  }
+}
