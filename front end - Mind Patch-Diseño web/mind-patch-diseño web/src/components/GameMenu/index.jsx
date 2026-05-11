@@ -139,8 +139,14 @@ Instrucciones de personalización:
       catch { setMessages(prev => [...prev, { role: 'ai', content: `Error del servidor: ${text_body.slice(0, 200)}` }]); return }
 
       setUsosHoy(incrementUsage())
-      const content = data.resultado || data.respuesta || data.error || 'Sin respuesta.'
-      setMessages(prev => [...prev, { role: 'ai', content }])
+      if (data.tipo === 'tarjetas' && Array.isArray(data.tarjetas)) {
+        setMessages(prev => [...prev, { role: 'ai', tipo: 'tarjetas', tarjetas: data.tarjetas }])
+      } else if (data.tipo === 'quiz' && Array.isArray(data.preguntas)) {
+        setMessages(prev => [...prev, { role: 'ai', tipo: 'quiz', preguntas: data.preguntas }])
+      } else {
+        const content = data.resultado || data.respuesta || data.error || 'Sin respuesta.'
+        setMessages(prev => [...prev, { role: 'ai', content }])
+      }
 
     } catch (err) {
       setMessages(prev => [...prev, { role: 'ai', content: err.message?.includes('fetch') ? 'No se pudo conectar con el servidor.' : `Error: ${err.message}` }])
