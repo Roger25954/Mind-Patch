@@ -1,37 +1,43 @@
 // components/onboarding/Step1Consent.jsx
+// Paso 1 — Consentimiento informado.
+// Versión modal: sin wrapper propio ni StepPills (la barra va en App.jsx).
+
 import { useState } from 'react'
 
-function ConsentBlock({ title, checked, onToggle, children }) {
+function ConsentBlock({ id, icon, title, checked, onToggle, children }) {
   return (
     <div
       style={{
-        border: `1.5px solid ${checked ? 'rgba(242,112,89,0.5)' : 'rgba(218,219,198,0.12)'}`,
+        border: `1.5px solid ${checked ? '#3D7A5F' : '#E2E7E4'}`,
         borderRadius: '12px',
         padding: '14px',
         marginBottom: '10px',
         transition: 'border-color .2s',
-        background: checked ? 'rgba(242,112,89,0.05)' : 'rgba(218,219,198,0.03)',
+        background: checked ? 'rgba(61,122,95,0.03)' : '#fff',
       }}
     >
       <div
         onClick={onToggle}
         style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', userSelect: 'none' }}
       >
+        {/* Checkbox */}
         <div style={{
           width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0,
-          border: `2px solid ${checked ? '#f27059' : 'rgba(218,219,198,0.25)'}`,
-          background: checked ? '#f27059' : 'transparent',
+          border: `2px solid ${checked ? '#3D7A5F' : '#E2E7E4'}`,
+          background: checked ? '#3D7A5F' : '#fff',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           transition: 'all .2s', marginTop: '1px',
           color: '#fff', fontSize: '11px', fontWeight: 700,
         }}>
           {checked && '✓'}
         </div>
-        <div style={{ fontSize: '13px', fontWeight: 600, color: '#DADBC6' }}>
-          {title}
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: '#1C2420' }}>
+            {icon} {title}
+          </div>
         </div>
       </div>
-      <div style={{ fontSize: '12px', color: 'rgba(218,219,198,0.55)', lineHeight: 1.65, marginTop: '10px', paddingLeft: '30px' }}>
+      <div style={{ fontSize: '12px', color: '#4A5652', lineHeight: 1.65, marginTop: '10px', paddingLeft: '30px' }}>
         {children}
       </div>
     </div>
@@ -45,16 +51,16 @@ export default function Step1Consent({ onNext, onBack }) {
   return (
     <div>
       <div style={{ marginBottom: '18px', marginTop: '12px' }}>
-        <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.5rem', color: '#DADBC6', margin: '0 0 6px', lineHeight: 1.2 }}>
+        <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.5rem', color: '#1C2420', margin: '0 0 6px', lineHeight: 1.2 }}>
           Consentimiento informado
         </h2>
-        <p style={{ fontSize: '13px', color: 'rgba(218,219,198,0.5)', margin: 0, lineHeight: 1.6 }}>
-          Necesitamos tu consentimiento en dos areas antes de continuar.
+        <p style={{ fontSize: '13px', color: '#4A5652', margin: 0, lineHeight: 1.6 }}>
+          Necesitamos tu consentimiento en dos áreas antes de continuar.
         </p>
       </div>
 
       <ConsentBlock
-        title="Datos personales"
+        icon="🔒" title="Datos personales"
         checked={dataOk} onToggle={() => setDataOk(v => !v)}
       >
         <p style={{ margin: '0 0 6px' }}>
@@ -68,7 +74,7 @@ export default function Step1Consent({ onNext, onBack }) {
       </ConsentBlock>
 
       <ConsentBlock
-        title="Orientación por IA"
+        icon="🤖" title="Orientación por IA"
         checked={aiOk} onToggle={() => setAiOk(v => !v)}
       >
         <p style={{ margin: '0 0 6px' }}>
@@ -82,9 +88,9 @@ export default function Step1Consent({ onNext, onBack }) {
       </ConsentBlock>
 
       <div style={{
-        background: 'rgba(218,219,198,0.05)', borderRadius: '10px',
-        padding: '10px 14px', fontSize: '11px', color: 'rgba(218,219,198,0.45)',
-        lineHeight: 1.6, borderLeft: '3px solid rgba(242,112,89,0.4)', margin: '14px 0 20px',
+        background: '#F2F4F1', borderRadius: '10px',
+        padding: '10px 14px', fontSize: '11px', color: '#4A5652',
+        lineHeight: 1.6, borderLeft: '3px solid #7AAF97', margin: '14px 0 20px',
       }}>
         Al aceptar confirmas que eres mayor de 18 años, o actúas como tutor legal.
         Esta plataforma no reemplaza la evaluación profesional.
@@ -93,28 +99,22 @@ export default function Step1Consent({ onNext, onBack }) {
       <div style={{ display: 'flex', gap: '10px' }}>
         <button
           onClick={onBack}
-          style={{
-            flex: 1, padding: '11px', borderRadius: '999px',
-            border: '1px solid rgba(218,219,198,0.18)', background: 'transparent',
-            color: 'rgba(218,219,198,0.6)', fontSize: '13px', fontWeight: 500,
-            cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color 0.2s',
-          }}
+          style={{ flex: 1, padding: '11px', borderRadius: '10px', border: '1.5px solid #E2E7E4', background: 'none', color: '#4A5652', fontSize: '13px', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
-          Atras
+          ← Atrás
         </button>
         <button
           onClick={onNext}
           disabled={!dataOk || !aiOk}
           style={{
-            flex: 2, padding: '11px', borderRadius: '999px', border: 'none',
-            background: dataOk && aiOk ? '#f27059' : 'rgba(218,219,198,0.08)',
-            color: dataOk && aiOk ? '#fff' : 'rgba(218,219,198,0.3)',
-            fontSize: '13px', fontWeight: 600,
-            cursor: dataOk && aiOk ? 'pointer' : 'not-allowed',
+            flex: 2, padding: '11px', borderRadius: '10px', border: 'none',
+            background: dataOk && aiOk ? '#3D7A5F' : '#E2E7E4',
+            color: dataOk && aiOk ? '#fff' : '#8A9690',
+            fontSize: '13px', fontWeight: 600, cursor: dataOk && aiOk ? 'pointer' : 'not-allowed',
             transition: 'all .2s', fontFamily: 'inherit',
           }}
         >
-          Continuar
+          Continuar →
         </button>
       </div>
     </div>

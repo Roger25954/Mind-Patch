@@ -1,17 +1,13 @@
 // components/onboarding/Step2UserType.jsx
-const USER_TYPES = [
-  { id: 'adult',      name: 'Adulto',       desc: '18 años o más. Completa la evaluación directamente.' },
-  { id: 'adolescent', name: 'Adolescente',  desc: '12–17 años. Flujo mixto: adolescente + tutor.' },
-  { id: 'child',      name: 'Niño / Niña',  desc: 'Hasta 11 años. El padre o tutor responde.' },
-]
+// Paso 2 — ¿Para quién es esta evaluación?
+// Adapta el flujo para adulto, adolescente o niño.
+// Si es menor, muestra bloque de datos del tutor.
 
-const inputStyle = {
-  width: '100%', padding: '9px 12px',
-  border: '1px solid rgba(218,219,198,0.18)', borderRadius: '10px',
-  fontSize: '13px', color: '#DADBC6', background: 'rgba(218,219,198,0.05)',
-  outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-  transition: 'border-color 0.2s',
-}
+const USER_TYPES = [
+  { id: 'adult',      icon: '🧑', name: 'Adulto',       desc: '18 años o más. Completa la evaluación directamente.' },
+  { id: 'adolescent', icon: '🧒', name: 'Adolescente',  desc: '12–17 años. Flujo mixto: adolescente + tutor.' },
+  { id: 'child',      icon: '👦', name: 'Niño / Niña',  desc: 'Hasta 11 años. El padre o tutor responde.' },
+]
 
 export default function Step2UserType({ onNext, onBack, data, setData }) {
   const needsTutor = data.userType === 'adolescent' || data.userType === 'child'
@@ -22,14 +18,15 @@ export default function Step2UserType({ onNext, onBack, data, setData }) {
   return (
     <div>
       <div style={{ marginBottom: '18px', marginTop: '12px' }}>
-        <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.5rem', color: '#DADBC6', margin: '0 0 6px', lineHeight: 1.2 }}>
+        <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.5rem', color: '#1C2420', margin: '0 0 6px', lineHeight: 1.2 }}>
           ¿Para quién es la evaluación?
         </h2>
-        <p style={{ fontSize: '13px', color: 'rgba(218,219,198,0.5)', margin: 0, lineHeight: 1.6 }}>
+        <p style={{ fontSize: '13px', color: '#4A5652', margin: 0, lineHeight: 1.6 }}>
           El flujo se adapta automáticamente según el perfil seleccionado.
         </p>
       </div>
 
+      {/* Tarjetas de perfil */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '16px' }}>
         {USER_TYPES.map(t => {
           const active = data.userType === t.id
@@ -39,30 +36,32 @@ export default function Step2UserType({ onNext, onBack, data, setData }) {
               onClick={() => setData(d => ({ ...d, userType: t.id }))}
               style={{
                 padding: '16px 10px',
-                border: `1.5px solid ${active ? 'rgba(242,112,89,0.6)' : 'rgba(218,219,198,0.12)'}`,
+                border: `2px solid ${active ? '#3D7A5F' : '#E2E7E4'}`,
                 borderRadius: '14px',
-                background: active ? 'rgba(242,112,89,0.08)' : 'rgba(218,219,198,0.03)',
+                background: active ? 'rgba(61,122,95,0.06)' : '#fff',
                 cursor: 'pointer',
                 textAlign: 'center',
                 transition: 'all .2s',
                 fontFamily: 'inherit',
               }}
             >
-              <div style={{ fontSize: '13px', fontWeight: 600, color: active ? '#f27059' : '#DADBC6', marginBottom: '4px' }}>{t.name}</div>
-              <div style={{ fontSize: '11px', color: 'rgba(218,219,198,0.45)', lineHeight: 1.4 }}>{t.desc}</div>
+              <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{t.icon}</div>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: '#1C2420', marginBottom: '4px' }}>{t.name}</div>
+              <div style={{ fontSize: '11px', color: '#8A9690', lineHeight: 1.4 }}>{t.desc}</div>
             </button>
           )
         })}
       </div>
 
+      {/* Bloque de tutor (solo para menores) */}
       {needsTutor && (
-        <div style={{ background: 'rgba(218,219,198,0.04)', borderRadius: '12px', padding: '14px', marginBottom: '16px', border: '1px solid rgba(218,219,198,0.1)' }}>
-          <p style={{ fontSize: '12px', color: 'rgba(218,219,198,0.5)', margin: '0 0 12px', lineHeight: 1.6 }}>
+        <div style={{ background: '#F2F4F1', borderRadius: '12px', padding: '14px', marginBottom: '16px' }}>
+          <p style={{ fontSize: '12px', color: '#4A5652', margin: '0 0 12px', lineHeight: 1.6 }}>
             Para este perfil, un padre o tutor completará las secciones de cuestionario.
           </p>
 
           <div style={{ marginBottom: '10px' }}>
-            <label style={{ fontSize: '11px', fontWeight: 500, color: 'rgba(218,219,198,0.5)', display: 'block', marginBottom: '5px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '12px', fontWeight: 500, color: '#4A5652', display: 'block', marginBottom: '5px' }}>
               Nombre del tutor
             </label>
             <input
@@ -70,22 +69,31 @@ export default function Step2UserType({ onNext, onBack, data, setData }) {
               placeholder="Nombre completo"
               value={data.tutorName}
               onChange={set('tutorName')}
-              style={inputStyle}
-              onFocus={e => e.target.style.borderColor = 'rgba(218,219,198,0.35)'}
-              onBlur={e => e.target.style.borderColor = 'rgba(218,219,198,0.18)'}
+              style={{
+                width: '100%', padding: '9px 12px',
+                border: '1.5px solid #E2E7E4', borderRadius: '8px',
+                fontSize: '13px', color: '#1C2420', background: '#fff',
+                outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
+              }}
+              onFocus={e => e.target.style.borderColor = '#7AAF97'}
+              onBlur={e => e.target.style.borderColor = '#E2E7E4'}
             />
           </div>
 
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 500, color: 'rgba(218,219,198,0.5)', display: 'block', marginBottom: '5px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '12px', fontWeight: 500, color: '#4A5652', display: 'block', marginBottom: '5px' }}>
               Relación con el menor
             </label>
             <select
               value={data.tutorRel}
               onChange={set('tutorRel')}
-              style={{ ...inputStyle, appearance: 'none' }}
-              onFocus={e => e.target.style.borderColor = 'rgba(218,219,198,0.35)'}
-              onBlur={e => e.target.style.borderColor = 'rgba(218,219,198,0.18)'}
+              style={{
+                width: '100%', padding: '9px 12px',
+                border: '1.5px solid #E2E7E4', borderRadius: '8px',
+                fontSize: '13px', color: '#1C2420', background: '#fff',
+                outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
+                appearance: 'none',
+              }}
             >
               <option value="">Selecciona...</option>
               <option>Madre</option>
@@ -101,28 +109,23 @@ export default function Step2UserType({ onNext, onBack, data, setData }) {
       <div style={{ display: 'flex', gap: '10px' }}>
         <button
           onClick={onBack}
-          style={{
-            flex: 1, padding: '11px', borderRadius: '999px',
-            border: '1px solid rgba(218,219,198,0.18)', background: 'transparent',
-            color: 'rgba(218,219,198,0.6)', fontSize: '13px', fontWeight: 500,
-            cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color 0.2s',
-          }}
+          style={{ flex: 1, padding: '11px', borderRadius: '10px', border: '1.5px solid #E2E7E4', background: 'none', color: '#4A5652', fontSize: '13px', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
-          Atras
+          ← Atrás
         </button>
         <button
           onClick={onNext}
           disabled={!canContinue}
           style={{
-            flex: 2, padding: '11px', borderRadius: '999px', border: 'none',
-            background: canContinue ? '#f27059' : 'rgba(218,219,198,0.08)',
-            color: canContinue ? '#fff' : 'rgba(218,219,198,0.3)',
+            flex: 2, padding: '11px', borderRadius: '10px', border: 'none',
+            background: canContinue ? '#3D7A5F' : '#E2E7E4',
+            color: canContinue ? '#fff' : '#8A9690',
             fontSize: '13px', fontWeight: 600,
             cursor: canContinue ? 'pointer' : 'not-allowed',
             transition: 'all .2s', fontFamily: 'inherit',
           }}
         >
-          Continuar
+          Continuar →
         </button>
       </div>
     </div>

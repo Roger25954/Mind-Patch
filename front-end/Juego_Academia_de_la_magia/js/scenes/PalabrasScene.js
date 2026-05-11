@@ -167,7 +167,7 @@ class PalabrasScene extends Phaser.Scene {
     const tiempoMs = this._tiempoMs - (this._timerBar.width / barW) * this._tiempoMs;
     const agotado  = tipo === null;
     const correcto = !agotado && tipo === item.tipo;
-    GameState.registrarPalabra(item.texto, item.tipo, tipo, correcto, Math.round(tiempoMs), agotado);
+    GameState.registrarPalabra(item.texto, item.tipo, item.frecuencia, tipo, correcto, Math.round(tiempoMs), agotado);
     this._actualizarMarcador(this._idx, correcto);
     if (agotado) {
       this._feedbackText.setStyle(TEXT_STYLES.feedback_warn).setText('⏳ Tiempo agotado');

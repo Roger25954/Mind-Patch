@@ -1,19 +1,17 @@
 // components/onboarding/Step3Context.jsx
+// Paso 3 — Contexto del usuario.
+// Muestra campos diferentes según userType y valida que la edad coincida con el módulo.
+//   adult      → campos completos (edad, escolaridad, ocupación, motivo, sliders)
+//   adolescent → edad, escolaridad, motivo, sliders (tutor ya registrado en paso 2)
+//   child      → edad del menor (4–11), motivo y sliders (tutor responde)
+
 import { useState } from 'react'
 import { getAgeMismatchMessage } from '../utils/ageModuleValidation'
-
-const inputStyle = {
-  width: '100%', padding: '9px 12px',
-  border: '1px solid rgba(218,219,198,0.18)', borderRadius: '10px',
-  fontSize: '13px', color: '#DADBC6', background: 'rgba(218,219,198,0.05)',
-  outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-  transition: 'border-color 0.2s',
-}
 
 function Field({ label, children }) {
   return (
     <div style={{ marginBottom: '12px' }}>
-      <label style={{ fontSize: '11px', fontWeight: 500, color: 'rgba(218,219,198,0.5)', display: 'block', marginBottom: '5px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+      <label style={{ fontSize: '12px', fontWeight: 500, color: '#4A5652', display: 'block', marginBottom: '5px' }}>
         {label}
       </label>
       {children}
@@ -25,9 +23,15 @@ function Input({ ...props }) {
   return (
     <input
       {...props}
-      style={{ ...inputStyle, ...props.style }}
-      onFocus={e => e.target.style.borderColor = 'rgba(218,219,198,0.35)'}
-      onBlur={e => e.target.style.borderColor = 'rgba(218,219,198,0.18)'}
+      style={{
+        width: '100%', padding: '9px 12px',
+        border: '1.5px solid #E2E7E4', borderRadius: '8px',
+        fontSize: '13px', color: '#1C2420', background: '#fff',
+        outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
+        ...props.style,
+      }}
+      onFocus={e => e.target.style.borderColor = '#7AAF97'}
+      onBlur={e => e.target.style.borderColor = '#E2E7E4'}
     />
   )
 }
@@ -36,32 +40,38 @@ function Select({ children, ...props }) {
   return (
     <select
       {...props}
-      style={{ ...inputStyle, appearance: 'none' }}
-      onFocus={e => e.target.style.borderColor = 'rgba(218,219,198,0.35)'}
-      onBlur={e => e.target.style.borderColor = 'rgba(218,219,198,0.18)'}
+      style={{
+        width: '100%', padding: '9px 12px',
+        border: '1.5px solid #E2E7E4', borderRadius: '8px',
+        fontSize: '13px', color: '#1C2420', background: '#fff',
+        outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
+        appearance: 'none',
+      }}
+      onFocus={e => e.target.style.borderColor = '#7AAF97'}
+      onBlur={e => e.target.style.borderColor = '#E2E7E4'}
     >
       {children}
     </select>
   )
 }
 
-function SliderRow({ label, minLabel, maxLabel, value, onChange }) {
+function SliderRow({ emoji, label, minLabel, maxLabel, value, onChange }) {
   const pct = ((value - 1) / 4) * 100
   return (
     <div style={{ marginBottom: '12px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(218,219,198,0.6)', marginBottom: '5px' }}>
-        <span>{label}</span>
-        <span style={{ fontWeight: 600, color: '#f27059' }}>{value}/5</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#4A5652', marginBottom: '5px' }}>
+        <span>{emoji} {label}</span>
+        <span style={{ fontWeight: 600, color: '#2A5A45' }}>{value}/5</span>
       </div>
       <input
         type="range" min="1" max="5" value={value}
         onChange={e => onChange(Number(e.target.value))}
         style={{
           WebkitAppearance: 'none', width: '100%', height: '4px', borderRadius: '2px', outline: 'none', cursor: 'pointer',
-          background: `linear-gradient(to right, #f27059 ${pct}%, rgba(218,219,198,0.15) ${pct}%)`,
+          background: `linear-gradient(to right, #3D7A5F ${pct}%, #E2E7E4 ${pct}%)`,
         }}
       />
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'rgba(218,219,198,0.3)', marginTop: '3px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#8A9690', marginTop: '3px' }}>
         <span>{minLabel}</span><span>{maxLabel}</span>
       </div>
     </div>
@@ -116,18 +126,19 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
   return (
     <div>
       <div style={{ marginBottom: '16px', marginTop: '12px' }}>
-        <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.5rem', color: '#DADBC6', margin: '0 0 6px', lineHeight: 1.2 }}>
+        <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.5rem', color: '#1C2420', margin: '0 0 6px', lineHeight: 1.2 }}>
           {isChild ? 'Cuéntanos sobre el menor' : 'Cuéntanos un poco sobre ti'}
         </h2>
-        <p style={{ fontSize: '13px', color: 'rgba(218,219,198,0.5)', margin: 0, lineHeight: 1.6 }}>
+        <p style={{ fontSize: '13px', color: '#4A5652', margin: 0, lineHeight: 1.6 }}>
           {isChild
             ? 'Esta información ayuda a adaptar la evaluación al perfil del niño o niña.'
             : 'Ayuda al sistema a adaptar la exploración y contextualizar los resultados.'}
         </p>
       </div>
 
-      <div style={{ background: 'rgba(218,219,198,0.04)', borderRadius: '14px', padding: '14px', marginBottom: '4px', border: '1px solid rgba(218,219,198,0.1)' }}>
+      <div style={{ background: '#F2F4F1', borderRadius: '14px', padding: '14px', marginBottom: '4px' }}>
 
+        {/* Edad — todos los perfiles (obligatoria; debe coincidir con el módulo del paso 2) */}
         {isChild ? (
           <Field label="Edad del niño o niña (4–11 años)">
             <Input
@@ -156,6 +167,7 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
           </div>
         )}
 
+        {/* Escolaridad — adulto y adolescente */}
         {!isChild && (
           <Field label="Nivel de escolaridad">
             <Select value={data.education} onChange={set('education')}>
@@ -181,6 +193,7 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
           </Field>
         )}
 
+        {/* Ocupación — solo adultos */}
         {isAdult && (
           <Field label="Ocupación actual (opcional)">
             <Input
@@ -190,6 +203,7 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
           </Field>
         )}
 
+        {/* Motivo — todos */}
         <Field label={isChild ? 'Motivo de la evaluación (según el tutor)' : 'Motivo principal de esta exploración'}>
           <Select value={data.reason} onChange={set('reason')}>
             <option value="">Selecciona el que más se acerque...</option>
@@ -197,13 +211,14 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
           </Select>
         </Field>
 
+        {/* Sliders — para todos, pero el label cambia */}
         <div style={{ marginTop: '4px' }}>
-          <div style={{ fontSize: '11px', fontWeight: 500, color: 'rgba(218,219,198,0.5)', marginBottom: '10px', letterSpacing: '1px', textTransform: 'uppercase' }}>
-            {isChild ? 'Niveles observados por el tutor' : 'Niveles actuales'}
+          <div style={{ fontSize: '12px', fontWeight: 500, color: '#4A5652', marginBottom: '10px' }}>
+            {isChild ? 'Niveles observados por el tutor' : 'Niveles actuales (arrastra el control)'}
           </div>
-          <SliderRow label="Calidad del sueño"      minLabel="Muy malo"  maxLabel="Excelente" value={data.sleep}     onChange={setSlider('sleep')} />
-          <SliderRow label="Nivel de ansiedad"      minLabel="Ninguna"   maxLabel="Muy alta"  value={data.anxiety}   onChange={setSlider('anxiety')} />
-          <SliderRow label="Dificultad de atención" minLabel="Ninguna"   maxLabel="Muy alta"  value={data.attention} onChange={setSlider('attention')} />
+          <SliderRow emoji="😴" label="Calidad del sueño"      minLabel="Muy malo"  maxLabel="Excelente" value={data.sleep}     onChange={setSlider('sleep')} />
+          <SliderRow emoji="😰" label="Nivel de ansiedad"      minLabel="Ninguna"   maxLabel="Muy alta"  value={data.anxiety}   onChange={setSlider('anxiety')} />
+          <SliderRow emoji="🎯" label="Dificultad de atención" minLabel="Ninguna"   maxLabel="Muy alta"  value={data.attention} onChange={setSlider('attention')} />
         </div>
       </div>
 
@@ -214,9 +229,9 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
             marginTop: '12px',
             padding: '10px 12px',
             borderRadius: '10px',
-            background: 'rgba(239,68,68,0.08)',
-            border: '1px solid rgba(239,68,68,0.2)',
-            color: '#ef4444',
+            background: 'rgba(192,83,58,0.08)',
+            border: '1px solid rgba(192,83,58,0.25)',
+            color: '#9B2C24',
             fontSize: '12px',
             lineHeight: 1.5,
           }}
@@ -228,28 +243,23 @@ export default function Step3Context({ onNext, onBack, data, setData }) {
       <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
         <button
           onClick={onBack}
-          style={{
-            flex: 1, padding: '11px', borderRadius: '999px',
-            border: '1px solid rgba(218,219,198,0.18)', background: 'transparent',
-            color: 'rgba(218,219,198,0.6)', fontSize: '13px', fontWeight: 500,
-            cursor: 'pointer', fontFamily: 'inherit', transition: 'border-color 0.2s',
-          }}
+          style={{ flex: 1, padding: '11px', borderRadius: '10px', border: '1.5px solid #E2E7E4', background: 'none', color: '#4A5652', fontSize: '13px', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
-          Atras
+          ← Atrás
         </button>
         <button
           onClick={handleSubmit}
           disabled={!canContinue}
           style={{
-            flex: 2, padding: '11px', borderRadius: '999px', border: 'none',
-            background: canContinue ? '#f27059' : 'rgba(218,219,198,0.08)',
-            color: canContinue ? '#fff' : 'rgba(218,219,198,0.3)',
+            flex: 2, padding: '11px', borderRadius: '10px', border: 'none',
+            background: canContinue ? '#3D7A5F' : '#E2E7E4',
+            color: canContinue ? '#fff' : '#8A9690',
             fontSize: '13px', fontWeight: 600,
             cursor: canContinue ? 'pointer' : 'not-allowed',
             transition: 'all .2s', fontFamily: 'inherit',
           }}
         >
-          Iniciar evaluación
+          Iniciar evaluación →
         </button>
       </div>
     </div>
