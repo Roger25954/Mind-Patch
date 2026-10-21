@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@import url('https://fonts.google.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --primary: #9A9F82;
+  --background: #DADBC6;
+  --accent: #BE7D57;
+  --text: #2F2F2F;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #DADBC6;
+  color: #2F2F2F;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #9A9F82;
+  color: #DADBC6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #DADBC6; }
+::-webkit-scrollbar-thumb { background: #9A9F82; border-radius: 2px; }
