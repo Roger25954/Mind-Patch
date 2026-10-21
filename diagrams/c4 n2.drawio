@@ -1,0 +1,86 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Página-1" id="gJRLnMspBNw3k4eb0YtM">
+    <mxGraphModel dx="1887" dy="1377" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-1" parent="1" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;labelBackgroundColor=none;fillColor=#21C0A5;strokeColor=#006658;fontColor=#000000;fontStyle=1;fontSize=17;" value="Aplicación API Backend (Node.js)" vertex="1">
+          <mxGeometry height="670.2127659574468" width="1211.09" x="244" y="213.1298992161254" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-2" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Aplicación Frontend&#xa;[Contenedor]" vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="699.0406116504854" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-3" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Base de Datos&#xa;[Contenedor]" vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="867.1822330097087" y="945.6606942889138" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-4" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Motor de IA Gemini&#xa;[Sistema Externo]" vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="279.27446601941745" y="945.6606942889138" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-5" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="APIs de Mapas&#xa;[Sistema Externo]" vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="1161.1361165048543" y="945.6606942889138" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-6" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Controlador API&#xa;[Express.js]&#xa;Enruta peticiones entrantes." vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="699.0406116504854" y="261.33818589025753" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-7" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Gestor de Seguridad&#xa;[JWT]&#xa;Valida roles y permisos." vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="279.27446601941745" y="507.08286674132137" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-8" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Procesador de Indicadores&#xa;[Lógica Node.js]&#xa;Calcula desviaciones y normaliza." vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="573.2283495145631" y="507.08286674132137" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-9" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Orquestador IA&#xa;[LangChain]&#xa;Construye prompts estructurados." vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="279.27446601941745" y="718.7290033594625" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-10" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Servicio de Canalización&#xa;[Lógica Node.js]&#xa;Busca especialistas médicos." vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="1161.1361165048543" y="507.08286674132137" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-11" parent="1" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#0050ef;strokeColor=#001DBC;fontColor=#ffffff;fontSize=17;verticalAlign=middle;" value="Capa de Acceso a Datos&#xa;[ORM SQL]&#xa;Gestiona persistencia." vertex="1">
+          <mxGeometry height="129.3393057110862" width="258.67941747572814" x="867.1822330097087" y="718.7290033594625" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-12" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-2" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=default;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-6" value="Envía métricas consolidadas (JSON)">
+          <mxGeometry relative="1" x="-0.5204" as="geometry">
+            <mxPoint y="-1" as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-13" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-6" style="startArrow=none;endArrow=block;exitX=0;exitY=0.5;rounded=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-7" value="Verifica tokens de sesión">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-14" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-6" style="startArrow=none;endArrow=block;entryX=0.5;entryY=0;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-8" value="Delega cálculos matemáticos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-15" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-8" style="startArrow=none;endArrow=block;exitX=0;exitY=1;rounded=0;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-9" value="Pasa datos estructurados">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="532.0748058252427" y="742.2452407614782" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-16" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-6" style="startArrow=none;endArrow=block;exitX=1;exitY=0.5;rounded=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-10" value="Solicita opciones de canalización">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-17" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-6" style="startArrow=none;endArrow=block;exitX=0.75;exitY=1;entryX=0.5;entryY=0;rounded=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-11" value="Coordina guardado de evaluaciones">
+          <mxGeometry relative="1" x="-0.1722" y="25" as="geometry">
+            <mxPoint y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-18" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-8" style="startArrow=none;endArrow=block;exitX=1;exitY=1;entryX=0.24;entryY=0;rounded=0;exitDx=0;exitDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-11" value="Guarda resultados procesados">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-19" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-11" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=default;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-3" value="Lee y escribe registros (SQL)">
+          <mxGeometry relative="1" x="0.4458" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-20" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-9" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0.01;rounded=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=default;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-4" value="Envía prompt anonimizado">
+          <mxGeometry relative="1" x="0.4458" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VB0UkTOpU6e2q3MNfyFm-21" edge="1" parent="1" source="VB0UkTOpU6e2q3MNfyFm-10" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#000066;fontColor=#000000;strokeWidth=4;fontSize=15;verticalAlign=middle;" target="VB0UkTOpU6e2q3MNfyFm-5" value="Consulta ubicaciones verificadas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

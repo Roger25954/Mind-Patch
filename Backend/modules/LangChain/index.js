@@ -1,0 +1,58 @@
+/*import "dotenv/config";
+import { GoogleGenAI } from "@google/genai";
+import readline from "node:readline";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+async function chat() {
+  rl.question("You: ", async (message) => {
+
+    if (message.toLowerCase() === "exit") {
+      rl.close();
+      return;
+    }
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-lite",
+      contents: message,
+    });
+
+    console.log("AI:", response.text);
+    chat();
+  });
+}
+
+chat();*/
+
+//version web
+
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_API_KEY
+});
+
+const enviarMensaje = async (mensaje, contexto = null) => {
+  const params = {
+    model: "gemini-3-flash-preview",
+    contents: mensaje,
+  };
+
+  if (contexto) {
+    params.config = { systemInstruction: contexto };
+  }
+
+  const response = await ai.models.generateContent(params);
+  return response.text;
+};
+
+module.exports = {
+  enviarMensaje
+};

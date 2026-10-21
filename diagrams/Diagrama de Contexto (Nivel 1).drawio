@@ -1,0 +1,80 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Página-1" id="WAt8ozF92JMGnoTn3-6e">
+    <mxGraphModel dx="2236" dy="1620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="u00enKtOEpt6MLLkINp--26" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="579.9985714285715" width="719.9958317399618" x="490" y="260" as="geometry" />
+        </mxCell>
+        <object placeholders="1" c4Name="Usuario Infantil" c4Type="Person" c4Description="Niño que interactúa con la plataforma a través de juegos y narrativa visual para detección temprana" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="u00enKtOEpt6MLLkINp--7">
+          <mxCell parent="u00enKtOEpt6MLLkINp--26" style="html=1;fontSize=14;dashed=0;whiteSpace=wrap;fillColor=#083F75;strokeColor=#06315C;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" vertex="1">
+            <mxGeometry height="180" width="200" x="39.99736137667304" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Usuario Adulto" c4Type="Person" c4Description="Persona que utiliza formularios progresivos para concientizar sobre su salud mental" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="u00enKtOEpt6MLLkINp--9">
+          <mxCell parent="u00enKtOEpt6MLLkINp--26" style="html=1;fontSize=14;dashed=0;whiteSpace=wrap;fillColor=#083F75;strokeColor=#06315C;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" vertex="1">
+            <mxGeometry height="180" width="200" x="479.9958317399618" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Plataforma de Tamizaje (IA)" c4Type="Software System" c4Description="Sistema web que gestiona pruebas de neurodivergencia, procesa datos y ofrece pre-diagnósticos" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="u00enKtOEpt6MLLkINp--10">
+          <mxCell parent="u00enKtOEpt6MLLkINp--26" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="239.99506692160614" y="255.35714285714283" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="u00enKtOEpt6MLLkINp--11" edge="1" parent="u00enKtOEpt6MLLkINp--26" source="u00enKtOEpt6MLLkINp--7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="u00enKtOEpt6MLLkINp--10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--20" connectable="0" parent="u00enKtOEpt6MLLkINp--11" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" value="Realiza juegos y toma de decisiones&lt;div&gt;[HTTPS]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2004" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--12" edge="1" parent="u00enKtOEpt6MLLkINp--26" source="u00enKtOEpt6MLLkINp--9" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="u00enKtOEpt6MLLkINp--10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--21" connectable="0" parent="u00enKtOEpt6MLLkINp--12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" value="Completa formularios de salud mental&lt;div&gt;[HTTPS]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1234" y="1" as="geometry">
+            <mxPoint x="15" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <object placeholders="1" c4Name="Google AI Studio / Gemini" c4Type="System External" c4Description="IA que analiza respuestas bajo el criterio DSM-5 y genera pre-diagnósticos estructurados" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="u00enKtOEpt6MLLkINp--13">
+          <mxCell parent="u00enKtOEpt6MLLkINp--26" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" y="459.9985714285715" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Base de Datos (MySQL)" c4Type="System External" c4Description="Almacena credenciales de usuarios, puntajes brutos y resultados generados por la IA" label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="u00enKtOEpt6MLLkINp--14">
+          <mxCell parent="u00enKtOEpt6MLLkINp--26" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="479.9958317399618" y="459.9985714285715" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="u00enKtOEpt6MLLkINp--16" edge="1" parent="u00enKtOEpt6MLLkINp--26" source="u00enKtOEpt6MLLkINp--10" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="u00enKtOEpt6MLLkINp--14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--24" connectable="0" parent="u00enKtOEpt6MLLkINp--16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" value="Registra usuarios y guarda&lt;div&gt;historial de evaluaciones,&lt;div&gt;[SQL]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.1585" y="1" as="geometry">
+            <mxPoint x="-18" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--17" edge="1" parent="u00enKtOEpt6MLLkINp--26" source="u00enKtOEpt6MLLkINp--10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;curved=1;fontSize=14;" target="u00enKtOEpt6MLLkINp--13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--22" connectable="0" parent="u00enKtOEpt6MLLkINp--17" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" value="Envía respuestas y prompts&lt;div&gt;especializados (LangChain),&lt;div&gt;[API]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.3006" y="6" as="geometry">
+            <mxPoint x="46" y="9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--19" edge="1" parent="u00enKtOEpt6MLLkINp--26" source="u00enKtOEpt6MLLkINp--13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;curved=1;fontSize=14;" target="u00enKtOEpt6MLLkINp--10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="336.70963671128106" y="492.1428571428571" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u00enKtOEpt6MLLkINp--23" connectable="0" parent="u00enKtOEpt6MLLkINp--19" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" value="Devuelve pre-diagnóstico y&amp;nbsp;&lt;div&gt;recomendaciones (JSON).&lt;div&gt;[JSON]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.1072" y="5" as="geometry">
+            <mxPoint x="7" y="-43" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

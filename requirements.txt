@@ -1,0 +1,40 @@
+# ==============================================================================
+# Mind-Patch - Requerimientos del Ecosistema (Node.js / Docker / PostgreSQL)
+# ==============================================================================
+# Nota: Mind-Patch es una plataforma Full-Stack basada en Node.js (Express/React)
+# y contenedores Docker. Este archivo documenta los requerimientos del entorno
+# y los paquetes NPM utilizados en cada módulo para mantener el estándar del
+# portafolio de proyectos.
+#
+# Para instalar las dependencias de cada servicio:
+#   npm install                          (Raíz: pg, dotenv)
+#   cd Backend && npm install            (Express 5, Sequelize, Passport, @google/genai)
+#   cd api-backend && npm install        (Express 5, pg, JWT, @google/generative-ai)
+#   cd langchain && npm install          (LangChain, @langchain/google-genai, @google/genai)
+#   docker compose up --build -d         (PostgreSQL 16 + Backend + Frontend)
+# ==============================================================================
+
+# --- Runtime & Infraestructura ---
+# node>=18.0.0
+# npm>=9.0.0
+# docker>=24.0.0
+# postgres==16.0
+
+# --- Dependencias NPM Principales (Referencia de Versiones) ---
+# express==5.2.1
+# pg==8.20.0
+# pg-hstore==2.3.4
+# sequelize==6.37.8
+# dotenv==17.4.2
+# cors==2.8.6
+# bcrypt==6.0.0
+# jsonwebtoken==9.0.3
+# passport==0.7.0
+# passport-google-oauth20==2.0.0
+# multer==2.1.1
+# axios==1.15.0
+# @google/genai==1.50.1
+# @google/generative-ai==0.24.1
+# langchain==1.2.30
+# @langchain/google-genai==2.1.24
+# @langchain/openai==1.2.12

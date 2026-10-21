@@ -1,0 +1,112 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.0 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.3.0">
+  <diagram name="Página-1" id="pwjeDmkihHaxKjrEfbqF">
+    <mxGraphModel dx="1860" dy="1350" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-45" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="790" width="960" x="70" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-23" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#F694C1;strokeColor=#AF45ED;fontColor=#095C86;fontSize=15;fontStyle=1" value="Capa de Datos" vertex="1">
+          <mxGeometry height="113.10010764262647" width="888.6089238845145" y="676.8998923573735" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-24" parent="5TNfugPb2gbSnnf4BZM9-45" style="strokeWidth=2;verticalAlign=top;labelBackgroundColor=none;fillColor=#F694C1;strokeColor=#AF45ED;fontColor=#095C86;fontSize=15;fontStyle=1" value="Servicios del Servidor" vertex="1">
+          <mxGeometry height="505.123789020452" width="793.7007874015749" x="166.2992125984252" y="108.84822389666307" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-25" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Frontend / Cliente" vertex="1">
+          <mxGeometry height="45.920344456404735" width="162.93963254593174" x="482.09973753280843" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-26" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="API Gateway - Next.js" vertex="1">
+          <mxGeometry height="45.920344456404735" width="182.25721784776906" x="472.02099737532814" y="142.0129171151776" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-27" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Validador de Esquemas - Zod" vertex="1">
+          <mxGeometry height="66.32938643702906" width="218.37270341207352" x="454.38320209973756" y="223.6490850376749" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-28" parent="5TNfugPb2gbSnnf4BZM9-45" style="rhombus;strokeWidth=2;whiteSpace=wrap;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Lógica de Negocio" vertex="1">
+          <mxGeometry height="156.46932185145317" width="154.54068241469818" x="486.29921259842524" y="327.39504843918183" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-29" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Cálculo de Baremos y Percentiles" vertex="1">
+          <mxGeometry height="66.32938643702906" width="218.37270341207352" x="195.6955380577428" y="526.3832077502691" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-30" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Generador de Reportes - React-PDF" vertex="1">
+          <mxGeometry height="66.32938643702906" width="218.37270341207352" x="712.230971128609" y="526.3832077502691" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-31" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Exportador de Datos - XLSX" vertex="1">
+          <mxGeometry height="45.920344456404735" width="214.1732283464567" x="456.0629921259843" y="536.5877287405812" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-32" parent="5TNfugPb2gbSnnf4BZM9-45" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="PostgreSQL - Supabase" vertex="1">
+          <mxGeometry height="70.58127018299245" width="146.98162729658793" x="113.38582677165354" y="698.1593110871904" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-33" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Cloud Storage - PDFs" vertex="1">
+          <mxGeometry height="45.920344456404735" width="174.6981627296588" x="604.7244094488188" y="710.064585575888" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-34" parent="5TNfugPb2gbSnnf4BZM9-45" style="whiteSpace=wrap;strokeWidth=2;labelBackgroundColor=none;fillColor=#660066;strokeColor=#AF45ED;fontColor=#33FFFF;fontSize=15;" value="Supabase Auth" vertex="1">
+          <mxGeometry height="45.920344456404735" width="136.9028871391076" y="536.5877287405812" as="geometry" />
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-35" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-25" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-26" value="Petición HTTPS + JWT">
+          <mxGeometry relative="1" x="-0.3628" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-36" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-26" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-27" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-37" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-27" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-28" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-38" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-28" style="curved=1;startArrow=none;endArrow=block;exitX=0;exitY=0.69;entryX=0.5;entryY=-0.01;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-29" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="304.88188976377955" y="505.123789020452" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-39" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-28" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.69;entryX=0.5;entryY=-0.01;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-30" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="821.4173228346457" y="505.123789020452" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-40" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-28" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=-0.01;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-31" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-41" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-29" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=1;entryY=-0.01;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-32" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="304.88188976377955" y="676.8998923573735" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-42" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-30" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.8;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-33" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="821.4173228346457" y="676.8998923573735" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-43" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-31" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0.2;entryY=0;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-33" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="563.5695538057743" y="676.8998923573735" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TNfugPb2gbSnnf4BZM9-44" edge="1" parent="5TNfugPb2gbSnnf4BZM9-45" source="5TNfugPb2gbSnnf4BZM9-34" style="curved=1;dashed=1;dashPattern=2 3;startArrow=none;endArrow=block;exitX=0.5;exitY=0.99;entryX=0;entryY=-0.01;rounded=0;labelBackgroundColor=none;strokeColor=#60E696;fontColor=default;fontSize=15;" target="5TNfugPb2gbSnnf4BZM9-32" value="Control de Acceso RLS">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="68.87139107611549" y="676.8998923573735" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

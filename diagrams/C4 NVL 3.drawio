@@ -1,0 +1,156 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Página-1" id="m8CefKdGshKkPSUWvJbq">
+    <mxGraphModel dx="787" dy="1377" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <object placeholders="1" c4Name="API Backend" c4Type="api_boundary" c4Application="Software System" label="&lt;font&gt;&lt;b&gt;&lt;div style=&quot;text-align: left&quot;&gt;%c4Name%&lt;/div&gt;&lt;/b&gt;&lt;/font&gt;&lt;div style=&quot;text-align: left&quot;&gt;[%c4Application%]&lt;/div&gt;" id="fajQS1U4nY3dDALys_Uz-2">
+          <mxCell parent="1" style="rounded=1;fontSize=14;whiteSpace=wrap;html=1;dashed=1;arcSize=20;fillColor=none;strokeColor=#666666;fontColor=#333333;labelBackgroundColor=none;align=left;verticalAlign=bottom;labelBorderColor=none;spacingTop=0;spacing=10;dashPattern=8 4;metaEdit=1;rotatable=0;perimeter=rectanglePerimeter;noLabel=0;labelPadding=0;allowArrows=0;connectable=0;expand=0;recursiveResize=0;editable=1;pointerEvents=0;absoluteArcSize=1;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="623.28" width="920" x="1150" y="446.72" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Base de Datos" c4Type="Container" c4Technology="db" c4Description="Persistencia de la información." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%:&amp;nbsp;%c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#E6E6E6&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="fajQS1U4nY3dDALys_Uz-3">
+          <mxCell parent="1" style="shape=cylinder3;size=15;whiteSpace=wrap;html=1;boundedLbl=1;rounded=0;labelBackgroundColor=none;fillColor=#23A2D9;fontSize=14;fontColor=#ffffff;align=center;strokeColor=#0E7DAD;metaEdit=1;points=[[0.5,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.5,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];resizable=0;" vertex="1">
+            <mxGeometry height="120" width="240" x="1381.9264935064934" y="1090.003" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Controlador de Autenticación" c4Type="auth" c4Description="Valida sesiones y permisos de adultos, tutores y menores." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" technology="JWT" id="fajQS1U4nY3dDALys_Uz-6">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="1820.0098701298703" y="472.49125000000004" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Aplicación Frontend" c4Type="Container" c4Technology="frontend" c4Description="Envía eventos y métricas consolidadas." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%: %c4Technology%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#E6E6E6&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="fajQS1U4nY3dDALys_Uz-7">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;labelBackgroundColor=none;fillColor=#23A2D9;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0E7DAD;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="120" width="240" x="1491.4473376623378" y="310" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Gestor de Evaluaciones" c4Type="assessment" c4Description="Coordina el flujo desde la recepción de métricas hasta el reporte." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" technology="Node.js" id="fajQS1U4nY3dDALys_Uz-8">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="1162.8848051948053" y="472.49125000000004" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Motor de Estadísticas" c4Type="stats" c4Description="Calcula desviaciones (σ), índices (I) y normalización (z)." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" technology="Node.js" id="fajQS1U4nY3dDALys_Uz-9">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="1162.8848051948053" y="859.03375" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Orquestador de IA" c4Type="ai_orch" c4Description="Construye prompts (Chain of Thought) y asegura anonimización." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" technology="LangChain" id="fajQS1U4nY3dDALys_Uz-10">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="1781.3554545454544" y="704.4167500000001" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Google AI Studio" c4Type="ai_service" c4Description="Servicio de análisis cognitivo." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="fajQS1U4nY3dDALys_Uz-12">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="1781.3554545454544" y="1090.003" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-13" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1820.0098701298703" y="330.759" as="sourcePoint" />
+            <mxPoint x="1961.7427272727273" y="472.49125000000004" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-33" connectable="0" parent="fajQS1U4nY3dDALys_Uz-13" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Envía métricas agregadas&lt;div&gt;[POST/JSON]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.3622" y="-2" as="geometry">
+            <mxPoint x="119" y="18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-14" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1446.3505194805196" y="266.33525000000003" as="sourcePoint" />
+            <mxPoint x="1343.2720779220779" y="498.26075000000003" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-32" connectable="0" parent="fajQS1U4nY3dDALys_Uz-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Solicitudes de acceso&lt;div&gt;[HTTPS]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.1555" y="-6" as="geometry">
+            <mxPoint x="-45" y="26" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-16" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-36" connectable="0" parent="fajQS1U4nY3dDALys_Uz-16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Solicita procesamiento&lt;div&gt;estadístico&lt;div&gt;[INTERNO]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2497" y="3" as="geometry">
+            <mxPoint x="-9" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-17" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1781.3554545454544" y="1129.6135" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-42" connectable="0" parent="fajQS1U4nY3dDALys_Uz-17" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Guarda reporte&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;final&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;[SQL]&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2824" y="4" as="geometry">
+            <mxPoint x="-4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-18" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-38" connectable="0" parent="fajQS1U4nY3dDALys_Uz-18" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Pasa indicadores procesados&lt;div&gt;[INTERNO]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.0712" as="geometry">
+            <mxPoint x="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-19" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-40" connectable="0" parent="fajQS1U4nY3dDALys_Uz-19" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Retorna análisis&lt;div&gt;de probabilidad&lt;/div&gt;&lt;div&gt;[JSON]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.0891" y="2" as="geometry">
+            <mxPoint y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-20" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-39" connectable="0" parent="fajQS1U4nY3dDALys_Uz-20" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Envía prompt&lt;div&gt;estructurado&lt;div&gt;[HTTPS]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.4814" as="geometry">
+            <mxPoint x="-1" y="66" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-21" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-41" connectable="0" parent="fajQS1U4nY3dDALys_Uz-21" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Entrega análisis&lt;div&gt;crudo&lt;div&gt;[INTERNO]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.6089" y="-1" as="geometry">
+            <mxPoint x="-4" y="-57" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-31" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1420.5809090909092" y="704.4167500000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-43" connectable="0" parent="fajQS1U4nY3dDALys_Uz-31" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Notifica finalización&lt;div&gt;de reporte&lt;/div&gt;&lt;div&gt;[INTERNO]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.0056" y="6" as="geometry">
+            <mxPoint x="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <object placeholders="1" c4Name="Generador de Reportes" c4Type="report" c4Description="Valida el JSON de salida y adapta el lenguaje del reporte." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" technology="Node.js" id="fajQS1U4nY3dDALys_Uz-11">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=14;" vertex="1">
+            <mxGeometry height="120" width="240" x="1491.4473376623378" y="936.34225" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-23" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1240.1936363636364" y="1039.4202500000001" as="sourcePoint" />
+            <mxPoint x="1407.696103896104" y="1606.34925" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-37" connectable="0" parent="fajQS1U4nY3dDALys_Uz-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Consulta datos para&lt;div&gt;normalización&lt;/div&gt;&lt;div&gt;[SQL]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.3119" y="-3" as="geometry">
+            <mxPoint x="3" y="34" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-29" edge="1" parent="1" source="fajQS1U4nY3dDALys_Uz-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=14;" target="fajQS1U4nY3dDALys_Uz-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fajQS1U4nY3dDALys_Uz-35" connectable="0" parent="fajQS1U4nY3dDALys_Uz-29" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Verifica permisos de rol&lt;div&gt;[iNTERNO]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.0753" y="-3" as="geometry">
+            <mxPoint x="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

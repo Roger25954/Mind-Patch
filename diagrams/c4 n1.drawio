@@ -1,0 +1,68 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Página-1" id="cedp2lnW09Ir7v5l6K8A">
+    <mxGraphModel dx="1853" dy="1360" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-1" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontSize=19;labelBackgroundColor=none;fillColor=#56517E;strokeColor=#EEEEEE;fontColor=#FFFFFF;" value="Usuario Infantil (Menor)&#xa;[Persona]&#xa;Interactúa mediante juegos y misiones de reconocimiento sin percibir una evaluación." vertex="1">
+          <mxGeometry height="255" width="255" x="372" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-2" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontSize=19;labelBackgroundColor=none;fillColor=#56517E;strokeColor=#EEEEEE;fontColor=#FFFFFF;" value="Usuario Adulto&#xa;[Persona]&#xa;Resuelve formularios progresivos y microtareas cognitivas en una interfaz cálida." vertex="1">
+          <mxGeometry height="255" width="255" x="724.5" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-3" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontSize=19;labelBackgroundColor=none;fillColor=#56517E;strokeColor=#EEEEEE;fontColor=#FFFFFF;" value="Tutor&#xa;[Persona]&#xa;Supervisa, gestiona los permisos y acompaña la evaluación del usuario menor." vertex="1">
+          <mxGeometry height="255" width="255" x="1072.5" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-4" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontSize=19;labelBackgroundColor=none;fillColor=#56517E;strokeColor=#EEEEEE;fontColor=#FFFFFF;" value="Plataforma Mind Patch&#xa;[Sistema de Software] &#xa;Plataforma de tamizaje digital enfocada en la detección temprana de neurodivergencias mediante evaluación no invasiva." vertex="1">
+          <mxGeometry height="375" width="375" x="664.5" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-5" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontSize=19;labelBackgroundColor=none;fillColor=#56517E;strokeColor=#EEEEEE;fontColor=#FFFFFF;" value="Motor de IA (Google Gemini)&#xa;[Sistema Externo]&#xa;Analiza indicadores cuantitativos anonimizados y estima probabilidades por dominio cognitivo." vertex="1">
+          <mxGeometry height="255" width="255" x="243" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-6" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontSize=19;labelBackgroundColor=none;fillColor=#56517E;strokeColor=#EEEEEE;fontColor=#FFFFFF;" value="APIs de Mapas y Directorios&#xa;[Sistema Externo]&#xa;Proporciona información verificada de especialistas para la canalización segura del usuario." vertex="1">
+          <mxGeometry height="255" width="255" x="1203" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-7" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-1" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0;entryY=0.19;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-4" value="Genera métricas conductuales&#xa;jugando">
+          <mxGeometry relative="1" x="-0.2965" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-8" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-2" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-4" value="Completa autoevaluaciones">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-9" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-3" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=1;entryY=0.18;rounded=0;edgeStyle=orthogonalEdgeStyle;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-4" value="Valida permisos y&#xa;recibe reporte final">
+          <mxGeometry relative="1" x="-0.3073" y="-20" as="geometry">
+            <mxPoint y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-10" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-4" style="curved=1;startArrow=none;endArrow=block;exitX=0;exitY=0.75;rounded=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-5" value="Envía métricas anonimizadas&#xa;orquestadas por LangChain">
+          <mxGeometry relative="1" x="0.0614" y="16" as="geometry">
+            <mxPoint x="-1" as="offset" />
+            <mxPoint x="664.5000000000003" y="633.9999999999997" as="sourcePoint" />
+            <mxPoint x="528" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-11" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-5" style="startArrow=none;endArrow=block;entryX=0.25;entryY=1;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=1;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-4" value="Devuelve reporte JSON con nivel&#xa;de riesgo y nota ética">
+          <mxGeometry relative="1" x="-0.2199" y="13" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="753" y="925" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-12" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-4" style="curved=1;startArrow=none;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-6" value="Consulta ubicación de&#xa;especialistas médicos">
+          <mxGeometry relative="1" x="-0.4133" y="21" as="geometry">
+            <mxPoint x="1" y="-1" as="offset" />
+            <mxPoint x="822.7500000000003" y="726.9999999999997" as="sourcePoint" />
+            <mxPoint x="949.5" y="826" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzU9v4h67jCoOWeUyi8v-13" edge="1" parent="1" source="tzU9v4h67jCoOWeUyi8v-6" style="curved=1;startArrow=none;endArrow=block;exitX=0.25;exitY=0;rounded=0;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=19;labelBackgroundColor=none;strokeColor=#182E3E;fontColor=default;strokeWidth=4;" target="tzU9v4h67jCoOWeUyi8v-4" value="Devuelve datos de contacto&#xa;para canalización">
+          <mxGeometry relative="1" x="0.0617" y="12" as="geometry">
+            <mxPoint x="-1" as="offset" />
+            <mxPoint x="1288.5000000000005" y="749.5" as="sourcePoint" />
+            <mxPoint x="1308" y="505" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

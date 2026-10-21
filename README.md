@@ -1,179 +1,116 @@
-# Documentación Técnica: Plataforma de Tamizaje Digital
-## Detección Temprana y Fortalecimiento Cognitivo mediante IA
+# Mind-Patch 🧠🎮
 
-**Equipo:** Mind Patch
-**Fecha de actualización:** 03 de marzo 2026
+Plataforma gamificada de evaluación, seguimiento y apoyo cognitivo/terapéutico impulsada por Inteligencia Artificial Generativa (Google Gemini & LangChain), construida sobre una arquitectura de contenedores con Node.js/Express, PostgreSQL y múltiples módulos interactivos y minijuegos web.
 
 ---
 
-## Tabla de Contenidos
+## 🎯 Objetivo del Proyecto
 
-- [Introducción](#introducción)
-    - [Contexto del Problema](#contexto-del-problema)
-    - [Necesidad Identificada](#necesidad-identificada)
-    - [Enfoque de la Solución](#enfoque-de-la-solución)
-    - [Limitación Importante](#limitación-importante)
-- [Propuesta de Valor](#propuesta-de-valor)
-    - [Detección Temprana Accesible](#detección-temprana-accesible)
-    - [Lenguaje Empático y No Alarmista](#lenguaje-empático-y-no-alarmista)
-    - [IA Estructurada y Responsable](#ia-estructurada-y-responsable)
-    - [Acompañamiento Activo](#acompañamiento-activo)
-- [Arquitectura Técnica General](#arquitectura-técnica-general)
-    - [Capas del Sistema](#capas-del-sistema)
-    - [Principios de Diseño](#principios-de-diseño)
-- [Frontend: Experiencia de Usuario](#frontend-experiencia-de-usuario)
-    - [Tecnologías](#tecnologías)
-    - [Módulo Infantil (Gamificación)](#módulo-infantil-gamificación)
-    - [Módulo Adulto](#módulo-adulto)
-- [Backend: Procesamiento y Lógica](#backend-procesamiento-y-lógica)
-    - [Tecnologías](#tecnologías-1)
-    - [API REST - Endpoints Principales](#api-rest---endpoints-principales)
-    - [Motor de Perfil Cognitivo](#motor-de-perfil-cognitivo)
-- [Motor de Estimulación Adaptativa](#motor-de-estimulación-adaptativa)
-    - [Objetivo](#objetivo)
-    - [Estructura del Plan](#estructura-del-plan)
-    - [Adaptación Dinámica](#adaptación-dinámica)
-- [Servicio de IA Responsable](#servicio-de-ia-responsable)
-    - [Función](#función)
-    - [Arquitectura de IA](#arquitectura-de-ia)
-    - [Ejemplo de Respuesta JSON](#ejemplo-de-respuesta-json)
-- [Canalización a Especialistas](#canalización-a-especialistas)
-- [Consideraciones Éticas y de Seguridad](#consideraciones-éticas-y-de-seguridad)
-    - [Protección de Datos](#protección-de-datos)
-    - [Transparencia](#transparencia)
-    - [Control de Acceso](#control-de-acceso)
-- [Flujo Completo del Sistema](#flujo-completo-del-sistema)
-- [Conclusión Técnica](#conclusión-técnica)
+**Mind-Patch** integra videojuegos cognitivos interactivos con un ecosistema de servicios backend e inteligencia artificial para evaluar métricas de desempeño cognitivo, atención, memoria y toma de decisiones, ofreciendo retroalimentación asistida por IA, geolocalización de especialistas y paneles de resultados para usuarios y profesionales de la salud mental.
 
 ---
 
-## Introducción
+## 🏛️ Estructura del Proyecto
 
-### Contexto del Problema
-En México, el acceso tardío a evaluaciones especializadas en áreas como atención, memoria y regulación cognitiva limita la posibilidad de actuar preventivamente. La falta de herramientas accesibles que orienten a familias y adultos de manera temprana retrasa la búsqueda de acompañamiento profesional.
+```text
+Mind-Patch/
+├── Backend/                                  # API principal en Node.js + Express + Sequelize + Google OAuth2
+│   ├── controllers/                          # Controladores de IA, Mapas, Resultados y Autenticación
+│   ├── db/                                   # Configuración de conexión a PostgreSQL
+│   ├── middleware/                           # Middlewares de autenticación JWT y validación
+│   ├── modules/Auth/                         # Integración con Passport Google OAuth 2.0
+│   ├── routes/                               # Rutas (/api/auth, /api/ia, /api/maps, /api/res)
+│   ├── app.js                                # Configuración de Express y CORS
+│   ├── server.js                             # Punto de entrada del servidor (Puerto 3000)
+│   └── Dockerfile                            # Contenedor del servicio Backend
+├── api-backend/                              # Servicio API complementario (Especialistas, Citas y Gemini AI)
+│   ├── config/                               # Configuración de conexión PostgreSQL
+│   ├── controllers/                          # Controladores de especialistas y servicios clínicos
+│   ├── middlewares/                          # Validación de sesiones y tokens JWT
+│   ├── routes/                               # Definición de endpoints REST
+│   ├── crearTablas.js                        # Script de inicialización de tablas
+│   └── server.js                             # Servidor Express API
+├── langchain/                                # Módulo de experimentación e integración conversacional con LangChain y Gemini
+│   ├── index.js                              # Agente conversacional con @google/genai (gemini-3-flash-preview)
+│   ├── documentosn.js                        # Procesamiento contextual de documentos con LangChain
+│   └── package.json                          # Dependencias de LangChain (@langchain/google-genai, @langchain/openai)
+├── db/                                       # Infraestructura de Base de Datos Relacional (PostgreSQL 16)
+│   ├── init-01/                              # Scripts SQL de inicialización de esquema y datos semilla
+│   └── docker-compose.yml                    # Orquestación aislada de la base de datos
+├── front-end/                                # Aplicaciones cliente y ecosistema de minijuegos cognitivos
+│   ├── front end - Mind Patch-Diseño web/    # Portal web principal de Mind-Patch (React + Vite)
+│   ├── nova-drive/                           # Minijuego de reflejos, atención visomotora y conducción espacial
+│   ├── Juego_Academia_de_la_magia/           # Minijuego cognitivo de memoria, secuencias y resolución lógica
+│   ├── juego-astrid/                         # Minijuego interactivo de agilidad mental y toma de decisiones
+│   └── Juego_Jesus_1_Archivo/                # Minijuego autocontenido de destreza y enfoque cognitivo
+├── diagrams/                                       # Definiciones PlantUML (.puml) de arquitectura C4 (Nivel 1 y Nivel 2)
+├── diagrams/                                 # Diagramas arquitectónicos C4 (Niveles 1-3), UML, Bloques, Flujo de Usuario y Tech Stack (.drawio, .png, .svg, .jpeg)
+├── docs/                                     # Documentación funcional, planteamiento del problema, propuestas de minijuegos y especificaciones C4 (.pdf, .docx)
+├── docker-compose.yml                        # Orquestación integral (PostgreSQL 16 + Backend + Frontend)
+├── DOCUMENTACION_TECNICA.md                  # Especificación técnica detallada del sistema y arquitectura C4
+├── requirements.txt                          # Especificación de dependencias del ecosistema y comandos de instalación
+├── LICENSE                                   # Licencia MIT
+└── package.json                              # Configuración raíz del proyecto Node.js
+```
 
-### Necesidad Identificada
-Se requiere una plataforma digital que permita:
-- Explorar indicadores cognitivos de forma accesible.
-- Ofrecer orientación estructurada y comprensible.
-- Sugerir cuándo podría ser conveniente acudir con un especialista.
-- Proponer actividades digitales de fortalecimiento cognitivo.
+---
 
-### Enfoque de la Solución
-Aplicación web basada en IA que combina: exploración digital temprana, generación de un perfil cognitivo orientativo, recomendación profesional responsable y actividades digitales adaptativas de fortalecimiento. Diseñada para población infantil y adulta.
+## 🎮 Módulos Frontend y Minijuegos Cognitivos
 
-### Limitación Importante
-La plataforma **no realiza diagnósticos clínicos**. Su función es orientar, describir tendencias observadas y sugerir áreas que podrían beneficiarse de acompañamiento profesional. El diagnóstico formal corresponde exclusivamente a profesionales de la salud.
+1. **Portal Principal (`front-end/front end - Mind Patch-Diseño web/`)**: Interfaz central del paciente/usuario para autenticación, visualización de progreso terapéutico, chat asistido por IA y búsqueda de especialistas.
+2. **Nova Drive (`front-end/nova-drive/`)**: Minijuego enfocado en coordinación visomotora, velocidad de reacción e inhibición de estímulos distractores.
+3. **Academia de la Magia (`front-end/Juego_Academia_de_la_magia/`)**: Entorno gamificado orientado a memoria de trabajo, reconocimiento de patrones y atención sostenida.
+4. **Juego Astrid (`front-end/juego-astrid/`)**: Módulo interactivo en React/Vite para evaluación de flexibilidad cognitiva y resolución de tareas bajo presión temporal.
+5. **Juego Jesús (`front-end/Juego_Jesus_1_Archivo/`)**: Prototipo ligero de evaluación rápida integrable en navegador.
 
-## Propuesta de Valor
+---
 
-### Detección Temprana Accesible
-Identificación de indicadores conductuales y cognitivos mediante dinámicas digitales estructuradas y juegos.
+## 🚀 Requisitos e Instalación
 
-### Lenguaje Empático y No Alarmista
-Los resultados no etiquetan, no usan términos clínicos y se centran en fortalezas y áreas a fortalecer.
+### Prerrequisitos
+- **Docker** y **Docker Compose** (para despliegue contenedorizado completo)
+- **Node.js** `>= 18.x` y **npm** (para ejecución local por servicio)
+- **PostgreSQL** `16` (si se ejecuta sin Docker)
+- Clave de API de Google Gemini (`GEMINI_API_KEY`) configurada en archivo `.env`
 
-### IA Estructurada y Responsable
-La IA no diagnostica ni reemplaza especialistas. Funciona como apoyo descriptivo, operando bajo reglas predefinidas y con salida controlada en formato JSON.
+### Opción 1: Despliegue con Docker Compose (Recomendado)
 
-### Acompañamiento Activo
-Además de la orientación inicial, el sistema ofrece actividades digitales adaptativas que ayudan a fortalecer habilidades mientras el usuario gestiona atención profesional.
+```bash
+docker compose up --build -d
+```
+- **Frontend Web:** `http://localhost:5173`
+- **Backend API:** `http://localhost:3000`
+- **PostgreSQL 16:** Puerto `5432` (usuario/contraseña/base por defecto: `mindpatch`)
 
-## Arquitectura Técnica General
+### Opción 2: Instalación Manual por Módulo
 
-### Capas del Sistema
-1.  **Capa de Presentación (Frontend):** Interfaz de usuario, experiencias gamificadas y captura de métricas.
-2.  **Capa de Lógica de Negocio (Backend):** API REST, procesamiento y validación.
-3.  **Motor de Perfil Cognitivo:** Cálculo de indicadores estadísticos a partir de métricas.
-4.  **Motor de Estimulación Adaptativa:** Generación y ajuste de planes de actividades personalizados.
-5.  **Servicio de IA Responsable:** Análisis estructurado y generación de descripciones en lenguaje natural.
-6.  **Capa de Datos:** Persistencia y trazabilidad (PostgreSQL).
+```bash
+# 1. Dependencias en la raíz
+npm install
 
-### Principios de Diseño
-- Separación clara entre evaluación y fortalecimiento.
-- Minimización de datos personales.
-- IA como apoyo, no como decisor clínico.
-- Enfoque ético y transparente.
+# 2. Servicio Backend Principal
+cd Backend
+npm install
+npm run dev
 
-## Frontend: Experiencia de Usuario
+# 3. Servicio API Backend Secundario
+cd ../api-backend
+npm install
+node server.js
 
-### Tecnologías
-- **HTML5:** Estructura semántica.
-- **CSS3:** Diseño responsivo.
-- **JavaScript/TypeScript:** Lógica de interacción.
-- **Phaser:** Motor para dinámicas gamificadas en 2D.
-- **Three.js:** Entornos visuales interactivos 3D.
+# 4. Módulo de IA Conversacional (LangChain / Gemini)
+cd ../langchain
+npm install
+node index.js
 
-### Módulo Infantil (Gamificación)
-- **Objetivo:** Explorar patrones de respuesta mediante juegos no clínicos.
-- **Actividades:** Juegos de atención selectiva, dinámicas go/no-go, secuencias de memoria de trabajo, discriminación auditiva/visual.
-- **Métricas Capturadas:**
-    - **Tiempo promedio de respuesta:**  
-  `<t> = (1/N) * Σ(t_i)`
+# 5. Portal Frontend Principal
+cd "../front-end/front end - Mind Patch-Diseño web/mind-patch-diseño web"
+npm install
+npm run dev
+```
 
-- **Variabilidad (desviación estándar):**  
-  `σ_t = √[ (1/N) * Σ(t_i - <t>)² ]`
+---
 
-- **Tasa de aciertos:**  
-  `TA = (A_totales / N_total) × 100%`
+## 📄 Licencia
 
-- **Tasa de impulsividad:**  
-  `TI = (E_impulsivos / N_total) × 100%`
-
-### Módulo Adulto
-- Cuestionarios estructurados y microtareas cognitivas.
-- Reportes visuales con lenguaje claro y empático.
-
-## Backend: Procesamiento y Lógica
-
-### Tecnologías
-- **Node.js + Express:** Entorno y framework para API REST.
-- **JWT:** Autenticación segura.
-- **PostgreSQL:** Base de datos con soporte JSONB.
-
-### API REST - Endpoints Principales
-- `POST /api/auth/login` - Autenticación de usuarios
-- `POST /api/auth/register` - Registro de usuarios
-- `POST /api/evaluaciones` - Registrar nueva evaluación
-- `POST /api/eventos` - Enviar eventos agregados
-- `GET /api/resultados/:id` - Consultar resultado final
-- `GET /api/especialistas` - Consultar directorio
-- `POST /api/actividades/plan` - Generar plan de actividades
-- `GET /api/actividades/:id` - Obtener actividad específica
-
-### Motor de Perfil Cognitivo
-Recibe métricas agregadas y calcula indicadores estadísticos para áreas como enfoque, memoria de trabajo y regulación. Organiza los resultados en un perfil descriptivo estructurado.
-
-## Motor de Estimulación Adaptativa
-
-### Objetivo
-Traducir el perfil orientativo en un plan de actividades digitales personalizadas. **No constituye tratamiento clínico.**
-
-### Estructura del Plan
-El motor genera planes en formato JSON con actividades, frecuencia, duración y parámetros iniciales.
-
-### Adaptación Dinámica
-Ajusta parámetros (velocidad, distractores, complejidad) según reglas predefinidas en función del desempeño del usuario (ej. Si la tasa de aciertos < 50%, disminuir dificultad).
-
-## Servicio de IA Responsable
-
-### Función
-La IA recibe métricas anonimizadas y genera descripciones en lenguaje natural, sugiriendo parámetros dentro de límites predefinidos. Nunca emite diagnósticos.
-
-### Arquitectura de IA
-- **LangChain:** Orquestador que construye prompts estructurados y aplica reglas de salida (JSON).
-- **Google AI Studio (Gemini):** Motor de análisis que identifica patrones y genera descripciones cualitativas.
-
-### Ejemplo de Respuesta JSON
-```json
-{
-  "tipo_usuario": "infantil",
-  "perfil_observado": {
-    "fortalezas": ["Buena capacidad de seguimiento de instrucciones"],
-    "areas_para_fortalecer": ["Mantenimiento de atención con distractores"]
-  },
-  "tendencias_identificadas": {
-    "atencion": "Variabilidad moderada en presencia de distractores"
-  },
-  "nota_etica": "Este análisis es un perfil orientativo y no constituye un diagnóstico clínico."
-}
+Distribuido bajo la licencia MIT. Consulta el archivo [`LICENSE`](file:///g:/Mi%20unidad/Drive.alumno.udg.mx/Proyectos/Mind-Patch/LICENSE) para más detalles.

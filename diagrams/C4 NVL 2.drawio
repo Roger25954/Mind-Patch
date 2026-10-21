@@ -1,0 +1,98 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Página-1" id="3iBadrLQWyOTuPFv165v">
+    <mxGraphModel dx="1594" dy="1157" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <object placeholders="1" c4Name="Usuario (Infante/Adulto)" c4Type="user" c4Description="Interactúa con la capa de presentación." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="-vtSCEiorbdMcFkAidtb-2">
+          <mxCell parent="1" style="html=1;fontSize=11;dashed=0;whiteSpace=wrap;fillColor=#083F75;strokeColor=#06315C;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" vertex="1">
+            <mxGeometry height="180" width="200" x="230" y="470" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Tutor" c4Type="tutor" c4Description="Gestiona la configuración y resultados." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="-vtSCEiorbdMcFkAidtb-3">
+          <mxCell parent="1" style="html=1;fontSize=11;dashed=0;whiteSpace=wrap;fillColor=#083F75;strokeColor=#06315C;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" vertex="1">
+            <mxGeometry height="180" width="200" x="520" y="470" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Mind System" c4Type="SystemScopeBoundary" c4Application="Software System" label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;&lt;div style=&quot;text-align: left&quot;&gt;%c4Name%&lt;/div&gt;&lt;/b&gt;&lt;/font&gt;&lt;div style=&quot;text-align: left&quot;&gt;[%c4Application%]&lt;/div&gt;" id="-vtSCEiorbdMcFkAidtb-4">
+          <mxCell parent="1" style="rounded=1;fontSize=11;whiteSpace=wrap;html=1;dashed=1;arcSize=20;fillColor=none;strokeColor=#666666;fontColor=#333333;labelBackgroundColor=none;align=left;verticalAlign=bottom;labelBorderColor=none;spacingTop=0;spacing=10;dashPattern=8 4;metaEdit=1;rotatable=0;perimeter=rectanglePerimeter;noLabel=0;labelPadding=0;allowArrows=0;connectable=0;expand=0;recursiveResize=0;editable=1;pointerEvents=0;absoluteArcSize=1;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="360" width="380" x="230" y="710" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Aplicación Frontend" c4Type="frontend" c4Description="Ejecuta dinámicas de juego y pre-procesa métricas iniciales." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" herramienta="HTML5, CSS3, JS/TS, Phaser" id="-vtSCEiorbdMcFkAidtb-5">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="120" width="240" x="350" y="740" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-6" edge="1" parent="1" source="-vtSCEiorbdMcFkAidtb-2" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="-vtSCEiorbdMcFkAidtb-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-17" connectable="0" parent="-vtSCEiorbdMcFkAidtb-6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Juega y completa formularios&lt;div&gt;[HTTPS]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1968" y="4" as="geometry">
+            <mxPoint x="-31" y="-4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-7" edge="1" parent="1" source="-vtSCEiorbdMcFkAidtb-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="-vtSCEiorbdMcFkAidtb-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-18" connectable="0" parent="-vtSCEiorbdMcFkAidtb-7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Consulta paneles de administración&lt;div&gt;[HTTPS]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1129" y="-1" as="geometry">
+            <mxPoint x="17" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <object placeholders="1" c4Name="API Backend" c4Type="api" c4Description="Gestiona la lógica de negocio, validación de roles y orquestación de IA." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" herramienta="Node.js, Express" id="-vtSCEiorbdMcFkAidtb-8">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="120" width="240" x="350" y="930" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-9" edge="1" parent="1" source="-vtSCEiorbdMcFkAidtb-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="-vtSCEiorbdMcFkAidtb-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-19" connectable="0" parent="-vtSCEiorbdMcFkAidtb-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Envía métricas&lt;div&gt;(promedios, tasas de error)&lt;div&gt;[JSON/HTTPS]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1793" y="4" as="geometry">
+            <mxPoint y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <object placeholders="1" c4Name="Base de Datos" c4Type="db" c4Description="Almacena perfiles, evaluaciones y resultados históricos." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" herramientas="PostgreSQL/MySQL" id="-vtSCEiorbdMcFkAidtb-10">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="120" width="240" x="750" y="930" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-11" edge="1" parent="1" source="-vtSCEiorbdMcFkAidtb-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="-vtSCEiorbdMcFkAidtb-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-20" connectable="0" parent="-vtSCEiorbdMcFkAidtb-11" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Lee y escribe datos de&lt;div&gt;usuario y evaluaciones&lt;/div&gt;&lt;div&gt;[SQL]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.2253" as="geometry">
+            <mxPoint x="22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <object placeholders="1" c4Name="Google AI Studio" c4Type="ai_service" c4Description="Servicio externo de análisis de IA." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="-vtSCEiorbdMcFkAidtb-12">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="120" width="240" x="190" y="1140" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Directorios Médicos" c4Type="directory" c4Description="Fuentes externas de canalización." label="&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/div&gt;" id="-vtSCEiorbdMcFkAidtb-13">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];" vertex="1">
+            <mxGeometry height="120" width="240" x="520" y="1140" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-14" edge="1" parent="1" source="-vtSCEiorbdMcFkAidtb-8" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="-vtSCEiorbdMcFkAidtb-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-23" connectable="0" parent="-vtSCEiorbdMcFkAidtb-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Busca especialistas cercanos&lt;div&gt;[HTTPS]&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.2185" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-16" edge="1" parent="1" source="-vtSCEiorbdMcFkAidtb-8" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="-vtSCEiorbdMcFkAidtb-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-vtSCEiorbdMcFkAidtb-21" connectable="0" parent="-vtSCEiorbdMcFkAidtb-16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Envía indicadores&lt;div&gt;anonimizados&amp;nbsp;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;vía LangChain&lt;/span&gt;&lt;div&gt;&lt;div&gt;[JSON/HTTPS]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.3001" y="-2" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

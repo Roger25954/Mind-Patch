@@ -1,0 +1,67 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+  <diagram name="Página-1" id="84LkFbsEyWYrPZihgGcN">
+    <mxGraphModel dx="1617" dy="1180" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <object placeholders="1" c4Name="Usuario" c4Type="Infante/Adulto" c4Description="Persona que realiza las actividades de tamizaje digital." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="XEKK_PoCG61eQD13fmC8-2">
+          <mxCell parent="1" style="html=1;fontSize=16;dashed=0;whiteSpace=wrap;fillColor=#083F75;strokeColor=#06315C;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" vertex="1">
+            <mxGeometry height="180" width="200" x="269.9965384615385" y="374" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Tutor" c4Type="Tutor" c4Description="Responsable del menor que gestiona perfiles y consulta reportes." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="XEKK_PoCG61eQD13fmC8-3">
+          <mxCell parent="1" style="html=1;fontSize=16;dashed=0;whiteSpace=wrap;fillColor=#083F75;strokeColor=#06315C;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" vertex="1">
+            <mxGeometry height="180" width="200" x="629.998076923077" y="374" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Mind Patch" c4Type="Software System" c4Description="Plataforma de tamizaje digital para la detección temprana de neurodivergencias." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="XEKK_PoCG61eQD13fmC8-4">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#1061B0;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#0D5091;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=16;" vertex="1">
+            <mxGeometry height="120" width="240" x="429.9957692307692" y="680.0033333333333" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-5" edge="1" parent="1" source="XEKK_PoCG61eQD13fmC8-2" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=24;" target="XEKK_PoCG61eQD13fmC8-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-7" connectable="0" parent="XEKK_PoCG61eQD13fmC8-5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=2;fontColor=#333333;labelBackgroundColor=default;fontSize=18;" value="Realiza misiones de juego&lt;div&gt;y formularios&lt;div&gt;[HTTPS]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.0347" y="5" as="geometry">
+            <mxPoint x="-22" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-6" edge="1" parent="1" source="XEKK_PoCG61eQD13fmC8-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=24;" target="XEKK_PoCG61eQD13fmC8-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-8" connectable="0" parent="XEKK_PoCG61eQD13fmC8-6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#333333;fontStyle=2;fontSize=18;" value="Gestiona perfiles y consulta&lt;div&gt;reportes de resultados&lt;div&gt;[HTTPS]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.0643" as="geometry">
+            <mxPoint x="39" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <object placeholders="1" c4Name="Google AI Studio (Gemini)" c4Type="ai_service" c4Description="Motor de IA que analiza indicadores cuantitativos anonimizados." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="XEKK_PoCG61eQD13fmC8-9">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=16;" vertex="1">
+            <mxGeometry height="120" width="240" x="250" y="910" as="geometry" />
+          </mxCell>
+        </object>
+        <object placeholders="1" c4Name="Directorios Médicos/Mapas" c4Type="directory" c4Description="APIs externas para la canalización con especialistas verificados." label="&lt;font&gt;&lt;b&gt;%c4Name%&lt;/b&gt;&lt;/font&gt;&lt;div&gt;[%c4Type%]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font&gt;&lt;font color=&quot;#cccccc&quot;&gt;%c4Description%&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" id="XEKK_PoCG61eQD13fmC8-10">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#8C8496;fontColor=#ffffff;align=center;arcSize=10;strokeColor=#736782;metaEdit=1;resizable=0;points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];fontSize=16;" vertex="1">
+            <mxGeometry height="120" width="240" x="630.0015384615384" y="910" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-11" edge="1" parent="1" source="XEKK_PoCG61eQD13fmC8-4" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=24;" target="XEKK_PoCG61eQD13fmC8-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-13" connectable="0" parent="XEKK_PoCG61eQD13fmC8-11" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=2;labelBackgroundColor=light-dark(#000000, #121212);fontColor=#333333;fontSize=18;" value="Envía métricas agregadas y&lt;div&gt;recibe análisis de riesgo&lt;div&gt;[HTTPS]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.1414" y="2" as="geometry">
+            <mxPoint x="-47" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-12" edge="1" parent="1" source="XEKK_PoCG61eQD13fmC8-4" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=24;" target="XEKK_PoCG61eQD13fmC8-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XEKK_PoCG61eQD13fmC8-14" connectable="0" parent="XEKK_PoCG61eQD13fmC8-12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#333333;fontStyle=2;fontSize=18;" value="Consulta información de&lt;div&gt;especialistas&lt;div&gt;[HTTPS]&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.0114" y="-2" as="geometry">
+            <mxPoint x="72" y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
